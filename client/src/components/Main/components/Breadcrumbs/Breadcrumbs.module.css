@@ -1,0 +1,20 @@
+.container{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-transform: capitalize;
+}
+
+.separator{
+    color: #ababab;
+}
+
+.link {
+    color: #B9B9B9;
+    font-style: italic;
+    text-decoration: none;
+}
+
+.link:last-child{
+    font-weight: 600;
+}

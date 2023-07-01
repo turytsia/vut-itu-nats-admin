@@ -1,0 +1,12 @@
+.container {
+    margin-top: 16px;
+    color: var(--black);
+}
+
+.container.dark {
+    color: var(--white);
+}
+
+.title{
+    margin-bottom: 8px;
+}

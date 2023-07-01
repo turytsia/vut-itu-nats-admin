@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  nats-admin:
+    container_name: nats-admin
+    build: 
+      context: ./client
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client/src:/client/src
+      - ./client/package.json:/client/package.json
+      - /node_modules
+    stdin_open: true
+    tty: true

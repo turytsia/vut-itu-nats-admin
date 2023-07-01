@@ -1,0 +1,19 @@
+.container{
+    display: flex;
+    background-color: white;
+    height: 100%;
+}
+
+.container.dark{
+    background-color: var(--dark-blue);
+}
+
+/* menu */
+.container>aside{
+    width: 285px;
+}
+
+/* content */
+.container>main{
+    flex: 1;
+}

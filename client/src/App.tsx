@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom"
 
-function App() {
+import View from "./components/View/View"
+import Menu from "./components/Menu/Menu"
+import Header from "./components/Header/Header"
+import Container from "./components/Container/Container"
+import Main from "./components/Main/Main"
+
+//pages
+import Welcome from "./pages/Welcome/Welcome"
+import Operators from "./pages/Operators/Operators"
+import Accounts from "./pages/Accounts/Accounts"
+import Users from "./pages/Users/Users"
+import Servers from "./pages/Servers/Servers"
+
+const App = () => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <View>
+      <Header />
+      <Container>
+        <Menu />
+        <Main>
+          <Routes>
+            <Route path="/" element={<Welcome />} />
+            <Route path="/operators" element={<Operators />} />
+            <Route path="/accounts" element={<Accounts />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/servers" element={<Servers />} />
+          </Routes>
+        </Main>
+      </Container>
+    </View>
   );
 }
 

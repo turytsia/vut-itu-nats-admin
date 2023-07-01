@@ -1,0 +1,36 @@
+.container{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, .3);
+    padding: 16px;
+    z-index: 1;
+}
+
+.dark.container {
+    background-color: var(--dark-blue-light);
+    color: white;
+}
+
+.actions{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.iconLink{
+    color: var(--black);
+}
+
+.iconLink.dark{
+    color: var(--white);
+}
+
+.iconLink:hover{
+    color: var(--blue);
+}
+
+.iconLink:hover svg{
+    color: var(--blue);
+}
