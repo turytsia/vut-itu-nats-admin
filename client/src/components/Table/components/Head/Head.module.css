@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 25px 8px;
+    gap: 8px;
+    padding-right: 8px;
+}
+
+.sortIcon {
+    cursor: pointer;
+}

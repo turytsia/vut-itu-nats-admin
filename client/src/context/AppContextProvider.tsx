@@ -12,6 +12,7 @@ import React, { createContext, useCallback, useState } from 'react'
 
 // modules
 import Storage from "../utils/storage"
+import Request from "../utils/axios"
 
 /** Type of application context provider */
 type AppContextProviderType = (props: PropsType) => JSX.Element
@@ -20,23 +21,27 @@ type AppContextProviderType = (props: PropsType) => JSX.Element
 type AppContextType = {
     isDark: boolean
     toggleIsDark: () => void
+    request: Request
 }
 
 /** component props type */
 type PropsType = {
     children: React.ReactNode
 }
+/** Storage protocol */
+const storage = new Storage()
+/** Request protocol */
+const request = new Request()
 
 /** Initial application state context */
 const initialValue: AppContextType = {
     isDark: false,
-    toggleIsDark: () => {}
+    toggleIsDark: () => { },
+    request
 }
 
 /** Application state context */
 export const AppContext = createContext(initialValue)
-/** Storage protocol */
-const storage = new Storage()
 
 /**
  * Provides general state for the entire application
@@ -51,9 +56,11 @@ const AppContextProvider: AppContextProviderType = ({
 
     /** Toggles isDark true/false */
     const toggleIsDark = useCallback(
-        () => { 
-            storage.set.isDark(!isDark)
-            setIsDark(prev => !prev)
+        () => {
+            setIsDark(prev => {
+                storage.set.isDark(!prev)
+                return !prev
+            })
         },
         []
     )
@@ -61,7 +68,8 @@ const AppContextProvider: AppContextProviderType = ({
     /** Application state inicialization */
     const value: AppContextType = {
         isDark,
-        toggleIsDark
+        request,
+        toggleIsDark,
     }
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>
