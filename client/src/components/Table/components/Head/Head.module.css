@@ -12,3 +12,22 @@
 .sortIcon {
     cursor: pointer;
 }
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.order {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #b1b1b1;
+    background-color: #eeeeee;
+    width: 15px;
+    height: 15px;
+    padding: 5px;
+    border-radius: 50%;
+    font-size: 12px;
+}

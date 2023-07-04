@@ -5,6 +5,7 @@ import Table from '../../components/Table/Table'
 
 // types
 import { OperatorType } from '../../utils/axios'
+import { ColumnTypes, columns } from '../../hooks/useSort'
 
 const OperatorHeaderMap = {
     "name": "Name",
@@ -12,6 +13,14 @@ const OperatorHeaderMap = {
     "iss": "Issuer ID",
     "jti": "JWT Token",
     "sub": "Subject"
+}
+
+const columnDataTypes: ColumnTypes = {
+    name: columns.TEXT,
+    iat: columns.NUMBER,
+    iss: columns.TEXT,
+    jti: columns.TEXT,
+    sub: columns.TEXT
 }
 
 const Operators = () => {
@@ -42,6 +51,7 @@ const Operators = () => {
             <Table
                 header={OperatorHeaderMap}
                 data={operators}
+                columns={columnDataTypes}
             />
         </Page>
     )

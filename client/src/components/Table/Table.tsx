@@ -4,42 +4,39 @@ import Cell from './components/Cell/Cell'
 import { getId } from '../../utils/id'
 
 import classes from './Table.module.css'
-import useSort from '../../hooks/useSort'
+import useSort, { ColumnTypes } from '../../hooks/useSort'
 
 type PropsType = {
     header: { [key: string]: string }
     data: { [key: string]: any }[]
+    columns: ColumnTypes
 }
 
 const Table = ({
     header,
-    data
+    data: initialData,
+    columns
 }: PropsType) => {
-    const { sorters, changeSort } = useSort()
-    const [hoverRowIndex, setHoverRowIndex] = useState<null | number>(null)
-
-    const onMouseLeave = () => {
-        if (hoverRowIndex === null) return
-
-        setHoverRowIndex(null)
-    }
-
-    console.log(sorters)
+    const { data, sortTypeOf, sortOrderOf, changeSort } = useSort(initialData, columns)
 
     return (
         <div
             className={classes.container}
-            style={{ gridTemplateColumns: `repeat(${Object.keys(header).length}, minmax(min-content, 150px))` }}
-            onMouseLeave={onMouseLeave}>
-            {Object.values(header).map(name =>
-                <Head key={name} onMouseEnter={onMouseLeave} changeSort={() => changeSort(name)}>{name}</Head>
+            style={{ gridTemplateColumns: `repeat(${Object.keys(header).length}, minmax(min-content, 150px))` }}>
+            {Object.keys(header).map(key =>
+                <Head
+                    key={key}
+                    changeSort={() => changeSort(key)}
+                    sort={sortTypeOf(key)}
+                    order={sortOrderOf(key)}>
+                    {header[key]}
+                </Head>
             )}
             {data.map((item, i) =>
                 Object.keys(header).map(key =>
                     <Cell
                         key={getId()}
-                        isHover={i === hoverRowIndex}
-                        onMouseEnter={() => setHoverRowIndex(i)}>
+                        isHover={false}>
                         {item[key]}
                     </Cell>
                 )
