@@ -1,0 +1,52 @@
+.popoverArrowTop {
+    position: absolute;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-bottom: 8px solid black;
+    top: -8px;
+}
+
+.popoverArrowBottom {
+    position: absolute;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    border-top: 8px solid black;
+    bottom: -8px;
+}
+
+.popoverArrowRight {
+    position: absolute;
+    border-bottom: 6px solid transparent;
+    border-top: 6px solid transparent;
+    border-left: 8px solid black;
+    right: -8px;
+}
+
+.popoverArrowLeft {
+    position: absolute;
+    border-bottom: 6px solid transparent;
+    border-top: 6px solid transparent;
+    border-right: 8px solid black;
+    left: -8px;
+}
+
+.popover {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    z-index: 1;
+    border-radius: var(--border-radius);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--color-content-inverse);
+    font-weight: normal;
+    font-size: 0.875rem;
+    transition: 0s;
+}
+
+.popoverPadding {
+    padding: var(--space-6) var(--space-10);
+}
+
+.popoverFlex {
+    width: max-content;
+}

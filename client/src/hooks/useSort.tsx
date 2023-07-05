@@ -37,6 +37,7 @@ export type ColumnTypes = {
 export enum columns {
     TEXT,
     NUMBER,
+    NONE,
 }
 
 /** Sorting types */
@@ -197,6 +198,11 @@ const useSort = ([...initialData]: DataType[], columnTypes: ColumnTypes) => {
         [sorters]
     )
 
+    const isSortable = useCallback(
+        (key: string) => columnTypes[key] !== columns.NONE,
+        [columnTypes]
+    )
+
     /** Sorted data */
     const data = useMemo(
         () => Object.values(sorters).length > 0 ? Object.values(sorters).reduce((cache, { key }) => sortData(cache, key), initialData) : initialData,
@@ -204,7 +210,7 @@ const useSort = ([...initialData]: DataType[], columnTypes: ColumnTypes) => {
     )
 
 
-    return { data, changeSort, sortTypeOf, sortOrderOf }
+    return { data, changeSort, sortTypeOf, sortOrderOf, isSortable }
 }
 
 export default useSort

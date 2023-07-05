@@ -5,6 +5,8 @@ import icons from '../../../../utils/icons'
 import classes from "./Head.module.css"
 import { sort } from '../../../../hooks/useSort'
 
+import Popover from "../../../Popover/Popover"
+
 type PropsType = {
     children: React.ReactNode
     changeSort: () => void

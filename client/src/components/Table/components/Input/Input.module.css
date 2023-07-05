@@ -1,0 +1,14 @@
+.container {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.input {
+    background-color: #E8E8E8;
+    padding: 6px 12px;
+    border-radius: 3px;
+    border: none;
+    font-size: 14px;
+    min-width: 300px;
+}

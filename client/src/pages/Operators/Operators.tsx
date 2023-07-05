@@ -6,21 +6,35 @@ import Table from '../../components/Table/Table'
 // types
 import { OperatorType } from '../../utils/axios'
 import { ColumnTypes, columns } from '../../hooks/useSort'
+import { timestampFormat } from '../../utils/common'
 
 const OperatorHeaderMap = {
     "name": "Name",
-    "iat": "Issued",
     "iss": "Issuer ID",
+    "sub": "Subject",
+    "iat": "Issued",
     "jti": "JWT Token",
-    "sub": "Subject"
 }
 
 const columnDataTypes: ColumnTypes = {
     name: columns.TEXT,
-    iat: columns.NUMBER,
     iss: columns.TEXT,
-    jti: columns.TEXT,
-    sub: columns.TEXT
+    sub: columns.TEXT,
+    iat: columns.NUMBER,
+    jti: columns.NONE,
+}
+
+const renderContent = (key: string, data: any) => {
+    switch (key) {
+        case "name":
+        case "iss":
+        case "sub":
+            return data
+        case "iat":
+            return timestampFormat(data)
+        case "jti":
+            return <span>Icon</span>
+    }
 }
 
 const Operators = () => {
@@ -51,7 +65,8 @@ const Operators = () => {
             <Table
                 header={OperatorHeaderMap}
                 data={operators}
-                columns={columnDataTypes}
+                columnDataTypes={columnDataTypes}
+                renderContent={renderContent}
             />
         </Page>
     )

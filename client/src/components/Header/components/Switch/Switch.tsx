@@ -30,6 +30,7 @@ const Switch = () => {
         checked={isDark}
         onChange={toggleIsDark}
         onColor={colors.blue}
+        offColor={colors.gray}
         onHandleColor={colors.darkBlueLight}
         handleDiameter={24}
         checkedIcon={false}

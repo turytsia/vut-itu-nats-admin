@@ -40,6 +40,9 @@ const initialValue: AppContextType = {
     request
 }
 
+/** Root element where floating elements are generated */
+export const floatingRoot = document.getElementById("portal")
+
 /** Application state context */
 export const AppContext = createContext(initialValue)
 
