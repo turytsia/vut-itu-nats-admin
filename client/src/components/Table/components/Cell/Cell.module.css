@@ -5,9 +5,22 @@
     white-space: nowrap;
     font-size: 12px;
     font-weight: 400;
-    border-top: 1px solid #D9D9D9;
-    border-bottom: 1px solid #D9D9D9;
     padding: 25px 8px;
+    color: var(--black);
+    border-top: 1px solid #D9D9D9;
+}
+
+.container svg {
+    color: var(--black);
+}
+
+.container.dark {
+    border-top: 1px solid var(--gray);
+    color: var(--white);
+}
+
+.container.dark svg {
+    color: var(--white);
 }
 
 .hover{

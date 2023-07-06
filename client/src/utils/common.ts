@@ -14,7 +14,12 @@ export enum placements {
  * @param date date string or miliseconds
  * @returns timestamp format string
  */
-export const timestampFormat = (date: string | number) => {
-    const format = timeFormat("%Y-%m-%dT%H:%M:%S")
+export const timesecondsFormat = (date: string | number) => {
+    const format = timeFormat("%H:%M:%S %Y.%m.%d")
+    return format(new Date(date))
+}
+
+export const dateFormat = (date: string | number) => {
+    const format = timeFormat("%Y.%m.%d")
     return format(new Date(date))
 }

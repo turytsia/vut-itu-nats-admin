@@ -10,3 +10,9 @@
 .title{
     margin-bottom: 8px;
 }
+
+.titleContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

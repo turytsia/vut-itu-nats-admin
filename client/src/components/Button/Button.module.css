@@ -1,0 +1,30 @@
+.container{
+    padding: 8px 15px;
+    font-weight: 500;
+    color: var(--black);
+    background-color: #EFEFEF;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.dark {
+    background-color: #52565b;
+    color: var(--white);
+}
+
+.blue {
+    color: var(--blue);
+}
+
+.container:hover{
+    background-color: #e6e6e6;
+}
+
+.container.dark:hover{
+    background-color: #44484c;
+}

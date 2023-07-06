@@ -10,23 +10,25 @@
  * @author xturyt00
  */
 
-import React, { useState, cloneElement, useRef, useMemo } from "react"
+import React, { useState, cloneElement, useRef, useMemo, useId } from "react"
 import { floatingRoot } from "../../context/AppContextProvider"
 import { placements } from "../../utils/common"
 
 import {
     FloatingPortal,
-    useInteractions,
-    useHover,
-    useFloating,
     arrow,
     flip,
     shift,
     autoUpdate,
     offset,
-    useDismiss,
     ReferenceType,
-} from "@floating-ui/react-dom-interactions"
+    useDelayGroupContext,
+    useFloating,
+    useHover,
+    useInteractions,
+    useDismiss,
+    useDelayGroup
+} from "@floating-ui/react"
 
 import classNames from "classnames"
 import classes from './Popover.module.css'
@@ -70,11 +72,11 @@ const Popover = ({
     className = "",
     placement = placements.TOP,
     active = true,
-    padding = false,
     mouseOnly = false,
     fallbackPlacements = [],
     offset: defaultOffset = 10
 }: PropsType) => {
+    const id = useId()
 
     const [isActive, setIsActive] = useState<boolean>(false)
     const arrowRef = useRef<HTMLDivElement>(null)
@@ -82,8 +84,7 @@ const Popover = ({
     const {
         x, // x position of the floating element
         y, // y position of the floating element
-        reference, // reference of the element with popover
-        floating, // popover reference
+        refs, // reference of the element with popover
         strategy, // position type (relative | absolute)
         context, // context
         placement: floatingPlacement,  // actual placement
@@ -107,9 +108,12 @@ const Popover = ({
             autoUpdate(reference, floating, update, { elementResize: true, ancestorScroll: true }),
     })
 
+    /** Context from FloatingDelayGroup */
+    const { delay } = useDelayGroupContext()
+
     // Hover set up for the floating element
     const { getReferenceProps, getFloatingProps } = useInteractions([
-        useHover(context, { enabled: active, mouseOnly }),
+        useHover(context, { enabled: active, mouseOnly, delay }),
         useDismiss(context, { ancestorScroll: true }),
     ])
 
@@ -126,18 +130,21 @@ const Popover = ({
 
     // Calculates popover styles
     const popoverStyles = useMemo(
-        () => classNames([classes.popover], className, { [classes.popoverPadding]: padding }),
-        [padding, className]
+        () => classNames([classes.popover], className),
+        [className]
     )
+
+    /** Registers delay group */
+    useDelayGroup(context, { id })
 
     return (
         <>
-            {cloneElement(Element, { ref: reference, ...getReferenceProps() })}
+            {cloneElement(Element, { ref: refs.setReference, ...getReferenceProps() })}
             <FloatingPortal root={floatingRoot}>
                 {isActive && (
                     <div
                         className={popoverStyles}
-                        ref={floating}
+                        ref={refs.setFloating}
                         style={{
                             position: strategy,
                             top: y ?? 0,

@@ -1,0 +1,52 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.required{
+    color: var(--red);
+}
+
+.input {
+    /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  background-color: #F8F8F8;
+  width: 25px;
+  height: 25px;
+  border-radius: 3px;
+  border: 1px solid #D9D9D9;
+  outline: none;
+  cursor: pointer;
+}
+
+.input:checked {
+  position: relative;
+}
+
+.input.input:checked::after{
+    content: '';
+    position: absolute;
+    height: 13px;
+    width: 13px;
+    bottom: 50%;
+    right: 50%;
+    transform: translate(50%, 50%);
+    background-color: var(--blue);
+    border-radius: 3px;
+}
+
+.label{
+    display: flex;
+    gap: 2px;
+    font-size: 18;
+    font-weight: 500;
+    width: fit-content;
+}
+
+.hint{
+    font-size: 12px;
+    font-weight: 400;
+}

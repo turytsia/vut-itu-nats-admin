@@ -35,18 +35,29 @@
     flex-wrap: wrap;
     justify-content: center;
     z-index: 1;
-    border-radius: var(--border-radius);
+    border-radius: 3px;
     background-color: rgba(0, 0, 0, 0.8);
-    color: var(--color-content-inverse);
+    color: white;
     font-weight: normal;
     font-size: 0.875rem;
     transition: 0s;
-}
-
-.popoverPadding {
-    padding: var(--space-6) var(--space-10);
+    padding: 6px 10px;
+    animation: slidein 100ms ease-in;
+    animation-iteration-count: 1;
 }
 
 .popoverFlex {
     width: max-content;
+}
+
+@keyframes slidein {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }

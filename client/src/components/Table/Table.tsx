@@ -1,34 +1,70 @@
-import React, { useMemo, useState } from 'react'
+/**
+ * @fileoverview Table implementation
+ *
+ * This file contains implementation of the Table. This component
+ * is being used as a table on different pages in order to easily
+ * present dynamicly changing data to the user.
+ *
+ * @module Input
+ * 
+ * @author xturyt00
+ */
+
+import { useCallback, useContext, useMemo, useState } from 'react'
 import Head from './components/Head/Head'
 import Cell from './components/Cell/Cell'
 import Input from "./components/Input/Input"
 import { getId } from '../../utils/id'
-
-import classes from './Table.module.css'
 import useSort, { ColumnTypes, columns } from '../../hooks/useSort'
 
+import classes from './Table.module.css'
+import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
+
+/** Component props type */
 type PropsType = {
     header: { [key: string]: string }
     data: { [key: string]: any }[]
     columnDataTypes: ColumnTypes
     renderContent: (key: string, value: any) => any
+    isLoading?: boolean
 }
 
+const SkeletonCellCount = 20
+
+/**
+ * Table component, renders a table with given data
+ * 
+ * @param props Component props
+ * @returns Table component
+ */
 const Table = ({
+    isLoading,
     header,
     data: initialData,
     columnDataTypes,
-    renderContent
+    renderContent,
 }: PropsType) => {
-    const { data: sortData, sortTypeOf, sortOrderOf, changeSort, isSortable } = useSort(initialData, columnDataTypes)
-
     const [search, setSearch] = useState<string>("")
     const [dropdownItem, setDropdownItem] = useState("name")
 
-    const onChangeFilter = (inputValue: string, dropdownValue: string) => {
-        setSearch(inputValue)
-        setDropdownItem(dropdownValue)
-    }
+    const { isDark } = useContext(AppContext)
+
+    const {
+        data: sortData,
+        sortTypeOf,
+        sortOrderOf,
+        changeSort,
+        isSortable
+    } = useSort(initialData, columnDataTypes)
+
+    const onChangeFilter = useCallback(
+        (inputValue: string, dropdownValue: string) => {
+            setSearch(inputValue)
+            setDropdownItem(dropdownValue)
+        },
+        []
+    )
 
     const hasText = useMemo(
         () => Object.values(columnDataTypes).includes(columns.TEXT),
@@ -45,6 +81,16 @@ const Table = ({
         [sortData]
     )
 
+    const columnCount = useMemo(
+        () => Object.keys(header).length,
+        [header]
+    )
+
+    const containerStyles = useMemo(
+        () => classNames(classes.container, { [classes.dark]: isDark }),
+        [isDark]
+    )
+
     return (
         <div className={classes.outer}>
             <div className={classes.filters}>
@@ -55,8 +101,8 @@ const Table = ({
                     dropdownValue={dropdownItem} />}
             </div>
             <div
-                className={classes.container}
-                style={{ gridTemplateColumns: `repeat(${Object.keys(header).length}, minmax(min-content, 150px))` }}>
+                className={containerStyles}
+                style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(min-content, 150px))` }}>
                 {Object.keys(header).map(key =>
                     <Head
                         key={key}
@@ -67,15 +113,16 @@ const Table = ({
                         {header[key]}
                     </Head>
                 )}
-                {data.map((item, i) =>
-                    Object.keys(header).map(key =>
-                        <Cell
-                            key={getId()}
-                            isHover={false}>
-                            {renderContent(key, item[key])}
-                        </Cell>
-                    )
-                )}
+                {isLoading ? Array(20).fill(Cell).map(CellSkeleton => <CellSkeleton key={getId()} isLoading />) :
+                    data.map((item, i) =>
+                        Object.keys(header).map(key =>
+                            <Cell
+                                className={i % 2 ? classes.darkCell : ""}
+                                key={getId()}>
+                                {renderContent(key, item)}
+                            </Cell>
+                        )
+                    )}
             </div>
         </div>
     )

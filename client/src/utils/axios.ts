@@ -79,8 +79,13 @@ const GetRequest: GetRequestActions = {
 }
 
 const PostRequest: PostRequestActions = {
-    operator: async () => {
-        return {}
+    operator: async (data) => {
+        try {
+            const response = await post("/operator/", { data })
+            return response.data
+        } catch (error) {
+            console.error(error)
+        }
     },
     account: async () => {
         return {}

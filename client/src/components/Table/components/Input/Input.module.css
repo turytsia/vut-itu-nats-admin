@@ -12,3 +12,9 @@
     font-size: 14px;
     min-width: 300px;
 }
+
+.input.dark{
+    background-color: var(--dark-blue-light);
+    border: 1px solid var(--gray);
+    color: var(--white);
+}

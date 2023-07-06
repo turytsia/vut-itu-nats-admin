@@ -1,8 +1,58 @@
-.container {
-    background-color: #E8E8E8;
-    padding: 12px 20px;
+.input {
+    background-color: #F8F8F8;
+    color: var(--black);
+    padding: 12px 30px 12px 12px;
     border-radius: 3px;
-    border: none;
+    border: 1px solid #D9D9D9;
     font-size: 8px;
-    min-width: 300px;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+}
+
+.input:disabled{
+    color: #a6a6a6;
+}
+
+.label{
+    display: flex;
+    gap: 2px;
+    font-size: 18;
+    margin-bottom: 12px;
+    font-weight: 500;
+    width: fit-content;
+}
+
+.required{
+    color: var(--red);
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inputContainer {
+    position: relative;
+}
+
+.copy{
+    background-color: transparent;
+    border: none;
+    color: #a6a6a6;
+    position: absolute;
+    right: 8px;
+    bottom: 50%;
+    transform: translateY(50%);
+    cursor: pointer;
+}
+
+.copy:hover{
+    color: var(--black);
+}
+
+.hint{
+    font-size: 12px;
+    font-weight: 400;
 }

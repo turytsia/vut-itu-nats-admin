@@ -1,11 +1,11 @@
 /**
- * @fileoverview Popover component implementation
+ * @fileoverview DismissWindow component implementation
  *
- * This file contains implementation of a Popover. This is
+ * This file contains implementation of a DismissWindow. This is
  * a floating component that will be generated in different root element.
- * Primary use of this component in application is a tooltip
+ * Primary use of this component in application is for Dropdown and Modal window
  *
- * @module Popover
+ * @module DismissWindow
  * 
  * @author xturyt00
  */
@@ -17,7 +17,6 @@ import { placements } from "../../utils/common"
 import {
     FloatingPortal,
     useInteractions,
-    useHover,
     useFloating,
     arrow,
     flip,
@@ -25,12 +24,11 @@ import {
     autoUpdate,
     offset,
     useDismiss,
-    ReferenceType,
     Boundary,
     size,
     hide,
     useClick,
-} from "@floating-ui/react-dom-interactions"
+} from "@floating-ui/react"
 
 import classNames from "classnames"
 import classes from './DismissWindow.module.css'
@@ -50,21 +48,21 @@ type PropsType = {
 }
 
 /**
- * Popover component, creates popover at different pages
+ * DismissWindow component, creates modal window at different pages
  * 
  * @see https://floating-ui.com/ floating ui documentation
  * 
  * @param props component props
- * @returns Popover component
+ * @returns DismissWindow component
  * 
  * ```tsx
  * // ...
  * 
  * return (
  *  <div>
- *      <Popover element = {<p>Element with hover</p>}>
- *          Hover content here
- *      <Popover/>
+ *      <DismissWindow element = {<p>Element with hover</p>}>
+ *          Modal window content here
+ *      <DismissWindow/>
  *  </div>
  * )
  * ```
@@ -88,15 +86,14 @@ const DismissWindow = ({
     const {
         x, // x position of the floating element
         y, // y position of the floating element
-        reference, // reference of the element with popover
-        floating, // popover reference
+        refs, // DismissWindow refs
         strategy, // position type (relative | absolute)
         context, // context
         placement: floatingPlacement,  // actual placement
         middlewareData,
     } = useFloating({
-        placement, // placement of the popover relatively to its parent
-        open: isActive, // popover state
+        placement, // placement of the DismissWindow relatively to its parent
+        open: isActive, // state
         onOpenChange: setIsActive,
         middleware: [
             // flip placements
@@ -150,12 +147,12 @@ const DismissWindow = ({
 
     return (
         <>
-            {cloneElement(Element(isActive), { ref: reference, ...getReferenceProps() })}
+            {cloneElement(Element(isActive), { ref: refs.setReference, ...getReferenceProps() })}
             <FloatingPortal root={floatingRoot}>
                 {isActive && cloneElement(
                     children(setIsActive) as ReactElement<any, string | JSXElementConstructor<any>>,
                     {
-                        ref: floating,
+                        ref: refs.setFloating,
                         style: {
                             position: strategy,
                             top: y ?? 0,

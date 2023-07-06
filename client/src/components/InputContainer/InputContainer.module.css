@@ -1,0 +1,39 @@
+.hint{
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.inputContainer {
+    position: relative;
+}
+
+
+.label{
+    display: flex;
+    gap: 2px;
+    font-size: 18;
+    margin-bottom: 12px;
+    font-weight: 500;
+    width: fit-content;
+}
+
+.required{
+    color: var(--red);
+}
+
+.flex{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.error {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--red);
+}
+
+.errorContainer{
+    flex: 1;
+}

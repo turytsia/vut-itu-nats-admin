@@ -15,8 +15,9 @@ import classNames from 'classnames'
 
 /** component props type */
 type PropsType = {
-    children: React.ReactNode,
+    children: React.ReactNode
     title: string
+    renderActions?: React.ReactNode
 }
 
 /**
@@ -27,7 +28,8 @@ type PropsType = {
  */
 const Page = ({
     children,
-    title
+    title,
+    renderActions
 }: PropsType) => {
 
     const { isDark } = useContext(AppContext)
@@ -36,7 +38,10 @@ const Page = ({
 
     return (
         <section className={containerStyles}>
-            <h2 className={classes.title}>{title}</h2>
+            <div className={classes.titleContainer}>
+                <h2 className={classes.title}>{title}</h2>
+                {renderActions}
+            </div>
             {children}
         </section>
     )
