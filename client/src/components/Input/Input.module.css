@@ -10,31 +10,15 @@
     width: 100%;
 }
 
+
 .input:disabled{
     color: #a6a6a6;
 }
 
-.label{
-    display: flex;
-    gap: 2px;
-    font-size: 18;
-    margin-bottom: 12px;
-    font-weight: 500;
-    width: fit-content;
-}
-
-.required{
-    color: var(--red);
-}
-
-.flex{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.inputContainer {
-    position: relative;
+.input.dark {
+    background-color: var(--dark-blue-light);
+    border: 1px solid var(--gray);
+    color: var(--white);
 }
 
 .copy{
@@ -50,9 +34,4 @@
 
 .copy:hover{
     color: var(--black);
-}
-
-.hint{
-    font-size: 12px;
-    font-weight: 400;
 }

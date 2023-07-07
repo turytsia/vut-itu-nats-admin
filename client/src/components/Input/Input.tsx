@@ -1,9 +1,10 @@
-import React, { ChangeEvent, ChangeEventHandler, useCallback, useMemo } from 'react'
+import React, { ChangeEvent, ChangeEventHandler, useCallback, useContext, useMemo } from 'react'
 import classes from "./Input.module.css"
 import classNames from 'classnames'
 import icons from '../../utils/icons'
 import { Icon } from '@iconify/react'
 import InputContainer from "../InputContainer/InputContainer"
+import { AppContext } from '../../context/AppContextProvider'
 
 
 
@@ -37,11 +38,18 @@ const Input = ({
 	onChange = () => { }
 }: PropsType) => {
 
+	const { isDark } = useContext(AppContext)
+
 	const onCopy = useCallback(
 		() => {
 			navigator.clipboard.writeText(value)
 		},
 		[value]
+	)
+
+	const inputStyles = useMemo(
+		() => classNames(classes.input, { [classes.dark]: isDark }),
+		[isDark]
 	)
 
 	return (
@@ -54,8 +62,8 @@ const Input = ({
 			width={width}
 		>
 			<input
-				id={classes.input}
-				className={classes.input}
+				id={inputStyles} // FIX
+				className={inputStyles}
 				value={value}
 				disabled={disabled}
 				placeholder={placeholder}

@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext, useMemo } from 'react'
 import InputContainer from '../InputContainer/InputContainer'
 import DatePicker from 'react-datepicker'
 
 import classes from "./DateInput.module.css"
 import { dateFormat } from '../../utils/common'
+import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
 
 type PropsType = {
     isRequired?: boolean
@@ -32,6 +34,14 @@ const DateInput = ({
     name,
     onChange = () => { }
 }: PropsType) => {
+
+    const { isDark } = useContext(AppContext)
+
+    const inputStyles = useMemo(
+        () => classNames(classes.input, { [classes.dark]: isDark }),
+        [isDark]
+    )
+
   return (
       <InputContainer
           labelText={labelText}
@@ -42,8 +52,8 @@ const DateInput = ({
           width={width}
       >
           <DatePicker
-              id={classes.input}
-              className={classes.input}
+              id={inputStyles}
+              className={inputStyles}
               placeholderText={placeholder}
               disabled={disabled}
               name={name}

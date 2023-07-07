@@ -7,7 +7,7 @@
  * 
  * @author xturyt00
  */
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 
 import { AppContext } from '../../context/AppContextProvider'
 import Switch from "./components/Switch/Switch"
@@ -25,14 +25,21 @@ const Header = () => {
 
     const { isDark } = useContext(AppContext)
 
-    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
-    const iconLinkStyles = classNames(classes.iconLink, { [classes.dark]: isDark })
+    const containerStyles = useMemo(
+        () => classNames(classes.container, { [classes.dark]: isDark }),
+        [isDark]
+    )
+
+    const iconLinkStyles = useMemo(
+        () => classNames(classes.iconLink, { [classes.dark]: isDark }),
+        [isDark]
+    )
 
     return (
         <header className={containerStyles}>
             <div className={classes.actions}>Jetono</div>
             <div className={classes.actions}>
-                <Link className={iconLinkStyles} to="https://github.com/turytsia/nats-admin">
+                <Link className={iconLinkStyles} target='_blank' to="https://github.com/turytsia/nats-admin">
                     <Icon icon={icons.github} height={35} width={35} />
                 </Link>
                 <Switch />

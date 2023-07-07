@@ -7,7 +7,7 @@
  * 
  * @author xturyt00
  */
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 
 import classes from "./Page.module.css"
 import { AppContext } from '../../context/AppContextProvider'
@@ -34,7 +34,10 @@ const Page = ({
 
     const { isDark } = useContext(AppContext)
 
-    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
+    const containerStyles = useMemo(
+        () => classNames(classes.container, { [classes.dark]: isDark }),
+        [isDark]
+    )
 
     return (
         <section className={containerStyles}>

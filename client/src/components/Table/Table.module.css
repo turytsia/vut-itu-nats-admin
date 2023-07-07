@@ -9,10 +9,6 @@
     margin-top: 48px;
 }
 
-.darkCell {
-    background-color: #efefef;
-}
-
 .container.dark{
     border-bottom: 1px solid var(--gray);
 }

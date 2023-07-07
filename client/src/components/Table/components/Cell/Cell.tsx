@@ -23,6 +23,7 @@ type PropsType = {
     children?: React.ReactNode
     className?: string
     isLoading?: boolean
+    isDark?: boolean
 }
 
 /**
@@ -34,7 +35,8 @@ type PropsType = {
 const Cell = ({
     className,
     children,
-    isLoading = false
+    isLoading = false,
+    isDark: isDarkInitialy = false
 }: PropsType) => {
 
     const { isDark } = useContext(AppContext)
@@ -45,7 +47,7 @@ const Cell = ({
     )
 
     const containerStyles = useMemo(
-        () => classNames(classes.container, className, { [classes.dark]: isDark } ),
+        () => classNames(classes.container, className, { [classes.dark]: isDark, [classes.darkContainer]: isDarkInitialy } ),
         [className, isDark]
     )
 

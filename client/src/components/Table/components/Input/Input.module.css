@@ -5,12 +5,13 @@
 }
 
 .input {
-    background-color: #E8E8E8;
+    background-color: #F8F8F8;
     padding: 6px 12px;
     border-radius: 3px;
     border: none;
     font-size: 14px;
     min-width: 300px;
+    border: 1px solid #D9D9D9;
 }
 
 .input.dark{

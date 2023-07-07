@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useCallback, useContext, useMemo } from 'react'
+import React, { MouseEventHandler, useCallback, useContext, useEffect, useMemo, useRef } from 'react'
 
 import classes from "./Modal.module.css"
 import { FloatingPortal } from '@floating-ui/react'
@@ -17,6 +17,10 @@ type PropsType = {
     onSubmit: () => void
     error?: string
     icon: icons
+}
+
+const onPropagationStop: MouseEventHandler<HTMLDivElement> = (e) => {
+    e.stopPropagation()
 }
 
 const Modal = ({
@@ -45,13 +49,6 @@ const Modal = ({
     const closeStyles = useMemo(
         () => classNames(classes.close, { [classes.dark]: isDark }),
         [isDark]
-    )
-
-    const onPropagationStop: MouseEventHandler<HTMLDivElement> = useCallback(
-        (e) => {
-            e.stopPropagation()
-        },
-        []
     )
 
     return (

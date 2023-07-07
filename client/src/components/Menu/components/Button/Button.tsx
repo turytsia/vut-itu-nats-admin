@@ -9,7 +9,7 @@
  */
 
 import classNames from 'classnames'
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { NavLink, NavLinkProps } from 'react-router-dom'
 import { AppContext } from '../../../../context/AppContextProvider'
 
@@ -17,6 +17,11 @@ import icons from '../../../../utils/icons'
 
 import classes from "./Button.module.css"
 import { Icon } from '@iconify/react'
+
+type ClassnameType = {
+  isActive: boolean
+  isPending: boolean
+}
 
 /** component props type */
 type PropsType = {
@@ -41,8 +46,10 @@ const Button = ({
 
   const { isDark } = useContext(AppContext)
 
-  const linkStyles: NavLinkProps["className"] =
-    ({ isActive, isPending }) => classNames(classes.container, { [classes.active]: isActive, [classes.dark]: isDark })
+  const linkStyles = useCallback(
+    ({ isActive, isPending }: ClassnameType) => classNames(classes.container, { [classes.active]: isActive, [classes.dark]: isDark }),
+    [isDark]
+  )
 
   return (
     <NavLink to={to} className={linkStyles}>

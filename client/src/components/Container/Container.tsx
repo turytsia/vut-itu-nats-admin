@@ -7,7 +7,7 @@
  * 
  * @author xturyt00
  */
-import React, { useContext } from 'react'
+import React, { useContext, useMemo } from 'react'
 
 import classes from "./Container.module.css"
 import classNames from 'classnames'
@@ -30,7 +30,10 @@ const Container = ({
 
     const { isDark } = useContext(AppContext)
 
-    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
+    const containerStyles = useMemo(
+        () => classNames(classes.container, { [classes.dark]: isDark }),
+        [isDark]
+    )
 
     return <div className={containerStyles}>{children}</div>
 }

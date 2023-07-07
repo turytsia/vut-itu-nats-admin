@@ -5,7 +5,7 @@
  * is being used as a table on different pages in order to easily
  * present dynamicly changing data to the user.
  *
- * @module Input
+ * @module Table
  * 
  * @author xturyt00
  */
@@ -113,11 +113,11 @@ const Table = ({
                         {header[key]}
                     </Head>
                 )}
-                {isLoading ? Array(20).fill(Cell).map(CellSkeleton => <CellSkeleton key={getId()} isLoading />) :
+                {isLoading ? Array(20).fill(Cell).map((CellSkeleton, i) => <CellSkeleton key={getId()} isLoading />) :
                     data.map((item, i) =>
                         Object.keys(header).map(key =>
                             <Cell
-                                className={i % 2 ? classes.darkCell : ""}
+                                isDark={i % 2 === 1}
                                 key={getId()}>
                                 {renderContent(key, item)}
                             </Cell>

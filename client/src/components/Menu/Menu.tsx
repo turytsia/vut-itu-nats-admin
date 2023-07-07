@@ -8,7 +8,7 @@
  * @author xturyt00
  */
 
-import { useContext } from 'react'
+import { useContext, useMemo } from 'react'
 import { AppContext } from '../../context/AppContextProvider'
 import Button from "./components/Button/Button"
 import SectionText from "./components/SectionText/SectionText"
@@ -26,7 +26,10 @@ const Menu = () => {
 
     const { isDark } = useContext(AppContext)
 
-    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
+    const containerStyles = useMemo(
+        () => classNames(classes.container, { [classes.dark]: isDark }),
+        [isDark]
+    )
 
     return (
         <aside className={containerStyles}>

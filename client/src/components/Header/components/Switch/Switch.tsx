@@ -3,7 +3,7 @@
  *
  * This file contains Switch component implementation
  *
- * @module Header
+ * @module Switch
  * 
  * @author xturyt00
  */
