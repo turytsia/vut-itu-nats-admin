@@ -32,7 +32,7 @@ const initialState: OperatorInputTypes = {
 
 const CreateOperatorModal = ({
     onClose,
-    onSubmit
+    onSubmit: _onSubmit
 }: PropsType) => {
 
     const [state, setState] = useState<OperatorInputTypes>(initialState)
@@ -58,6 +58,13 @@ const CreateOperatorModal = ({
         []
     )
 
+    const onSubmit = useCallback(
+        () => {
+            _onSubmit(state)
+        },
+        [state]
+    )
+
     return (
         <Modal
             title="Create new operator"
@@ -65,7 +72,7 @@ const CreateOperatorModal = ({
             textCancel='Cancel'
             icon={icons.plus}
             onClose={onClose}
-            onSubmit={() => onSubmit(state)}>
+            onSubmit={onSubmit}>
             <div className={classes.container}>
                 <Input
                     isRequired
@@ -74,14 +81,14 @@ const CreateOperatorModal = ({
                     value={state.name}
                     onChange={onChangeInput} />
                 <DateInput
-                    placeholder='dd.mm.yyyy'
+                    placeholder='yyyy.mm.dd'
                     name='expiry'
                     hintText="Valid until"
                     labelText="Expiry"
                     value={state.expiry}
                     onChange={onChangeDate} />
                 <DateInput
-                    placeholder='dd.mm.yyyy'
+                    placeholder='yyyy.mm.dd'
                     name='start'
                     hintText="Valid from"
                     labelText="Start"

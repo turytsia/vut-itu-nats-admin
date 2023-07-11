@@ -20,7 +20,7 @@ const ViewOperatorModal = ({
             icon={icons.eye}
             onClose={onClose}
             onSubmit={onClose}>
-            1234
+            Version: 2
             {/* <Input
                 disabled
                 isFlex
