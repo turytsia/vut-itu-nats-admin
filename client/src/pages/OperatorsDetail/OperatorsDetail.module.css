@@ -1,0 +1,20 @@
+.container {
+    max-width: 400px;
+}
+
+.tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.version {
+    padding: 4px 8px;
+    border-radius: 12px;
+    background-color: var(--white);
+    color: var(--test);
+    width: fit-content;
+    font-size: 12px;
+        margin: 0px 0 16px;
+
+}

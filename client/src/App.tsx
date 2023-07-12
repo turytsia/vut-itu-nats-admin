@@ -14,6 +14,7 @@ import Users from "./pages/Users/Users"
 import Servers from "./pages/Servers/Servers"
 import { useContext, useEffect } from "react"
 import { AppContext } from "./context/AppContextProvider"
+import OperatorsDetail from "./pages/OperatorsDetail/OperatorsDetail"
 
 const App = () => {
 
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="/accounts" element={<Accounts />} />
             <Route path="/users" element={<Users />} />
             <Route path="/servers" element={<Servers />} />
+            <Route path="/operators/:operator" element={<OperatorsDetail />} />
           </Routes>
         </Main>
       </Container>

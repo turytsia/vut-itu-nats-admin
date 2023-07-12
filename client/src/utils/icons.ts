@@ -16,7 +16,8 @@ enum icons {
     error = 'material-symbols:error-outline',
     copy = 'ph:copy-bold',
     lock = 'uil:lock',
-    plus = 'ic:round-plus'
+    plus = 'ic:round-plus',
+    pen = 'material-symbols:edit'
 }
 
 export default icons

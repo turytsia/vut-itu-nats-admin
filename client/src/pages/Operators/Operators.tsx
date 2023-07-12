@@ -12,11 +12,11 @@ import Popover from '../../components/Popover/Popover'
 import { FloatingDelayGroup } from '@floating-ui/react'
 
 import JWTModal from "./modals/JWTModal/JWTModal"
-import ViewOperatorModal from "./modals/ViewOperatorModal/ViewOperatorModal"
 import CreateOperatorModal, { OperatorInputTypes } from "./modals/CreateOperatorModal/CreateOperatorModal"
 
 import classes from "./Operators.module.css"
 import Button from '../../components/Button/Button'
+import { Link } from 'react-router-dom'
 
 const OperatorHeaderMap = {
     "name": "Name",
@@ -39,7 +39,6 @@ const Operators = () => {
     const { request } = useContext(AppContext)
     const [operators, setOperators] = useState<OperatorType[]>([])
     const [isJWTActive, setIsJWTActive] = useState<string>("")
-    const [isOperatorActive, setIsOperatorActive] = useState<OperatorType | null>(null)
     const [isCreateActive, setIsCreateActive] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -48,25 +47,20 @@ const Operators = () => {
         async () => {
             setIsLoading(true)
 
-            const { operators } = await request.get.operators()
+            try {
+                const { operators } = await request.get.operators()
 
-            const responses =
-                await Promise.allSettled(operators.map(async name => await request.get.operator(name)))
+                const responses =
+                    await Promise.allSettled(operators.map(async name => await request.get.operator(name)))
 
-            setOperators(responses.filter((r): r is PromiseFulfilledResult<OperatorType> => r.status === "fulfilled").map(r => r.value).filter(v => v))
-        
-            setIsLoading(false)
+                setOperators(responses.filter((r): r is PromiseFulfilledResult<OperatorType> => r.status === "fulfilled").map(r => r.value).filter(v => v))
+            } catch (e) {
+                console.error(e)
+            }
+            finally {
+                setIsLoading(false)
+            }
         },
-        []
-    )
-
-    const onOperatorModalOpen = useCallback(
-        (operator: OperatorType) => setIsOperatorActive(operator),
-        []
-    )
-
-    const onOperatorModalClose = useCallback(
-        () => setIsOperatorActive(null),
         []
     )
 
@@ -119,9 +113,9 @@ const Operators = () => {
                                     JWT Token
                                 </Popover>
                                 <Popover element={
-                                    <button className={classes.actionIcon} onClick={() => onOperatorModalOpen(data)}>
+                                    <Link className={classes.actionIcon} to={data["name"]}>
                                         <Icon icon={icons.eye} width={20} height={20} />
-                                    </button>
+                                    </Link>
                                 }>
                                     Details
                                 </Popover>
@@ -156,7 +150,6 @@ const Operators = () => {
             />
             {isCreateActive && <CreateOperatorModal onClose={onCreateOperatorClose} onSubmit={onCreateOperatorSubmit} />}
             {!!isJWTActive && <JWTModal onClose={onJWTModalClose} token={isJWTActive} />}
-            {!!isOperatorActive && <ViewOperatorModal onClose={onOperatorModalClose} operator={isOperatorActive} />}
         </Page>
     )
 }
