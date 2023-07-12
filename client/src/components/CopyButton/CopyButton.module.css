@@ -1,0 +1,10 @@
+.container {
+    background-color: transparent;
+    border: none;
+    color: #a6a6a6;
+    cursor: pointer;
+}
+
+.container:hover{
+    color: var(--black);
+}

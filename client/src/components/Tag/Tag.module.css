@@ -1,0 +1,9 @@
+.container {
+    padding: 4px 8px;
+    border-radius: 12px;
+    background-color: var(--white);
+    color: var(--test);
+    width: fit-content;
+    font-size: 12px;
+    font-weight: 400;
+}

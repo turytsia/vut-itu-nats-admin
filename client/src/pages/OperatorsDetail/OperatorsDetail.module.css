@@ -1,5 +1,9 @@
 .container {
-    max-width: 400px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    /* max-width: 500px; */
+    padding: 24px 0 0;
 }
 
 .tags{
@@ -15,6 +19,12 @@
     color: var(--test);
     width: fit-content;
     font-size: 12px;
-        margin: 0px 0 16px;
+    margin: 0px 0 16px;
+}
 
+.tags{
+    max-width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;  
 }

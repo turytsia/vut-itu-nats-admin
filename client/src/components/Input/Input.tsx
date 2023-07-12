@@ -1,8 +1,7 @@
 import React, { ChangeEvent, ChangeEventHandler, useCallback, useContext, useMemo } from 'react'
 import classes from "./Input.module.css"
 import classNames from 'classnames'
-import icons from '../../utils/icons'
-import { Icon } from '@iconify/react'
+import CopyButton from '../CopyButton/CopyButton'
 import InputContainer from "../InputContainer/InputContainer"
 import { AppContext } from '../../context/AppContextProvider'
 
@@ -40,13 +39,6 @@ const Input = ({
 
 	const { isDark } = useContext(AppContext)
 
-	const onCopy = useCallback(
-		() => {
-			navigator.clipboard.writeText(value)
-		},
-		[value]
-	)
-
 	const inputStyles = useMemo(
 		() => classNames(classes.input, { [classes.dark]: isDark }),
 		[isDark]
@@ -70,11 +62,7 @@ const Input = ({
 				name={name}
 				onChange={onChange} />
 
-			{isCopy && (
-				<button className={classes.copy} onClick={onCopy}>
-					<Icon icon={icons.copy} width={20} height={20} />
-				</button>
-			)}
+			{isCopy && <CopyButton className={classes.copy} value={value} />}
 		</InputContainer>
 	)
 }

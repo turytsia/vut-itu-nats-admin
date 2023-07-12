@@ -14,10 +14,15 @@ enum icons {
     secret = 'codicon:gist-secret',
     close = 'ic:round-close',
     error = 'material-symbols:error-outline',
-    copy = 'ph:copy-bold',
+    copy = 'lucide:copy',
+    copyCheck = 'lucide:copy-check',
     lock = 'uil:lock',
     plus = 'ic:round-plus',
-    pen = 'material-symbols:edit'
+    pen = 'material-symbols:edit',
+    open = 'fluent:open-20-filled',
+    settings = 'material-symbols:settings-outline',
+    nats = 'logos:nats-icon',
+    message = 'mi:message'
 }
 
 export default icons

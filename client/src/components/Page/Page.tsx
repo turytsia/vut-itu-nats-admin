@@ -8,16 +8,19 @@
  * @author xturyt00
  */
 import React, { useContext, useMemo } from 'react'
+import Tag from "../Tag/Tag"
 
-import classes from "./Page.module.css"
 import { AppContext } from '../../context/AppContextProvider'
+
 import classNames from 'classnames'
+import classes from "./Page.module.css"
 
 /** component props type */
 type PropsType = {
     children: React.ReactNode
     title: string
     renderActions?: React.ReactNode
+    tagText?: string
 }
 
 /**
@@ -29,20 +32,21 @@ type PropsType = {
 const Page = ({
     children,
     title,
-    renderActions
+    renderActions,
+    tagText
 }: PropsType) => {
 
     const { isDark } = useContext(AppContext)
 
-    const containerStyles = useMemo(
-        () => classNames(classes.container, { [classes.dark]: isDark }),
-        [isDark]
-    )
+    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
 
     return (
         <section className={containerStyles}>
             <div className={classes.titleContainer}>
-                <h2 className={classes.title}>{title}</h2>
+                <h2 className={classes.title}>
+                    {title}
+                    {tagText && <Tag>{tagText}</Tag>}
+                </h2>
                 {renderActions}
             </div>
             {children}

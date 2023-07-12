@@ -22,16 +22,9 @@
 }
 
 .copy{
-    background-color: transparent;
-    border: none;
-    color: #a6a6a6;
     position: absolute;
     right: 8px;
     bottom: 50%;
     transform: translateY(50%);
-    cursor: pointer;
 }
 
-.copy:hover{
-    color: var(--black);
-}

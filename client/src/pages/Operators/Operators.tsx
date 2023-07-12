@@ -11,7 +11,6 @@ import icons from '../../utils/icons'
 import Popover from '../../components/Popover/Popover'
 import { FloatingDelayGroup } from '@floating-ui/react'
 
-import JWTModal from "./modals/JWTModal/JWTModal"
 import CreateOperatorModal, { OperatorInputTypes } from "./modals/CreateOperatorModal/CreateOperatorModal"
 
 import classes from "./Operators.module.css"
@@ -38,7 +37,6 @@ const Operators = () => {
 
     const { request } = useContext(AppContext)
     const [operators, setOperators] = useState<OperatorType[]>([])
-    const [isJWTActive, setIsJWTActive] = useState<string>("")
     const [isCreateActive, setIsCreateActive] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -61,16 +59,6 @@ const Operators = () => {
                 setIsLoading(false)
             }
         },
-        []
-    )
-
-    const onJWTModalOpen = useCallback(
-        (token: string) => setIsJWTActive(token),
-        []
-    )
-
-    const onJWTModalClose = useCallback(
-        () => setIsJWTActive(""),
         []
     )
 
@@ -106,18 +94,11 @@ const Operators = () => {
                         <div className={classes.actions}>
                             <FloatingDelayGroup delay={150}>
                                 <Popover element={
-                                    <button className={classes.actionIcon} onClick={() => onJWTModalOpen(data["jti"])}>
-                                        <Icon icon={icons.secret} width={20} height={20} />
-                                    </button>
-                                }>
-                                    JWT Token
-                                </Popover>
-                                <Popover element={
                                     <Link className={classes.actionIcon} to={data["name"]}>
-                                        <Icon icon={icons.eye} width={20} height={20} />
+                                        <Icon icon={icons.open} width={20} height={20} />
                                     </Link>
                                 }>
-                                    Details
+                                    Describe
                                 </Popover>
                             </FloatingDelayGroup>
                         </div>
@@ -149,7 +130,6 @@ const Operators = () => {
                 renderContent={renderContent}
             />
             {isCreateActive && <CreateOperatorModal onClose={onCreateOperatorClose} onSubmit={onCreateOperatorSubmit} />}
-            {!!isJWTActive && <JWTModal onClose={onJWTModalClose} token={isJWTActive} />}
         </Page>
     )
 }

@@ -9,7 +9,11 @@
 
 .title{
     margin-bottom: 8px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
 }
+
 
 .titleContainer{
     display: flex;

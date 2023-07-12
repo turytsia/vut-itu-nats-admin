@@ -5,7 +5,13 @@ export type OperatorType = {
     iss: string
     jti: string
     name: string
-    nats: { type: string, version: number }
+    nats: {
+        type: string,
+        version: number,
+        account_server_url?: string,
+        signing_keys?: string[],
+        tags?: string[]
+    }
     sub: string
 }
 
