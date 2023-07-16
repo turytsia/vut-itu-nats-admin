@@ -16,7 +16,7 @@
 }
 
 .container:hover{
-    background-color: rgb(99, 171, 255, .15);
+    background-color: #63abff26;
 }
 
 .container:not(.active):hover{

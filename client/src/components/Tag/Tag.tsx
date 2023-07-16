@@ -1,15 +1,25 @@
 import React from 'react'
 
 import classes from "./Tag.module.css"
+import classNames from 'classnames'
 
 type PropsType = {
     children: React.ReactNode
+    isBlue?: boolean
+    renderRight?: React.ReactNode
+    onClick?: () => void
 }
 
 const Tag = ({
-    children
+    isBlue,
+    children,
+    renderRight = null,
+    onClick = () => { }
 }: PropsType) => {
-    return <p className={classes.container}>{children}</p>
+
+    const containerStyles = classNames(classes.container, { [classes.blue]: isBlue })
+
+    return <p className={containerStyles} onClick={onClick}>{children} {renderRight}</p>
 }
 
 export default Tag

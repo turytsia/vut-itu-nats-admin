@@ -13,6 +13,7 @@ import ButtonIcon from '../../components/ButtonIcon/ButtonIcon'
 import classes from "./OperatorsDetail.module.css"
 import Popover from '../../components/Popover/Popover'
 import JWTModal from './modals/JWTModal/JWTModal'
+import EditOperatorModal from './modals/EditOperatorModal/EditOperatorModal'
 import Tag from '../../components/Tag/Tag'
 
 const OperatorsDetail = () => {
@@ -23,6 +24,7 @@ const OperatorsDetail = () => {
 	const [operator, setOperator] = useState<OperatorType | null>(null)
 
 	const [isJWTView, setIsJWTView] = useState<string>("")
+	const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
 	const fetch = useCallback(
 		async () => {
@@ -41,6 +43,18 @@ const OperatorsDetail = () => {
 		[]
 	)
 
+	const onEditModalOpen = () => {
+		setIsEditModal(true)
+	}
+
+	const onEditModalClose = () => {
+		setIsEditModal(false)
+	}
+
+	const onEditSubmit = () => {
+		onEditModalClose()
+	}
+
 	const onJWTModalOpen = () => {
 		setIsJWTView(operator?.jti as string)
 	}
@@ -58,7 +72,7 @@ const OperatorsDetail = () => {
 			title={name as string}
 			tagText={`Version ${operator?.nats.version}`}
 			renderActions={
-				<Button onClick={() => { }}>
+				<Button onClick={onEditModalOpen}>
 					Edit operator
 					<Icon icon={icons.pen} width={20} height={20} />
 				</Button>
@@ -95,6 +109,7 @@ const OperatorsDetail = () => {
 
 			</div>
 			{!!isJWTView && <JWTModal token={isJWTView} onClose={onJWTModalClose} />}
+			{(isEditModal && operator) && <EditOperatorModal onClose={onEditModalClose} onSubmit={onEditSubmit} operator={operator} />}
 		</Page>
 	)
 }

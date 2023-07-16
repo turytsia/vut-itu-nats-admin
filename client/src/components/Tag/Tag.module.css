@@ -1,4 +1,7 @@
 .container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
     padding: 4px 8px;
     border-radius: 12px;
     background-color: var(--white);
@@ -6,4 +9,9 @@
     width: fit-content;
     font-size: 12px;
     font-weight: 400;
+}
+
+.container.blue {
+    color: var(--blue);
+    background-color: #63abff26;
 }

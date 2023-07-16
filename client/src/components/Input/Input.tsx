@@ -39,10 +39,7 @@ const Input = ({
 
 	const { isDark } = useContext(AppContext)
 
-	const inputStyles = useMemo(
-		() => classNames(classes.input, { [classes.dark]: isDark }),
-		[isDark]
-	)
+	const inputStyles = classNames(classes.input, { [classes.dark]: isDark })
 
 	return (
 		<InputContainer
