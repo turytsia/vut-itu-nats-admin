@@ -12,6 +12,9 @@ import React, { useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 import classes from "./Breadcrumbs.module.css"
+import { Icon } from '@iconify/react'
+import icons from '../../../../utils/icons'
+import ButtonIcon from '../../../ButtonIcon/ButtonIcon'
 
 /**
  * Parses url into array of strings
@@ -53,6 +56,7 @@ const Breadcrumbs = () => {
 
     return (
         <div className={classes.container}>
+            <ButtonIcon icon={icons.arrowBack} onClick={() => alert("Not implemented")} />
             {paths.map((p, i) => (
                 <React.Fragment key={i}>
                     <span className={classes.separator}>{i > 0 ? "•" : ""}</span>

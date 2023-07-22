@@ -17,6 +17,7 @@ export type OperatorInputTypes = {
 }
 
 type PropsType = {
+    error: string
     onClose: () => void
     onSubmit: (state: OperatorInputTypes) => void
 }
@@ -32,7 +33,8 @@ const initialState: OperatorInputTypes = {
 
 const CreateOperatorModal = ({
     onClose,
-    onSubmit: _onSubmit
+    onSubmit: _onSubmit,
+    error,
 }: PropsType) => {
 
     const [state, setState] = useState<OperatorInputTypes>(initialState)
@@ -67,6 +69,7 @@ const CreateOperatorModal = ({
 
     return (
         <Modal
+            error={error}
             title="Create new operator"
             textProceed='Create'
             textCancel='Cancel'

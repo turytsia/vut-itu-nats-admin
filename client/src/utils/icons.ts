@@ -22,7 +22,11 @@ enum icons {
     open = 'fluent:open-20-filled',
     settings = 'material-symbols:settings-outline',
     nats = 'logos:nats-icon',
-    message = 'mi:message'
+    message = 'mi:message',
+    arrowBack = 'formkit:arrowleft',
+    control = 'ant-design:control-outlined',
+    account = 'material-symbols:account-tree-outline',
+    users = 'lucide:users'
 }
 
 export default icons

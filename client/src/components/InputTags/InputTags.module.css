@@ -13,7 +13,7 @@
 }
 
 .inputBox:focus-within {
-    border: 1px solid var(--blue);
+    outline: 1px solid var(--blue);
 }
 
 .inputBox {
@@ -52,8 +52,24 @@
     cursor: pointer;
 }
 
-.tagAddIcon {
+.plusIcon {
     position: absolute;
     right: 12px;
     bottom: 12px;
+    color: var(--gray);
+    cursor: pointer;
+
+    animation: plusIconFadeIn .1s ease-in 1 forwards;
+    animation-name: plusIconFadeIn;
+}
+
+@keyframes plusIconFadeIn {
+    from{
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

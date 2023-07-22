@@ -13,7 +13,7 @@ import ButtonIcon from '../../components/ButtonIcon/ButtonIcon'
 import classes from "./OperatorsDetail.module.css"
 import Popover from '../../components/Popover/Popover'
 import JWTModal from './modals/JWTModal/JWTModal'
-import EditOperatorModal from './modals/EditOperatorModal/EditOperatorModal'
+import EditOperatorModal, { EditOperatorType } from './modals/EditOperatorModal/EditOperatorModal'
 import Tag from '../../components/Tag/Tag'
 
 const OperatorsDetail = () => {
@@ -51,7 +51,8 @@ const OperatorsDetail = () => {
 		setIsEditModal(false)
 	}
 
-	const onEditSubmit = () => {
+	const onEditSubmit = (settings: EditOperatorType) => {
+		console.log(settings)
 		onEditModalClose()
 	}
 
@@ -73,7 +74,7 @@ const OperatorsDetail = () => {
 			tagText={`Version ${operator?.nats.version}`}
 			renderActions={
 				<Button onClick={onEditModalOpen}>
-					Edit operator
+					Edit
 					<Icon icon={icons.pen} width={20} height={20} />
 				</Button>
 			}>
@@ -86,10 +87,16 @@ const OperatorsDetail = () => {
 				</TextSection>
 				<TextSection icon={icons.lock} text='Secret'>
 					<Text labelText="JWT Token">
-						<ButtonIcon icon={icons.eye} onClick={onJWTModalOpen} />
+						<Button className={classes.containerButton} onClick={onJWTModalOpen} isTransparent>
+							View
+							<Icon icon={icons.eye} height={20} width={20} />
+						</Button>
 					</Text>
 					<Text labelText="Signing Keys">
-						<ButtonIcon icon={icons.eye} onClick={onJWTModalOpen} />
+						<Button className={classes.containerButton} onClick={onJWTModalOpen} isTransparent>
+							View
+							<Icon icon={icons.eye} height={20} width={20} />
+						</Button>
 					</Text>
 				</TextSection>
 				<TextSection icon={icons.message} text='Nats'>
@@ -101,7 +108,7 @@ const OperatorsDetail = () => {
 					}
 					{operator?.nats.tags &&
 						<Text className={classes.tags} labelText="Tags">
-							{operator?.nats.tags.map(tag => <Tag>{tag}</Tag>)}
+							{operator?.nats.tags.map(tag => <Tag isBlue>{tag}</Tag>)}
 						</Text>
 
 					}

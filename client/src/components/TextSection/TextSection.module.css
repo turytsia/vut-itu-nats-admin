@@ -1,7 +1,7 @@
 .innerContainer {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
     padding: 16px 0 0 24px;
 }
 
@@ -10,10 +10,20 @@
 }
 
 .title{
+    display: flex;
+    align-items: center;
     font-weight: 600;
     display: flex;
     align-items: center;
+    color: var(--black);
     gap: 8px;
-    padding: 8px;
-    color: var(--test);
+}
+
+.title::after {
+    content: "";
+    height: 1px;
+    width: 50%;
+    background-color: #cbcbcb;
+    flex: 1;
+    margin-left: 8px;
 }

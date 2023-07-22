@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { Axios, AxiosError, AxiosResponse } from "axios";
 
 export type OperatorType = {
     iat: number
@@ -15,6 +15,13 @@ export type OperatorType = {
     sub: string
 }
 
+
+
+type ResponseType = {
+    type: "error" | "success"
+    data: any
+}
+
 type GetOperatorsType = () => Promise<{ operators: string[] }>
 type GetOperatorByNameType = (operatorName: string) => Promise<OperatorType>
 type GetAccountsType = (operatorName: string) => Promise<object>
@@ -22,7 +29,7 @@ type GetAccountByNameType = (operatorName: string, accountName: string) => Promi
 type GetUsersType = (operatorName: string, accountName: string) => Promise<object>
 type GetUsersByNameType = (operatorName: string, accountName: string, userName: string) => Promise<object>
 
-type PostOperatorType = (data: object) => Promise<object>
+type PostOperatorType = (data: object) => Promise<ResponseType>
 type PostAccountType = (operatorName: string, data: object) => Promise<object>
 type PostUserType = (operatorName: string, accountName: string, data: object) => Promise<object>
 
@@ -87,10 +94,11 @@ const GetRequest: GetRequestActions = {
 const PostRequest: PostRequestActions = {
     operator: async (data) => {
         try {
-            const response = await post("/operator/", { data })
-            return response.data
+            const response = await post("/operator", data)
+            return { type: "success", data: response.data }
         } catch (error) {
-            console.error(error)
+            const err = error as AxiosError
+            return { type: "error", data: err.response?.data }
         }
     },
     account: async () => {

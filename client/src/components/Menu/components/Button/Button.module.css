@@ -4,11 +4,18 @@
     align-items: center;
     color: #777777;
     background-color: transparent;
-    font-size: 18px;
+    font-size: 14px;
     padding: 8px 12px;
     text-decoration: none;
     width: 100%;
-    font-weight: 400;
+    font-weight: 600;
+    border-radius: 3px;
+}
+
+.innerContainer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .container.dark{
@@ -16,7 +23,7 @@
 }
 
 .container:hover{
-    background-color: #63abff26;
+    background-color: #9dcbff26;
 }
 
 .container:not(.active):hover{
@@ -50,7 +57,7 @@
 
 .container.active {
     color: var(--blue);
-    font-weight: 600;
+    background-color: #63abff26;
 }
 
 .container.active:hover {

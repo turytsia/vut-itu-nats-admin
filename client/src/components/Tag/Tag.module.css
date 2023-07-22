@@ -9,9 +9,11 @@
     width: fit-content;
     font-size: 12px;
     font-weight: 400;
+    border: 1px solid #c1c9d1;
 }
 
 .container.blue {
+    border: 1px solid #c7e1ff;
     color: var(--blue);
     background-color: #63abff26;
 }

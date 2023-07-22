@@ -39,6 +39,7 @@ const Operators = () => {
     const [operators, setOperators] = useState<OperatorType[]>([])
     const [isCreateActive, setIsCreateActive] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string>("")
 
     /** Fetch page data */
     const fetch = useCallback(
@@ -75,7 +76,10 @@ const Operators = () => {
     const onCreateOperatorSubmit = useCallback(
         async (state: OperatorInputTypes) => {
             const response = await request.post.operator(state)
-            console.log(response)
+            
+            if (response.type === "error") {
+                setError(response.data?.message)
+            }
         },
         []
     )
@@ -129,7 +133,7 @@ const Operators = () => {
                 columnDataTypes={columnDataTypes}
                 renderContent={renderContent}
             />
-            {isCreateActive && <CreateOperatorModal onClose={onCreateOperatorClose} onSubmit={onCreateOperatorSubmit} />}
+            {isCreateActive && <CreateOperatorModal error={error} onClose={onCreateOperatorClose} onSubmit={onCreateOperatorSubmit} />}
         </Page>
     )
 }

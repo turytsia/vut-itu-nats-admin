@@ -10,6 +10,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 8px;
+    border: 1px solid #dde3ea;
 }
 
 .dark {
@@ -19,6 +20,11 @@
 
 .blue {
     color: var(--blue);
+}
+
+.transparent {
+    background-color: transparent;
+    border: 1px solid transparent;
 }
 
 .container:hover{

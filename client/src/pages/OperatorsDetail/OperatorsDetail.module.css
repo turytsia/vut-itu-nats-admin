@@ -29,3 +29,8 @@
     flex-wrap: wrap;
     gap: 8px;  
 }
+
+.containerButton{
+    font-weight: 500;
+    font-size: 16px;
+}

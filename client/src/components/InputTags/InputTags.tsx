@@ -19,7 +19,6 @@ type PropsType = {
     renderLeft?: React.ReactNode
     isFlex?: boolean
     width?: string
-    isCopy?: boolean
     placeholder?: string
     hintText?: string
     name?: string
@@ -35,16 +34,21 @@ const InputTags = ({
     disabled = false,
     renderLeft,
     isFlex,
-    isCopy,
     width,
     name,
     onChange: setTags = () => { }
 }: PropsType) => {
 
     const id = getId().toString()
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const { isDark } = useContext(AppContext)
     const [value, setValue] = useState<string>("")
+    const [isFocuse, setIsFocuse] = useState<boolean>(false)
+
+    const onInputFocuse = () => setIsFocuse(true)
+
+    const onInputBlur = () => setIsFocuse(false)
 
     const onValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setValue(e.target.value)
@@ -79,7 +83,7 @@ const InputTags = ({
             isFlex={isFlex}
             width={width}
         >
-            <label htmlFor={id} className={inputBoxStyles}>
+            <label htmlFor={id} className={inputBoxStyles} onMouseEnter={onInputFocuse} onMouseLeave={onInputBlur}>
                 {tags.map(tag =>
                     <Tag
                         isBlue
@@ -97,22 +101,22 @@ const InputTags = ({
                 )}
                 <input
                     id={id} // FIX
+                    ref={inputRef}
                     className={inputStyles}
                     value={value}
                     disabled={disabled}
                     placeholder={placeholder}
                     name={name}
+                    onFocus={onInputFocuse}
                     onChange={onValueChange}
                     onKeyUp={onKeyUp} />
-                <Icon
-                    className={classes.tagAddIcon}
+                {isFocuse  && <Icon
+                    className={classes.plusIcon}
                     onClick={onTagChange}
                     icon={icons.plus}
                     width={20}
-                    height={20} />
+                    height={20} />}
             </label>
-
-            {isCopy && <CopyButton className={classes.copy} value={value} />}
         </InputContainer>
     )
 }

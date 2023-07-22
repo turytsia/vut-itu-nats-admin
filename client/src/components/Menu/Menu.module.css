@@ -1,6 +1,7 @@
 .container {
     border-right: 1px solid #d8d8d8;
     padding: 24px 8px 8px;
+    background-color: #eff2f4;
 }
 
 .container.dark{

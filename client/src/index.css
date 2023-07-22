@@ -18,12 +18,13 @@
 :root {
   --white: #ebebeb;
   --blue: #63ABFF;
-  --black: #4D4D4D;
+  --black: #282828;
   --dark-blue-light: #3f4246;
   --dark-blue: #313438;
   --red: #EF6262;
   --gray: #646464;
   --test: #6c7279;
+  --gray-light: #dde3ea; 
 }
 
 .react-datepicker-wrapper{

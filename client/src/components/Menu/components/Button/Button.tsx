@@ -53,8 +53,10 @@ const Button = ({
 
   return (
     <NavLink to={to} className={linkStyles}>
-      {children}
-      {icon && <Icon icon={icon} height={20} width={20}/>}
+      <span className={classes.innerContainer}>
+        {icon && <Icon icon={icon} height={20} width={20} />}
+        {children}
+      </span>
       {textRight && <span className={classes.textRight}>{textRight}</span>}
     </NavLink>
   )

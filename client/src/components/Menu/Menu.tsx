@@ -34,10 +34,11 @@ const Menu = () => {
     return (
         <aside className={containerStyles}>
             <Button to="/" icon={icons.danger}>Welcum</Button>
-            <SectionText>Tools</SectionText>
-            <Button to="/operators" textRight='53'>Operators</Button>
-            <Button to="/accounts" textRight='124'>Accounts</Button>
-            <Button to="/users" textRight='1.1K'>Users</Button>
+            {/* TODO, use Buttons as the children of Section */}
+            <SectionText>Tools</SectionText> 
+            <Button to="/operators" icon={icons.control} textRight='53'>Operators</Button>
+            <Button to="/accounts" icon={icons.account} textRight='124'>Accounts</Button>
+            <Button to="/users" icon={icons.users} textRight='1.1K'>Users</Button>
             <Button to="/servers" textRight='3'>Servers</Button>
         </aside>
     )
