@@ -1,17 +1,16 @@
 .container {
     display: flex;
     align-items: stretch;
-    gap: 8px;
+    gap: 10px;
 }
 
 .input {
-    background-color: #F8F8F8;
+    background-color: #fff;
     padding: 6px 12px;
-    border-radius: 3px;
+    border-radius: var(--radius);
     border: none;
     font-size: 14px;
     min-width: 300px;
-    border: 1px solid #D9D9D9;
 }
 
 .input.dark{

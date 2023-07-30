@@ -1,12 +1,19 @@
 .container {
     display: grid;
     overflow: auto;
-    width: fit-content;
-    border-bottom: 1px solid #D9D9D9;
+    width: 100%;
+}
+
+.outerFilters{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .filters{
+    display: flex;
     margin-top: 48px;
+    gap: 10px;
 }
 
 .container.dark{

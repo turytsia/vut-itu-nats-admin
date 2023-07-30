@@ -25,6 +25,10 @@
   --gray: #646464;
   --test: #6c7279;
   --gray-light: #dde3ea; 
+
+  --gray-background: #F0F0F0;
+
+  --radius: 7px;
 }
 
 .react-datepicker-wrapper{

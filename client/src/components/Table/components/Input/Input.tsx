@@ -47,12 +47,9 @@ const Input = ({
      * 
      * @param e event
      */
-    const onInputChange = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            onChange(e.target.value, dropdownValue)
-        },
-        []
-    )
+    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(e.target.value, dropdownValue)
+    }
 
     /**
      * Dropdown change handler
@@ -71,7 +68,7 @@ const Input = ({
     return (
         <div className={classes.container}>
             <input className={inputStyles} value={inputValue} onChange={onInputChange} placeholder='Search...' />
-            <Dropdown items={dropdownItems} value={dropdownValue} onChange={onDropdownChange} />
+            <Dropdown items={dropdownItems} value={dropdownValue} label='Search by' onChange={onDropdownChange} />
         </div>
     )
 }

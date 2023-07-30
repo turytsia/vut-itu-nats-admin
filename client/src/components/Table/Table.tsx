@@ -10,7 +10,7 @@
  * @author xturyt00
  */
 
-import { useCallback, useContext, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
 import Head from './components/Head/Head'
 import Cell from './components/Cell/Cell'
 import Input from "./components/Input/Input"
@@ -20,6 +20,10 @@ import useSort, { ColumnTypes, columns } from '../../hooks/useSort'
 import classes from './Table.module.css'
 import { AppContext } from '../../context/AppContextProvider'
 import classNames from 'classnames'
+import ButtonIcon from '../ButtonIcon/ButtonIcon'
+import icons from '../../utils/icons'
+import Popover from '../Popover/Popover'
+import { FloatingDelayGroup } from '@floating-ui/react'
 
 /** Component props type */
 type PropsType = {
@@ -28,9 +32,8 @@ type PropsType = {
     columnDataTypes: ColumnTypes
     renderContent: (key: string, value: any) => any
     isLoading?: boolean
+    renderActions?: React.ReactNode
 }
-
-const SkeletonCellCount = 20
 
 /**
  * Table component, renders a table with given data
@@ -44,6 +47,7 @@ const Table = ({
     data: initialData,
     columnDataTypes,
     renderContent,
+    renderActions = null
 }: PropsType) => {
     const [search, setSearch] = useState<string>("")
     const [dropdownItem, setDropdownItem] = useState("name")
@@ -66,43 +70,41 @@ const Table = ({
         []
     )
 
-    const hasText = useMemo(
-        () => Object.values(columnDataTypes).includes(columns.TEXT),
-        [columnDataTypes]
-    )
+    const hasText = Object.values(columnDataTypes).includes(columns.TEXT)
 
     const dropdownItems = useMemo(
         () => Object.keys(header).filter(key => columnDataTypes[key] === columns.TEXT).map(key => ({ id: key, value: header[key] })),
         [header]
     )
 
-    const data = useMemo(
-        () => sortData.filter(item => item[dropdownItem].toLowerCase().includes(search.toLowerCase())),
-        [sortData]
-    )
+    const data = sortData.filter(item => item[dropdownItem].toLowerCase().includes(search.toLowerCase()))
 
-    const columnCount = useMemo(
-        () => Object.keys(header).length,
-        [header]
-    )
+    const columnCount = Object.keys(header).length
 
-    const containerStyles = useMemo(
-        () => classNames(classes.container, { [classes.dark]: isDark }),
-        [isDark]
-    )
+    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
 
     return (
         <div className={classes.outer}>
-            <div className={classes.filters}>
-                {hasText && <Input
-                    value={search}
-                    onChange={onChangeFilter}
-                    dropdownItems={dropdownItems}
-                    dropdownValue={dropdownItem} />}
+            <div className={classes.outerFilters}>
+                <div className={classes.filters}>
+                    {hasText && <Input
+                        value={search}
+                        onChange={onChangeFilter}
+                        dropdownItems={dropdownItems}
+                        dropdownValue={dropdownItem} />}
+                    <FloatingDelayGroup delay={150}>
+                        <Popover offset={0} element={<ButtonIcon icon={icons.filterOff} onClick={() => { }} />}>
+                            <span>Reset filters</span>
+                        </Popover>
+                    </FloatingDelayGroup>
+                </div>
+                <div className={classes.actions}>
+                    {renderActions}
+                </div>
             </div>
             <div
                 className={containerStyles}
-                style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(min-content, 150px))` }}>
+                style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}>
                 {Object.keys(header).map(key =>
                     <Head
                         key={key}

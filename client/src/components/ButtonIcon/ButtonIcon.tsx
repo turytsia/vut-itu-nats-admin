@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ForwardedRef, forwardRef } from 'react'
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
 
@@ -9,15 +9,13 @@ type PropsType = {
     onClick: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const ButtonIcon = ({
+const ButtonIcon = forwardRef(({
     icon,
     onClick
-}: PropsType) => {
-  return (
-      <button className={classes.container} onClick={onClick}>
-          <Icon icon={icon} width={20} height={20} />
-      </button>
-  )
-}
+}: PropsType, ref: ForwardedRef<HTMLButtonElement>) => (
+    <button ref={ref} className={classes.container} onClick={onClick}>
+        <Icon icon={icon} width={20} height={20} />
+    </button>
+))
 
 export default ButtonIcon

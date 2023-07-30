@@ -76,7 +76,7 @@ const Operators = () => {
     const onCreateOperatorSubmit = useCallback(
         async (state: OperatorInputTypes) => {
             const response = await request.post.operator(state)
-            
+
             if (response.type === "error") {
                 setError(response.data?.message)
             }
@@ -119,19 +119,19 @@ const Operators = () => {
 
     return (
         <Page
-            title='Operators'
-            renderActions={
-                <Button onClick={onCreateOperatorOpen}>
-                    Create new operator
-                    <Icon icon={icons.plus} width={20} height={20} />
-                </Button>
-            }>
+            title={`Operators (${operators.length})`}>
             <Table
                 isLoading={isLoading}
                 header={OperatorHeaderMap}
                 data={operators}
                 columnDataTypes={columnDataTypes}
                 renderContent={renderContent}
+                renderActions={
+                    <Button isBlue onClick={onCreateOperatorOpen}>
+                        Create operator
+                        <Icon icon={icons.plus} width={20} height={20} />
+                    </Button>
+                }
             />
             {isCreateActive && <CreateOperatorModal error={error} onClose={onCreateOperatorClose} onSubmit={onCreateOperatorSubmit} />}
         </Page>

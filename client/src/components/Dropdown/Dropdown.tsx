@@ -32,6 +32,7 @@ type PropsType = {
     value: string
     items: DropdownItemType[]
     name?: string
+    label?: string
     onChange: (value: string, name: string) => void
 }
 
@@ -42,6 +43,7 @@ type PropsType = {
  * @returns Dropdown component
  */
 const Dropdown = ({
+    label = "",
     value,
     items,
     name = "",
@@ -55,15 +57,9 @@ const Dropdown = ({
         [value]
     )
 
-    const dropdownStyles = useMemo(
-        () => classNames(classes.dropdown, { [classes.dark]: isDark }),
-        [isDark]
-    )
+    const dropdownStyles = classNames(classes.dropdown, { [classes.dark]: isDark })
 
-    const itemStyles = useMemo(
-        () => classNames(classes.item, { [classes.dark]: isDark }),
-        [isDark]
-    )
+    const itemStyles = classNames(classes.item, { [classes.dark]: isDark })
 
 
     return (
@@ -73,6 +69,7 @@ const Dropdown = ({
             placement={placements.BOTTOM}
             element={(isActive) =>
                 <button className={dropdownStyles}>
+                    {label && <span className={classes.label}>{label}</span>}
                     {currentValue ?? "--"}
                     <Icon icon={isActive ? icons.arrowUp : icons.arrowDown} height={20} width={20} />
                 </button>}>

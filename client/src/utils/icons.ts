@@ -26,7 +26,8 @@ enum icons {
     arrowBack = 'formkit:arrowleft',
     control = 'ant-design:control-outlined',
     account = 'material-symbols:account-tree-outline',
-    users = 'lucide:users'
+    users = 'lucide:users',
+    filterOff = 'mdi:filter-off'
 }
 
 export default icons

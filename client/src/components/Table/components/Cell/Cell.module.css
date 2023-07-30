@@ -1,13 +1,13 @@
 .container {
-    max-width: 30ch;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     padding: 25px 8px;
     color: var(--black);
-    border-top: 1px solid #D9D9D9;
+    border-bottom: 1px solid #D9D9D9;
+    background-color: #fff;
 }
 
 .container svg {
@@ -15,16 +15,15 @@
 }
 
 .darkContainer {
-    background-color: #efefef;
+    background-color: #F4F4F4;
 }
 
 .darkContainer.dark {
-    background-color: var(--gray-light);
+    background-color: #F4F4F4;
 }
 
 
 .container.dark {
-    border-top: 1px solid var(--gray);
     color: var(--white);
 }
 

@@ -19,7 +19,9 @@
 }
 
 .blue {
-    color: var(--blue);
+    background-color: var(--blue);
+    color: #fff;
+    border-radius: var(--radius);
 }
 
 .transparent {
