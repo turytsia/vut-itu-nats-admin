@@ -25,6 +25,10 @@ import icons from '../../utils/icons'
 import Popover from '../Popover/Popover'
 import { FloatingDelayGroup } from '@floating-ui/react'
 
+type FiltersType = {
+    searchBy?: string[]
+}
+
 /** Component props type */
 type PropsType = {
     header: { [key: string]: string }
@@ -33,6 +37,7 @@ type PropsType = {
     renderContent: (key: string, value: any) => any
     isLoading?: boolean
     renderActions?: React.ReactNode
+    filters?: FiltersType
 }
 
 /**
@@ -47,7 +52,8 @@ const Table = ({
     data: initialData,
     columnDataTypes,
     renderContent,
-    renderActions = null
+    renderActions = null,
+    filters = {},
 }: PropsType) => {
     const [search, setSearch] = useState<string>("")
     const [dropdownItem, setDropdownItem] = useState("name")
@@ -70,11 +76,9 @@ const Table = ({
         []
     )
 
-    const hasText = Object.values(columnDataTypes).includes(columns.TEXT)
-
-    const dropdownItems = useMemo(
-        () => Object.keys(header).filter(key => columnDataTypes[key] === columns.TEXT).map(key => ({ id: key, value: header[key] })),
-        [header]
+    const searchByItems = useMemo(
+        () => filters.searchBy ? filters.searchBy.map(key => ({ id: key, value: header[key] })) : [],
+        [filters, header]
     )
 
     const data = sortData.filter(item => item[dropdownItem].toLowerCase().includes(search.toLowerCase()))
@@ -87,11 +91,13 @@ const Table = ({
         <div className={classes.outer}>
             <div className={classes.outerFilters}>
                 <div className={classes.filters}>
-                    {hasText && <Input
-                        value={search}
-                        onChange={onChangeFilter}
-                        dropdownItems={dropdownItems}
-                        dropdownValue={dropdownItem} />}
+                    {filters.searchBy && (
+                        <Input
+                            value={search}
+                            onChange={onChangeFilter}
+                            dropdownItems={searchByItems}
+                            dropdownValue={dropdownItem} />
+                    )}
                     <FloatingDelayGroup delay={150}>
                         <Popover offset={0} element={<ButtonIcon icon={icons.filterOff} onClick={() => { }} />}>
                             <span>Reset filters</span>

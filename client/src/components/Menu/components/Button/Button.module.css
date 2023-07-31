@@ -2,10 +2,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: #777777;
+    color: #454545;
     background-color: transparent;
-    font-size: 14px;
-    padding: 8px 12px;
+    font-size: 18px;
+    padding: 15px 12px;
     text-decoration: none;
     width: 100%;
     font-weight: 600;
@@ -18,40 +18,41 @@
     gap: 6px;
 }
 
-.container.dark{
+.container.dark {
     color: #dadada;
 }
 
-.container:hover{
-    background-color: #9dcbff26;
+.container:hover {
+    background-color: #F5F5F5;
 }
 
-.container:not(.active):hover{
+.container:not(.active):hover {
     color: #5B5B5B;
 }
 
-.container:not(.active):hover svg{
+.container:not(.active):hover svg {
     color: #5B5B5B;
 }
 
 .textRight {
     font-size: 12px;
     color: #B9B9B9;
+    font-weight: 400;
 }
 
-.container:not(.active):hover .textRight{
+.container:not(.active):hover .textRight {
     color: #5B5B5B;
 }
 
-.container.dark:hover{
+.container.dark:hover {
     color: #e1e1e1;
 }
 
-.container.dark:hover svg{
+.container.dark:hover svg {
     color: #e1e1e1;
 }
 
-.container.dark:hover .textRight{
+.container.dark:hover .textRight {
     color: #e1e1e1;
 }
 
@@ -64,14 +65,14 @@
     color: var(--blue);
 }
 
-.container.active:hover svg{
+.container.active:hover svg {
     color: var(--blue);
 }
 
-.container.active .textRight{
+.container.active .textRight {
     color: var(--blue);
 }
 
-.container.active:hover .textRight{
+.container.active:hover .textRight {
     color: var(--blue);
 }

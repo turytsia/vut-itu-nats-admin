@@ -121,6 +121,9 @@ const Operators = () => {
         <Page
             title={`Operators (${operators.length})`}>
             <Table
+                filters={{
+                    searchBy: ["name", "sub", "iss"]
+                }}
                 isLoading={isLoading}
                 header={OperatorHeaderMap}
                 data={operators}

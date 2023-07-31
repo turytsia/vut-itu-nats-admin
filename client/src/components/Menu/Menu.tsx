@@ -8,10 +8,9 @@
  * @author xturyt00
  */
 
-import { useContext, useMemo } from 'react'
+import { useContext } from 'react'
 import { AppContext } from '../../context/AppContextProvider'
 import Button from "./components/Button/Button"
-import SectionText from "./components/SectionText/SectionText"
 import icons from '../../utils/icons'
 
 import classes from "./Menu.module.css"
@@ -26,16 +25,10 @@ const Menu = () => {
 
     const { isDark } = useContext(AppContext)
 
-    const containerStyles = useMemo(
-        () => classNames(classes.container, { [classes.dark]: isDark }),
-        [isDark]
-    )
+    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
 
     return (
         <aside className={containerStyles}>
-            <Button to="/" icon={icons.danger}>Welcum</Button>
-            {/* TODO, use Buttons as the children of Section */}
-            <SectionText>Tools</SectionText> 
             <Button to="/operators" icon={icons.control} textRight='53'>Operators</Button>
             <Button to="/accounts" icon={icons.account} textRight='124'>Accounts</Button>
             <Button to="/users" icon={icons.users} textRight='1.1K'>Users</Button>
