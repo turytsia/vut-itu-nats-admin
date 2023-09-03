@@ -27,7 +27,8 @@ enum icons {
     control = 'ant-design:control-outlined',
     account = 'material-symbols:account-tree-outline',
     users = 'lucide:users',
-    filterOff = 'mdi:filter-off'
+    filterOff = 'mdi:filter-off',
+    table = 'fe:table'
 }
 
 export default icons

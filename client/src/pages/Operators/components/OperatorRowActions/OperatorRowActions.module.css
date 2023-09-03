@@ -1,0 +1,13 @@
+.actions {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.actionIcon {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+}

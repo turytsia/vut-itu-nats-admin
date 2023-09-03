@@ -1,0 +1,19 @@
+.container {
+    transition: 0s;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, .3);
+}
+
+.button{
+    min-width: 150px;
+}
+
+.input{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    font-size: 14px;
+}

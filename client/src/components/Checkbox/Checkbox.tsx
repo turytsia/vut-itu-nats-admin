@@ -42,7 +42,7 @@ const Checkbox = ({
                 name={name}
                 type='checkbox'
                 onChange={onChange}
-                value={value} />
+                checked={value} />
         </InputContainer>
     )
 }

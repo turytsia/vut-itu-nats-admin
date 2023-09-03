@@ -46,10 +46,11 @@ const Cell = ({
         [isDark]
     )
 
-    const containerStyles = useMemo(
-        () => classNames(classes.container, className, { [classes.dark]: isDark, [classes.darkContainer]: isDarkInitialy } ),
-        [className, isDark]
-    )
+    const containerStyles = classNames(classes.container, className,
+        {
+            [classes.dark]: isDark,
+            [classes.darkContainer]: isDarkInitialy
+        })
 
     return (
         <div className={containerStyles}>

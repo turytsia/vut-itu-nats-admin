@@ -6,11 +6,11 @@
 
 .input {
     background-color: #fff;
-    padding: 6px 12px;
+    padding: 8px;
     border-radius: var(--radius);
     border: none;
-    font-size: 14px;
-    min-width: 300px;
+    font-size: 16px;
+    min-width: 350px;
 }
 
 .input.dark{

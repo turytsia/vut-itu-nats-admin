@@ -7,8 +7,7 @@
  * 
  * @author xturyt00
  */
-import React, { useContext, useMemo } from 'react'
-import Tag from "../Tag/Tag"
+import React, { useContext } from 'react'
 
 import { AppContext } from '../../context/AppContextProvider'
 
@@ -20,7 +19,6 @@ type PropsType = {
     children: React.ReactNode
     title: string
     renderActions?: React.ReactNode
-    tagText?: string
 }
 
 /**
@@ -32,8 +30,7 @@ type PropsType = {
 const Page = ({
     children,
     title,
-    renderActions,
-    tagText
+    renderActions
 }: PropsType) => {
 
     const { isDark } = useContext(AppContext)
@@ -45,7 +42,6 @@ const Page = ({
             <div className={classes.titleContainer}>
                 <h2 className={classes.title}>
                     {title}
-                    {tagText && <Tag>{tagText}</Tag>}
                 </h2>
                 {renderActions}
             </div>

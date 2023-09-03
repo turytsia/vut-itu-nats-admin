@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useContext, useMemo } from 'react'
+import React, { MouseEventHandler, forwardRef, useContext, useMemo } from 'react'
 import classes from "./Button.module.css"
 import classNames from 'classnames'
 import { AppContext } from '../../context/AppContextProvider'
@@ -12,14 +12,14 @@ type PropsType = {
     onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
-const Button = ({
+const Button = forwardRef<HTMLButtonElement, PropsType>(({
     className = "",
     isBlue = false,
     isTransparent = false,
-    children,
+    children = null,
     disabled = false,
     onClick = (e) => { }
-}: PropsType) => {
+}, ref) => {
 
     const { isDark } = useContext(AppContext)
 
@@ -35,6 +35,7 @@ const Button = ({
 
     return (
         <button
+            ref={ref}
             className={buttonStyles}
             disabled={disabled}
             onClick={onClick}
@@ -42,6 +43,6 @@ const Button = ({
             {children}
         </button>
     )
-}
+})
 
 export default Button

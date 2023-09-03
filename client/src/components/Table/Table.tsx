@@ -13,31 +13,42 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 import Head from './components/Head/Head'
 import Cell from './components/Cell/Cell'
-import Input from "./components/Input/Input"
+import Filters from "../Filters/Filters"
 import { getId } from '../../utils/id'
-import useSort, { ColumnTypes, columns } from '../../hooks/useSort'
+import useSort, { ColumnTypes } from '../../hooks/useSort'
 
 import classes from './Table.module.css'
 import { AppContext } from '../../context/AppContextProvider'
 import classNames from 'classnames'
-import ButtonIcon from '../ButtonIcon/ButtonIcon'
-import icons from '../../utils/icons'
-import Popover from '../Popover/Popover'
-import { FloatingDelayGroup } from '@floating-ui/react'
 
-type FiltersType = {
-    searchBy?: string[]
+type ColumnMapNamesType = {
+    [key: string]: string
+}
+
+export type FiltersConfigType = {
+    searchBy?: string[],
+    dateRange?: string[],
+    columnToggler?: boolean
+}
+
+export type TableConfigType = {
+    columnTypes: ColumnTypes,
+    columnMapNames: ColumnMapNamesType
 }
 
 /** Component props type */
 type PropsType = {
-    header: { [key: string]: string }
     data: { [key: string]: any }[]
-    columnDataTypes: ColumnTypes
     renderContent: (key: string, value: any) => any
     isLoading?: boolean
     renderActions?: React.ReactNode
-    filters?: FiltersType
+    tableConfig?: TableConfigType
+    filtersConfig?: FiltersConfigType
+}
+
+const initialTableConfig: TableConfigType = {
+    columnMapNames: {},
+    columnTypes: {}
 }
 
 /**
@@ -48,15 +59,19 @@ type PropsType = {
  */
 const Table = ({
     isLoading,
-    header,
     data: initialData,
-    columnDataTypes,
     renderContent,
     renderActions = null,
-    filters = {},
+    tableConfig = initialTableConfig,
+    filtersConfig = {},
 }: PropsType) => {
+
+    // filters
+
     const [search, setSearch] = useState<string>("")
     const [dropdownItem, setDropdownItem] = useState("name")
+    const [date, setDate] = useState<{ [k: string]: [string, string] }>({})
+    const [activeColumns, setActiveColumns] = useState<string[]>(Object.values(tableConfig.columnMapNames))
 
     const { isDark } = useContext(AppContext)
 
@@ -66,71 +81,108 @@ const Table = ({
         sortOrderOf,
         changeSort,
         isSortable
-    } = useSort(initialData, columnDataTypes)
+    } = useSort(initialData, tableConfig.columnTypes)
 
-    const onChangeFilter = useCallback(
-        (inputValue: string, dropdownValue: string) => {
-            setSearch(inputValue)
-            setDropdownItem(dropdownValue)
-        },
+    // FIXME
+
+    const onChangeInput = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
+        []
+    )
+
+    const onChangeDropdown = useCallback(
+        (value: string) => setDropdownItem(value),
+        []
+    )
+
+    const onChangeDate = useCallback(
+        (name: string) => (date: [string, string]) => setDate(prev => ({ ...prev, [name]: date })),
+        []
+    )
+
+    const onToggleColumn = useCallback(
+        (key: string) => setActiveColumns(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]),
         []
     )
 
     const searchByItems = useMemo(
-        () => filters.searchBy ? filters.searchBy.map(key => ({ id: key, value: header[key] })) : [],
-        [filters, header]
+        () => filtersConfig.searchBy ? filtersConfig.searchBy.map(key => ({ id: key, value: tableConfig.columnMapNames[key] })) : [],
+        [filtersConfig, tableConfig]
     )
 
-    const data = sortData.filter(item => item[dropdownItem].toLowerCase().includes(search.toLowerCase()))
+    const searchData = sortData.filter(item => item[dropdownItem]?.trim().toLowerCase()?.includes(search.trim().toLowerCase()))
 
-    const columnCount = Object.keys(header).length
+
+    const columns = Object.keys(tableConfig.columnMapNames).filter(k => activeColumns.includes(tableConfig.columnMapNames[k]))
 
     const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
 
     return (
         <div className={classes.outer}>
-            <div className={classes.outerFilters}>
-                <div className={classes.filters}>
-                    {filters.searchBy && (
-                        <Input
-                            value={search}
-                            onChange={onChangeFilter}
-                            dropdownItems={searchByItems}
-                            dropdownValue={dropdownItem} />
-                    )}
-                    <FloatingDelayGroup delay={150}>
-                        <Popover offset={0} element={<ButtonIcon icon={icons.filterOff} onClick={() => { }} />}>
-                            <span>Reset filters</span>
-                        </Popover>
-                    </FloatingDelayGroup>
-                </div>
-                <div className={classes.actions}>
-                    {renderActions}
-                </div>
-            </div>
-            <div
-                className={containerStyles}
-                style={{ gridTemplateColumns: `repeat(${columnCount}, 1fr)` }}>
-                {Object.keys(header).map(key =>
+            <Filters
+                renderActions={renderActions}
+                filtersConfig={{
+                    searchConfig: {
+                        input: {
+                            value: search,
+                            onChange: onChangeInput
+                        },
+                        dropdown: {
+                            value: dropdownItem,
+                            items: searchByItems,
+                            onChange: onChangeDropdown,
+                        }
+                    },
+                    dateRangeConfig: {
+                        items: filtersConfig.dateRange?.map(key => ({ key, name: tableConfig.columnMapNames[key] })) ?? [],
+                        value: date,
+                        onChange: onChangeDate
+                    },
+                    columnToggler: {
+                        label: 'Manage columns',
+                        items: Object.values(tableConfig.columnMapNames),
+                        values: activeColumns,
+                        onChange: onToggleColumn
+                    }
+                }}
+            />
+            <div style={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${activeColumns.length}, 1fr)`
+            }}>
+                {columns.map(key =>
                     <Head
                         key={key}
                         changeSort={() => changeSort(key)}
                         isSortable={isSortable(key)}
                         sort={sortTypeOf(key)}
                         order={sortOrderOf(key)}>
-                        {header[key]}
+                        {tableConfig.columnMapNames[key]}
                     </Head>
                 )}
-                {isLoading ? Array(20).fill(Cell).map((CellSkeleton, i) => <CellSkeleton key={getId()} isLoading />) :
-                    data.map((item, i) =>
-                        Object.keys(header).map(key =>
-                            <Cell
-                                isDark={i % 2 === 1}
-                                key={getId()}>
-                                {renderContent(key, item)}
-                            </Cell>
+            </div>
+            <div style={{
+                flex: 1,
+                overflow: "auto",
+                position: "relative"
+            }}>
+                <div
+                    className={containerStyles}
+                    style={{ gridTemplateColumns: `repeat(${activeColumns.length}, 1fr)` }}>
+                    {isLoading ?
+                        Array(20).fill(Cell).map((CellSkeleton, i) => <CellSkeleton key={getId()} isLoading />)
+                        :
+                        searchData.map((item, i) =>
+                            columns.map(key =>
+                                <Cell
+                                    isDark={i % 2 === 1}
+                                    key={getId()}>
+                                    {renderContent(key, item)}
+                                </Cell>
+                            )
                         )
-                    )}
+                    }
+                </div>
             </div>
         </div>
     )

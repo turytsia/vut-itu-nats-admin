@@ -73,7 +73,7 @@ const Dropdown = ({
                     {currentValue ?? "--"}
                     <Icon icon={isActive ? icons.arrowUp : icons.arrowDown} height={20} width={20} />
                 </button>}>
-            {(setIsActive) =>
+            {setIsActive =>
                 <div className={classes.container}>
                     {items.map(({ id, value }) => (
                         <button key={id} className={itemStyles} onClick={() => { setIsActive(false); onChange(id, name) }}>

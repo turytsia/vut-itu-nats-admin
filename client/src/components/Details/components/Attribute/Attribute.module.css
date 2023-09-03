@@ -1,0 +1,23 @@
+.container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.label{
+    font-weight: 500;
+    color: var(--test);
+}
+
+.value{
+    max-width: 20ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: var(--black);
+    font-weight: 500;
+}
+
+.button{
+    font-weight: 500;
+    font-size: 16px;
+}

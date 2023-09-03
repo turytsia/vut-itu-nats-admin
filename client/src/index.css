@@ -12,14 +12,21 @@
     transition: .1s;
 }
 
+html,
+body {
+  overflow: hidden;
+  transition: 0s;
+}
+
 *:focus-visible {
     outline: 1px solid var(--blue);
-    border-radius: 3px;
+    border-radius: var(--radius);
 }
 
 :root {
     --white: #ebebeb;
     --blue: #4D92E3;
+    --blue-light: #619de3;
     --black: #282828;
     --dark-blue-light: #3f4246;
     --dark-blue: #313438;
@@ -29,6 +36,24 @@
     --gray-light: #dde3ea;
     --gray-background: #F0F0F0;
     --radius: 7px;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+ 
+*::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+ 
+*::-webkit-scrollbar-thumb {
+  background-color: var(--black);
+  border-radius: 7px;
+}
+
+.react-datepicker-popper {
+    /* transition: 0s !important; */
 }
 
 .react-datepicker-wrapper {

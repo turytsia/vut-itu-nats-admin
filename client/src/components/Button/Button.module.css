@@ -1,16 +1,15 @@
-.container{
+.container {
     padding: 8px 15px;
     font-weight: 500;
     color: var(--black);
-    background-color: #EFEFEF;
-    border: none;
-    border-radius: 3px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 8px;
-    border: 1px solid #dde3ea;
+    white-space: nowrap;
 }
 
 .dark {
@@ -21,18 +20,20 @@
 .blue {
     background-color: var(--blue);
     color: #fff;
-    border-radius: var(--radius);
 }
 
 .transparent {
     background-color: transparent;
-    border: 1px solid transparent;
 }
 
-.container:hover{
-    background-color: #e6e6e6;
+.container:hover {
+    background-color: #f6f6f6;
 }
 
-.container.dark:hover{
+.container.dark:hover {
     background-color: #44484c;
+}
+
+.container.blue:hover {
+    background-color: var(--blue-light);
 }

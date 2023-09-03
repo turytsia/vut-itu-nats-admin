@@ -1,6 +1,11 @@
 .container {
     margin-top: 16px;
     color: var(--black);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    flex: 1;
 }
 
 .container.dark {

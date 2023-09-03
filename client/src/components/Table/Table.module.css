@@ -1,21 +1,16 @@
 .container {
     display: grid;
-    overflow: auto;
     width: 100%;
 }
 
-.outerFilters{
+.outer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    height: 100%;
 }
 
-.filters{
-    display: flex;
-    margin-top: 48px;
-    gap: 10px;
-}
-
-.container.dark{
+.container.dark {
     border-bottom: 1px solid var(--gray);
 }

@@ -9,10 +9,10 @@ type PropsType = {
     onClick: React.MouseEventHandler<HTMLButtonElement>
 }
 
-const ButtonIcon = forwardRef(({
+const ButtonIcon = forwardRef<HTMLButtonElement, PropsType>(({
     icon,
     onClick
-}: PropsType, ref: ForwardedRef<HTMLButtonElement>) => (
+}, ref) => (
     <button ref={ref} className={classes.container} onClick={onClick}>
         <Icon icon={icon} width={20} height={20} />
     </button>

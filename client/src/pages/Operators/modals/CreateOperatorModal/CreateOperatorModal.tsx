@@ -8,12 +8,12 @@ import DateInput from '../../../../components/DateInput/DateInput'
 import classes from "./CreateOperatorModal.module.css"
 
 export type OperatorInputTypes = {
-    name: string,
-    expiry: null | string,
-    start: null | string,
-    generateSigningKey: boolean,
-    sys: boolean,
-    force: boolean
+    "name": string,
+    "expiry": null | string,
+    "start": null | string,
+    "generate_signing_key": boolean,
+    "sys": boolean,
+    "force": boolean
 }
 
 type PropsType = {
@@ -23,12 +23,12 @@ type PropsType = {
 }
 
 const initialState: OperatorInputTypes = {
-    name: "",
-    expiry: null,
-    start: null,
-    generateSigningKey: false,
-    sys: false,
-    force: false
+    "name": "",
+    "expiry": null,
+    "start": null,
+    "generate_signing_key": false,
+    "sys": false,
+    "force": false
 }
 
 const CreateOperatorModal = ({
@@ -64,7 +64,7 @@ const CreateOperatorModal = ({
         () => {
             _onSubmit(state)
         },
-        [state]
+        [state, _onSubmit]
     )
 
     return (
@@ -101,8 +101,8 @@ const CreateOperatorModal = ({
                 <Checkbox
                     labelText='Generate signing key'
                     hintText='Generate a signing key with the operator'
-                    name='generateSigningKey'
-                    value={state.generateSigningKey}
+                    name='generate_signing_key'
+                    value={state["generate_signing_key"]}
                     onChange={onChangeCheckbox} />
                 <Checkbox
                     labelText='Sys'

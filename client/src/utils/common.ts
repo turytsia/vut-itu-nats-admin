@@ -20,6 +20,7 @@ export const timesecondsFormat = (date: string | number) => {
 }
 
 export const dateFormat = (date: string | number) => {
+    if(!date) return ""
     const format = timeFormat("%Y.%m.%d")
     return format(new Date(date))
 }
