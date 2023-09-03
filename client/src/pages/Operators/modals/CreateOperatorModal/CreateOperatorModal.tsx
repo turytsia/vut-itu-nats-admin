@@ -6,23 +6,15 @@ import Checkbox from '../../../../components/Checkbox/Checkbox'
 import DateInput from '../../../../components/DateInput/DateInput'
 
 import classes from "./CreateOperatorModal.module.css"
-
-export type OperatorInputTypes = {
-    "name": string,
-    "expiry": null | string,
-    "start": null | string,
-    "generate_signing_key": boolean,
-    "sys": boolean,
-    "force": boolean
-}
+import { OperatorPayloadType } from '../../../../utils/axios'
 
 type PropsType = {
     error: string
     onClose: () => void
-    onSubmit: (state: OperatorInputTypes) => void
+    onSubmit: (state: OperatorPayloadType) => void
 }
 
-const initialState: OperatorInputTypes = {
+const initialState: OperatorPayloadType = {
     "name": "",
     "expiry": null,
     "start": null,
@@ -37,7 +29,7 @@ const CreateOperatorModal = ({
     error,
 }: PropsType) => {
 
-    const [state, setState] = useState<OperatorInputTypes>(initialState)
+    const [state, setState] = useState<OperatorPayloadType>(initialState)
 
     const onChangeInput = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {

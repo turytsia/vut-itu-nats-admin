@@ -3,13 +3,13 @@ import { AppContext } from '../../context/AppContextProvider'
 import Page from '../../components/Page/Page'
 import Table, { FiltersConfigType, TableConfigType } from '../../components/Table/Table'
 
-import { OperatorType } from '../../utils/axios'
+import { OperatorType, OperatorPayloadType } from '../../utils/axios'
 import { ColumnTypes, columns } from '../../hooks/useSort'
 import { dateFormat } from '../../utils/common'
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
 
-import CreateOperatorModal, { OperatorInputTypes } from "./modals/CreateOperatorModal/CreateOperatorModal"
+import CreateOperatorModal from "./modals/CreateOperatorModal/CreateOperatorModal"
 
 import classes from "./Operators.module.css"
 import Button from '../../components/Button/Button'
@@ -92,7 +92,7 @@ const Operators = () => {
      * @todo
      */
     const onCreateOperatorSubmit = useCallback(
-        async (form: OperatorInputTypes) => {
+        async (form: OperatorPayloadType) => {
             try {
                 const response = await request.post.operator(form)
 
