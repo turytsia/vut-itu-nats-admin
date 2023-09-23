@@ -1,4 +1,16 @@
-/** Color collection  */
+/**
+ * @fileoverview A file for all the colors used in the application
+ *
+ * This file contains all the colors for the application.
+ *
+ * @module colors
+ * 
+ * @author xturyt00
+ */
+
+/** 
+ * Color collection  
+ */
 enum colors {
     blue = '#63ABFF',
     darkBlueLight = '#3f4246',

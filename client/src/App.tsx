@@ -1,19 +1,28 @@
+/**
+ * @fileoverview App component
+ * 
+ * Root component of the application.
+ *
+ * @module App
+ * 
+ * @author xturyt00
+ */
+
 import { Route, Routes } from "react-router-dom"
 
+// components
 import View from "./components/View/View"
 import Menu from "./components/Menu/Menu"
 import Header from "./components/Header/Header"
 import Container from "./components/Container/Container"
 import Main from "./components/Main/Main"
 
-//pages
+// pages
 import Welcome from "./pages/Welcome/Welcome"
 import Operators from "./pages/Operators/Operators"
 import Accounts from "./pages/Accounts/Accounts"
 import Users from "./pages/Users/Users"
 import Servers from "./pages/Servers/Servers"
-import { useContext, useEffect } from "react"
-import { AppContext } from "./context/AppContextProvider"
 import OperatorsDetail from "./pages/OperatorsDetail/OperatorsDetail"
 
 const App = () => {

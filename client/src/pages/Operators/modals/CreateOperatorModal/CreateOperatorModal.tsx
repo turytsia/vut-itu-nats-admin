@@ -1,12 +1,23 @@
-import React, { ChangeEvent, useCallback, useState } from 'react'
+/**
+ * @fileoverview Modal form component to create operator
+ *
+ * This file contains modal form component to create operator.
+ *
+ * @module CreateOperatorModal
+ * 
+ * @author xturyt00
+ */
+import { ChangeEvent, useCallback, useState } from 'react'
+import { OperatorPayloadType } from '../../../../utils/axios'
 import icons from '../../../../utils/icons'
+
+import classes from "./CreateOperatorModal.module.css"
+
+// components
 import Modal from '../../../../components/Modal/Modal'
 import Input from '../../../../components/Input/Input'
 import Checkbox from '../../../../components/Checkbox/Checkbox'
 import DateInput from '../../../../components/DateInput/DateInput'
-
-import classes from "./CreateOperatorModal.module.css"
-import { OperatorPayloadType } from '../../../../utils/axios'
 
 type PropsType = {
     error: string
@@ -14,6 +25,7 @@ type PropsType = {
     onSubmit: (state: OperatorPayloadType) => void
 }
 
+// initial state for form inputs
 const initialState: OperatorPayloadType = {
     "name": "",
     "expiry": null,
@@ -23,40 +35,68 @@ const initialState: OperatorPayloadType = {
     "force": false
 }
 
+/**
+ * Modal form component for creating operators.
+ *
+ * @param props - Component props.
+ * @param props.onClose - Callback to close the modal.
+ * @param props.onSubmit - Callback to submit the form.
+ * @param props.error - Error message to display, if any.
+ * @returns Modal form component.
+ */
 const CreateOperatorModal = ({
     onClose,
-    onSubmit: _onSubmit,
+    onSubmit,
     error,
 }: PropsType) => {
 
     const [state, setState] = useState<OperatorPayloadType>(initialState)
-
-    const onChangeInput = useCallback(
+    
+    /**
+     * Handle input changes
+     * 
+     * @param e - Input event
+     */
+    const handleInputChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
         },
         []
     )
-
-    const onChangeDate = useCallback(
+    
+    /**
+     * Handle date changes
+     * 
+     * @param date - Date value
+     * @param name - Input date name
+     */
+    const handleDateChange = useCallback(
         (date: string, name: string) => {
             setState(prev => ({ ...prev, [name]: String(date) }))
         },
         []
     )
-
-    const onChangeCheckbox = useCallback(
+    
+    /**
+     * Handle checkbox changes
+     * 
+     * @param e - Checkbox input event
+     */
+    const handleCheckboxChange = useCallback(
         (e: ChangeEvent<HTMLInputElement>) => {
             setState(prev => ({ ...prev, [e.target.name]: e.target.checked }))
         },
         []
     )
-
-    const onSubmit = useCallback(
+    
+    /**
+     * Handle form submission
+     */
+    const handleSubmit = useCallback(
         () => {
-            _onSubmit(state)
+            onSubmit(state)
         },
-        [state, _onSubmit]
+        [state, onSubmit]
     )
 
     return (
@@ -67,47 +107,47 @@ const CreateOperatorModal = ({
             textCancel='Cancel'
             icon={icons.plus}
             onClose={onClose}
-            onSubmit={onSubmit}>
+            onSubmit={handleSubmit}>
             <div className={classes.container}>
                 <Input
                     isRequired
                     labelText="Name"
                     name='name'
                     value={state.name}
-                    onChange={onChangeInput} />
+                    onChange={handleInputChange} />
                 <DateInput
                     placeholder='yyyy.mm.dd'
                     name='expiry'
                     hintText="Valid until"
                     labelText="Expiry"
                     value={state.expiry}
-                    onChange={onChangeDate} />
+                    onChange={handleDateChange} />
                 <DateInput
                     placeholder='yyyy.mm.dd'
                     name='start'
                     hintText="Valid from"
                     labelText="Start"
                     value={state.start}
-                    onChange={onChangeDate} />
+                    onChange={handleDateChange} />
                 <div />
                 <Checkbox
                     labelText='Generate signing key'
                     hintText='Generate a signing key with the operator'
                     name='generate_signing_key'
                     value={state["generate_signing_key"]}
-                    onChange={onChangeCheckbox} />
+                    onChange={handleCheckboxChange} />
                 <Checkbox
                     labelText='Sys'
                     hintText='Generate system account with the operator (if specified will be signed with signing key)'
                     name='sys'
                     value={state.sys}
-                    onChange={onChangeCheckbox} />
+                    onChange={handleCheckboxChange} />
                 <Checkbox
                     labelText='Force'
                     hintText='On import, overwrite existing when already present'
                     name='force'
                     value={state.force}
-                    onChange={onChangeCheckbox} />
+                    onChange={handleCheckboxChange} />
             </div>
         </Modal>
     )

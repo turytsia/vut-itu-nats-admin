@@ -1,4 +1,18 @@
-/** Icon collection  */
+/**
+ * @fileoverview A file for all the icons used in the application dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+ *
+ * This file contains all the icons for the application. 
+ *
+ * @module icons
+ * 
+ * @author xturyt00
+ */
+
+/** 
+ * Icons enum 
+ * 
+ * @see https://icon-sets.iconify.design/ - All the icons can be found here
+ */
 enum icons {
     sun = 'lucide:sun',
     moon = 'radix-icons:moon',

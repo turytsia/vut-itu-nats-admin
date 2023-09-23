@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Request protocol implementation
+ *
+ * This file contains implementation of a request protocol.
+ * Request protocol is the object that helps to make requests to
+ * a backend.
+ *
+ * @module axios
+ * 
+ * @author xturyt00
+ */
 import axios, { AxiosError } from "axios";
 
 
@@ -443,6 +454,9 @@ const { get, post } = axios.create({
     }
 })
 
+/**
+ * @todo
+ */
 const GetRequest: GetRequestActions = {
     operators: async () => {
         try {
@@ -517,6 +531,9 @@ const GetRequest: GetRequestActions = {
     }
 }
 
+/**
+ * @todo
+ */
 const PostRequest: PostRequestActions = {
     operator: async (payload) => {
         try {
@@ -568,6 +585,9 @@ const PostRequest: PostRequestActions = {
     }
 }
 
+/**
+ * @todo
+ */
 const PatchRequest: PatchRequestActions = {
     operator: function (operator: string, payload: OperatorPatchType): Promise<ResponseType> {
         throw new Error("Function not implemented.");
@@ -580,12 +600,24 @@ const PatchRequest: PatchRequestActions = {
     }
 }
 
+/**
+ * @todo
+ */
 const DeleteRequest: DeleteRequestActions = {
     user: function (operator: string, account: string, user: string): Promise<{ [key: string]: string; }> {
         throw new Error("Function not implemented.");
     }
 }
 
+/**
+ * Request protocol
+ * 
+ * Request protocol is the object that helps to make requests to
+ * a backend.
+ * 
+ * @example
+ * const { operators } = await request.get.operators() // fetches requests
+ */
 class Request implements RequestActions {
     get: GetRequestActions = GetRequest
     post: PostRequestActions = PostRequest
