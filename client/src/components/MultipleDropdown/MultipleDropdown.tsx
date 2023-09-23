@@ -1,12 +1,21 @@
-import React, { ChangeEventHandler, useCallback } from 'react'
+/**
+ * @fileoverview MultipleDropdown component implementation
+ *
+ * This file contains implementation of a MultipleDropdown component.
+ * It generates selectable dropdown element.
+ *
+ * @module MultipleDropdown
+ * 
+ * @author xturyt00
+ */
+import React, { useCallback } from 'react'
 import DismissWindow from '../DismissWindow/DismissWindow'
+import Checkbox from '../Checkbox/Checkbox'
 import { placements } from '../../utils/common'
 import Button from '../Button/Button'
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
-
 import classes from "./MultipleDropdown.module.css"
-import Checkbox from '../Checkbox/Checkbox'
 
 type PropsType = {
     label: string,
@@ -16,6 +25,17 @@ type PropsType = {
     onChange?: (k: string) => void
 }
 
+/**
+ * MultipleDropdown component
+ * 
+ * @param props - Component props 
+ * @param props.label - Label text
+ * @param props.icon - Icon
+ * @param props.items - Dropdown items
+ * @param props.values - Selected values
+ * @param props.onChange - Callback to change the dropdown
+ * @returns MultipleDropdown component
+ */
 const MultipleDropdown = ({
     label = "",
     icon,

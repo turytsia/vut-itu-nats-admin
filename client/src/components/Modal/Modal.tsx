@@ -1,5 +1,13 @@
-import React, { MouseEventHandler, useCallback, useContext, useEffect, useMemo, useRef } from 'react'
-
+/**
+ * @fileoverview Modal component implementation
+ *
+ * This file contains implementation of a Modal window component.
+ *
+ * @module Modal
+ * 
+ * @author xturyt00
+ */
+import React, { MouseEventHandler, useContext } from 'react'
 import classes from "./Modal.module.css"
 import { FloatingPortal } from '@floating-ui/react'
 import { AppContext, floatingRoot } from '../../context/AppContextProvider'
@@ -19,10 +27,29 @@ type PropsType = {
     icon: icons
 }
 
-const onPropagationStop: MouseEventHandler<HTMLDivElement> = (e) => {
+/**
+ * Prevents click event from bubbling up the DOM
+ * 
+ * @param e - Event
+ */
+const stopPropagation: MouseEventHandler<HTMLDivElement> = (e) => {
     e.stopPropagation()
 }
 
+/**
+ * Modal window component
+ * 
+ * @param props - Component props
+ * @param props.title - Title
+ * @param props.children - Children
+ * @param props.error - Error text
+ * @param props.textProceed - Proceed text
+ * @param props.textCancel - Cancel text
+ * @param props.icon - Icon
+ * @param props.onClose - Callback to close the modal window
+ * @param props.onSubmit - Callback to proceed the modal window
+ * @returns Modal window component
+ */
 const Modal = ({
     title,
     children,
@@ -31,30 +58,21 @@ const Modal = ({
     textCancel,
     icon,
     onClose,
-    onSubmit
+    onSubmit,
 }: PropsType) => {
 
     const { isDark } = useContext(AppContext)
 
-    const headerStyles = useMemo(
-        () => classNames(classes.header, { [classes.dark]: isDark }),
-        [isDark]
-    )
+    const headerStyles = classNames(classes.header, { [classes.dark]: isDark })
 
-    const containerStyles = useMemo(
-        () => classNames(classes.container, { [classes.dark]: isDark }),
-        [isDark]
-    )
+    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
 
-    const closeStyles = useMemo(
-        () => classNames(classes.close, { [classes.dark]: isDark }),
-        [isDark]
-    )
+    const closeStyles = classNames(classes.close, { [classes.dark]: isDark })
 
     return (
         <FloatingPortal root={floatingRoot}>
             <div className={classes.outer} onClick={onClose}>
-                <div className={containerStyles} onClick={onPropagationStop}>
+                <div className={containerStyles} onClick={stopPropagation}>
                     <header className={headerStyles}>
                         <div className={classes.headerTitle}>
                             <Icon icon={icon} height={25} width={25} />
@@ -67,7 +85,11 @@ const Modal = ({
                     <div className={classes.content}>{children}</div>
                     <footer className={classes.footer}>
                         <div className={classes.errorContainer}>
-                            {error && <p className={classes.error}><Icon icon={icons.error} height={20} width={20} /> {error}</p>}
+                            {error && (
+                                <p className={classes.error}>
+                                    <Icon icon={icons.error} height={20} width={20} /> {error}
+                                </p>
+                            )}
                         </div>
                         <div className={classes.actions}>
                             <Button onClick={onClose}>

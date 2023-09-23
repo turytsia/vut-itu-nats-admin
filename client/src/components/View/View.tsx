@@ -9,10 +9,8 @@
  */
 
 import React from 'react'
-
 import classes from "./View.module.css"
 
-/** component props type */
 type PropsType = {
     children: React.ReactNode
 } 
@@ -20,7 +18,8 @@ type PropsType = {
 /**
  * Wrapper that creates view box of an application
  * 
- * @param props component props
+ * @param props Component props
+ * @param props.children Children
  * @returns Wrapped children
  */
 const View = ({

@@ -8,19 +8,19 @@
  * @author xturyt00
  */
 import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
-
 import classes from "./Main.module.css"
 
-/** component props type */
 type PropsType = {
     children: React.ReactNode
 }
 
 /**
- * Main component, generates main content of the page the user is on
+ * Main component.
+ * Generate main content of the page the user is on.
  * 
- * @param props component props
- * @returns Main
+ * @param props - Component props
+ * @param props.childer - Children
+ * @returns Main component
  */
 const Main = ({
     children

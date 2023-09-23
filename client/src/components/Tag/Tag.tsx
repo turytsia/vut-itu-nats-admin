@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Tag component implementation
+ *
+ * This file contains implementation of a Tag component. This is a
+ * common component for the tag in the application.
+ *
+ * @module Tag
+ * 
+ * @author xturyt00
+ */
 import React from 'react'
 
 import classes from "./Tag.module.css"
@@ -10,6 +20,15 @@ type PropsType = {
     onClick?: () => void
 }
 
+/**
+ * Tag component
+ * 
+ * @param props - Component props
+ * @param props.isBlue - Set blue styles for the tag (Default = false)
+ * @param props.children - Children
+ * @param props.onClick - Callback to click a tag 
+ * @returns Tag component
+ */
 const Tag = ({
     isBlue,
     children,

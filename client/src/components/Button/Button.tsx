@@ -9,9 +9,9 @@
  * @author xturyt00
  */
 import React, { MouseEventHandler, forwardRef, useContext } from 'react'
-import classes from "./Button.module.css"
-import classNames from 'classnames'
 import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
+import classes from "./Button.module.css"
 
 type PropsType = {
     className?: string
@@ -26,11 +26,11 @@ type PropsType = {
  * Button component
  * 
  * @param props - Component props
- * @param props.className - className
- * @param props.isBlue - flag if true then the button is blue
- * @param props.isTransparent - flag if true then the button is transparent
+ * @param props.className - ClassName
+ * @param props.isBlue - Flag if true then the button is blue
+ * @param props.isTransparent - Flag if true then the button is transparent
  * @param props.disabled - flag if true then the button is disabled
- * @param props.onClick - Callback to click the button.
+ * @param props.onClick - Callback to click the button
  * @returns Button component
  */
 const Button = forwardRef<HTMLButtonElement, PropsType>(({

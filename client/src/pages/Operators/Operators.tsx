@@ -69,36 +69,40 @@ const Operators = () => {
     /**
      * Fetch operators and update the component state.
      */
-    const fetchOperators = useCallback(async () => {
-        try {
-            setIsLoading(true);
+    const fetchOperators = useCallback(
+        async () => {
+            try {
+                setIsLoading(true);
 
-            // Fetch the list of operators
-            const { operators } = await request.get.operators();
+                // Fetch the list of operators
+                const { operators } = await request.get.operators();
 
-            // Fetch operator details concurrently using Promise.allSettled
-            const responses = await Promise.allSettled(
-                operators.map(async (name) => await request.get.operator(name))
-            );
+                // Fetch operator details concurrently using Promise.allSettled
+                const responses = await Promise.allSettled(
+                    operators.map(async (name) => await request.get.operator(name))
+                );
 
-            // Filter out fulfilled promises and extract their values
-            const fulfilledResponses = responses
-                .filter((r): r is PromiseFulfilledResult<OperatorType> => r.status === "fulfilled")
-                .map((r) => r.value)
-                .filter((v) => v);
+                // Filter out fulfilled promises and extract their values
+                const fulfilledResponses = responses
+                    .filter((r): r is PromiseFulfilledResult<OperatorType> => r.status === "fulfilled")
+                    .map((r) => r.value)
+                    .filter((v) => v);
 
-            setOperators(fulfilledResponses);
-        } catch (error) {
-            console.error(error)
-        } finally {
-            setIsLoading(false);
-        }
-    }, [request]);
+                setOperators(fulfilledResponses);
+            } catch (error) {
+                console.error(error)
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [request]
+    );
 
     /**
      * Submits form to create new operator
      */
-    const onOperatorSubmit = useCallback(async (form: OperatorPayloadType) => {
+    const onOperatorSubmit = useCallback(
+        async (form: OperatorPayloadType) => {
             try {
                 const response = await request.post.operator(form)
 

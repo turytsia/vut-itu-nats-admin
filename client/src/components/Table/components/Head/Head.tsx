@@ -8,15 +8,12 @@
  * 
  * @author xturyt00
  */
-
 import React from 'react'
 import { Icon } from '@iconify/react'
 import icons from '../../../../utils/icons'
 import { sort } from '../../../../hooks/useSort'
-
 import classes from "./Head.module.css"
 
-/** Component props type */
 type PropsType = {
     children: React.ReactNode
     isSortable?: boolean
@@ -28,7 +25,7 @@ type PropsType = {
 /**
  * Returns icon representing provided sort state
  * 
- * @param sortType sort state
+ * @param sortType - Sort state
  * @returns Returns icon
  */
 const getSortIcon = (sortType: sort) => ({
@@ -40,7 +37,12 @@ const getSortIcon = (sortType: sort) => ({
 /**
  * Head component, renders head of the table at Table.tsx
  * 
- * @param props Component props
+ * @param props - Component props
+ * @param props.children - Children
+ * @param props.isSortable - Sortable column (default = false)
+ * @param props.sort - Sorting type (from useSort)
+ * @param props.order - Sorting order (from useSort)
+ * @param props.changeSort - Callback to change sorting (from useSort)
  * @returns Head component
  */
 const Head = ({
@@ -55,9 +57,14 @@ const Head = ({
         <div className={classes.container}>
             {children}
             <div className={classes.actions}>
-                {order && <span className={classes.order}>{order}</span>}
-                {(isSortable && sortType) &&
-                    <Icon className={classes.sortIcon} icon={getSortIcon(sortType)} width={12} height={12} onClick={changeSort} />}
+                {order && (
+                    <span className={classes.order}>
+                        {order}
+                    </span>
+                )}
+                {(isSortable && sortType) && (
+                    <Icon className={classes.sortIcon} icon={getSortIcon(sortType)} width={12} height={12} onClick={changeSort} />
+                )}
             </div>
         </div>
     )

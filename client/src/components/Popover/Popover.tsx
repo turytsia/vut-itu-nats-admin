@@ -51,11 +51,18 @@ type PropsType = {
  * 
  * @see https://floating-ui.com/ floating ui documentation
  * 
- * @param props component props
+ * @param props - Component props
+ * @param props.element - Element that toggles tooltip
+ * @param props.children - Children
+ * @param props.className - Classname
+ * @param props.placement - Tooltip placement relative to an element (default = placements.top)
+ * @param props.active - Active tooltip
+ * @param props.mouseOnly - Tooltip is active only for mouse
+ * @param props.fallbackPlacements - Fallback placements for the tooltip if there is not much space
+ * @param props.offset - Offset of a tooltip from the element (default = 10)
  * @returns Popover component
  * 
  * ```tsx
- * // ...
  * 
  * return (
  *  <div>

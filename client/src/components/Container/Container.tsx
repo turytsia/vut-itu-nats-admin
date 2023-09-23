@@ -8,21 +8,20 @@
  * @author xturyt00
  */
 import React, { useContext } from 'react'
-
-import classes from "./Container.module.css"
-import classNames from 'classnames'
 import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
+import classes from "./Container.module.css"
 
-/** component props type */
 type PropsType = {
     children: React.ReactNode
 }
 
 /**
- * Container component, that generates main container at App.tsx
+ * Container component to generate main container at App.tsx
  * 
- * @param props component props
- * @returns Container
+ * @param props - Component props
+ * @param props.children - Component children
+ * @returns Container component
  */
 const Container = ({
     children

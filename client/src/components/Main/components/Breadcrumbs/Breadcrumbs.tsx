@@ -12,7 +12,6 @@ import React, { useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
 import classes from "./Breadcrumbs.module.css"
-import { Icon } from '@iconify/react'
 import icons from '../../../../utils/icons'
 import ButtonIcon from '../../../ButtonIcon/ButtonIcon'
 

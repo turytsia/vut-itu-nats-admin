@@ -54,7 +54,13 @@ const initialTableConfig: TableConfigType = {
 /**
  * Table component, renders a table with given data
  * 
- * @param props Component props
+ * @param props - Component props
+ * @param props.isLoading - Set loading state for the table
+ * @param props.data - Table data
+ * @param props.renderContent - Function that wraps each cell's value and modifies it
+ * @param props.renderActions - Render elements in the filter container to the right
+ * @param props.tableConfig - Table config
+ * @param props.filtersConfig - Filter config
  * @returns Table component
  */
 const Table = ({
@@ -85,33 +91,47 @@ const Table = ({
 
     // FIXME
 
+    /**
+     * TODO
+     */
     const onChangeInput = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
         []
     )
 
+    /**
+     * TODO
+     */
     const onChangeDropdown = useCallback(
         (value: string) => setDropdownItem(value),
         []
     )
-
+    
+    /**
+     * TODO
+     */
     const onChangeDate = useCallback(
         (name: string) => (date: [string, string]) => setDate(prev => ({ ...prev, [name]: date })),
         []
     )
-
+    
+    /**
+     * TODO
+     */
     const onToggleColumn = useCallback(
         (key: string) => setActiveColumns(prev => prev.includes(key) ? prev.filter(k => k !== key) : [...prev, key]),
         []
     )
 
+    /**
+     * TODO
+     */
     const searchByItems = useMemo(
         () => filtersConfig.searchBy ? filtersConfig.searchBy.map(key => ({ id: key, value: tableConfig.columnMapNames[key] })) : [],
         [filtersConfig, tableConfig]
     )
 
     const searchData = sortData.filter(item => item[dropdownItem]?.trim().toLowerCase()?.includes(search.trim().toLowerCase()))
-
 
     const columns = Object.keys(tableConfig.columnMapNames).filter(k => activeColumns.includes(tableConfig.columnMapNames[k]))
 

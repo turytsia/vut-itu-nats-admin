@@ -14,7 +14,6 @@ import { AppContext } from '../../context/AppContextProvider'
 import classNames from 'classnames'
 import classes from "./Page.module.css"
 
-/** component props type */
 type PropsType = {
     children: React.ReactNode
     title: string
@@ -24,8 +23,10 @@ type PropsType = {
 /**
  * Page component, wraps all the pages with basic styles and title
  * 
- * @param props component props
- * @returns Page
+ * @param props - Component props
+ * @param props.title - Title
+ * @param props.renderActions - Render elements to the right of a title
+ * @returns Page component
  */
 const Page = ({
     children,

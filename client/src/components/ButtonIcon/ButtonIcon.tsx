@@ -1,4 +1,13 @@
-import React, { ForwardedRef, forwardRef } from 'react'
+/**
+ * @fileoverview ButtonIcon component implementation
+ *
+ * This file contains implementation of a Button component, that contains Icon.
+ *
+ * @module ButtonIcon
+ * 
+ * @author xturyt00
+ */
+import React, { forwardRef } from 'react'
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
 
@@ -9,6 +18,13 @@ type PropsType = {
     onClick: React.MouseEventHandler<HTMLButtonElement>
 }
 
+/**
+ * ButtonIcon component
+ * 
+ * @param props - Component props
+ * @param props.icon - Icon
+ * @param props.onClick - Callback to click the button
+ */
 const ButtonIcon = forwardRef<HTMLButtonElement, PropsType>(({
     icon,
     onClick

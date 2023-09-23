@@ -6,7 +6,7 @@
  * There is also a dropdown which specifies which column is going
  * to be filtered
  *
- * @module Input
+ * @module SearchInput
  * 
  * @author xturyt00
  */
@@ -34,7 +34,6 @@ export type SearchInputConfigType = {
     dropdown?: SearchInputDropdownType
 }
 
-/** Component props type */
 type PropsType = {
     searchConfig: SearchInputConfigType
 }
@@ -44,7 +43,8 @@ type PropsType = {
  * order to filter table at Table.tsx
  * 
  * @param props Component props
- * @returns Input component
+ * @param props.searchConfig - Search config
+ * @returns SearchInput component
  */
 const SearchInput = ({
     searchConfig

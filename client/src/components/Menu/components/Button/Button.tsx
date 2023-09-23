@@ -10,7 +10,7 @@
 
 import classNames from 'classnames'
 import React, { useCallback, useContext } from 'react'
-import { NavLink, NavLinkProps } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { AppContext } from '../../../../context/AppContextProvider'
 
 import icons from '../../../../utils/icons'

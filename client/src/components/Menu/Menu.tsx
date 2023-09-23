@@ -19,7 +19,7 @@ import classNames from 'classnames'
 /**
  *  Menu component, that generates at the left side of an App.tsx
  * 
- * @returns Menu
+ * @returns Menu component
  */
 const Menu = () => {
 

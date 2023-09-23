@@ -1,10 +1,19 @@
-import React, { useState } from 'react'
-
-import classes from "./Attribute.module.css"
+/**
+ * @fileoverview Attribute component implementation
+ *
+ * This file contains implementation of a Attribute component. 
+ * It is generated at the Details component.
+ *
+ * @module Attribute
+ * 
+ * @author xturyt00
+ */
+import { useState } from 'react'
 import JWTModal from '../../../../pages/OperatorsDetail/modals/JWTModal/JWTModal'
 import Button from '../../../Button/Button'
 import { Icon } from '@iconify/react'
 import icons from '../../../../utils/icons'
+import classes from "./Attribute.module.css"
 
 export type DetailsConfigAttributeType = {
     name?: string,
@@ -16,6 +25,15 @@ type PropsType = {
     attributeConfig: DetailsConfigAttributeType
 }
 
+/**
+ * Attribute component
+ * 
+ * TODO implement modal window
+ * 
+ * @param props - Component props
+ * @param props.attributeConfig - attributeConfig
+ * @returns Attribute component
+ */
 const Attribute = ({
     attributeConfig
 }: PropsType) => {
@@ -33,7 +51,9 @@ const Attribute = ({
                     View
                     <Icon icon={icons.eye} height={20} width={20} />
                 </Button>
-                {isSecretActive && <JWTModal token={attributeConfig.value} onClose={() => setIsSecretActive(false)} />}
+                {isSecretActive && (
+                    <JWTModal token={attributeConfig.value} onClose={() => setIsSecretActive(false)} />
+                )}
             </div>
         )
     }

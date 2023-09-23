@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Details component implementation
+ *
+ * This file contains implementation of a Details component.
+ * It generates details page based on given config.
+ *
+ * @module Details
+ * 
+ * @author xturyt00
+ */
 import React, { useEffect, useState } from 'react'
 
 import classes from "./Details.module.css"
@@ -27,20 +37,47 @@ type PropsType = {
 
 // accessors
 
+/**
+ * Retrieves search filter's value
+ * 
+ * @param filtersConfig - Filters config
+ * @returns Search filter's value
+ */
 const getSearchValue = (filtersConfig?: FiltersConfigType) => {
     return filtersConfig?.searchConfig?.input.value ?? ""
 }
 
+/**
+ * Retrieve title's value from Details config based on index
+ * 
+ * @param index - Current index
+ * @param detailsConfig - Details config
+ * @returns Title's value from Details config based on index
+ */
 const getCurrentTitle = (index: number, detailsConfig: DetailsConfigType) => {
     return detailsConfig?.[index]?.title.value ?? ""
 }
 
+/**
+ * Retrieve attributes from Details config based on index
+ * 
+ * @param index - Current index
+ * @param detailsConfig - Details config
+ * @returns Attributes from Details config based on index
+ */
 const getCurrentAttributes = (index: number, detailsConfig: DetailsConfigType) => {
     return detailsConfig?.[index]?.attributes ?? []
 }
 
 // helpers
 
+/**
+ * Filter attributes
+ * 
+ * @param attributes - Attributes
+ * @param filtersConfig - Filters config
+ * @returns Filtered attributes
+ */
 const filterAttributes = (attributes: DetailsConfigAttributeType[], filtersConfig?: FiltersConfigType) => {
     if (!filtersConfig?.searchConfig) return attributes
 
@@ -50,12 +87,28 @@ const filterAttributes = (attributes: DetailsConfigAttributeType[], filtersConfi
         )
 }
 
+/**
+ * Filter details
+ * 
+ * @param detailsConfig - Details config
+ * @param filtersConfig - Filters config
+ * @returns Filtered details
+ */
 const filterDetailsConfig = (detailsConfig: DetailsConfigType, filtersConfig?: FiltersConfigType) => {
     return detailsConfig
         .map(config => ({ ...config, attributes: filterAttributes(config.attributes, filtersConfig) }))
         .filter(({ attributes }) => attributes.length > 0)
 }
 
+/**
+ * Details component
+ * 
+ * @param props - Component props
+ * @param props.detailsConfig - Details config
+ * @param props.filtersConfig - Filters config
+ * @param props.renderActions - Renders element to the right of the filters
+ * @returns Details component
+ */
 const Details = ({
     detailsConfig,
     filtersConfig,

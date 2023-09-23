@@ -4,30 +4,24 @@
  * This file contains implementation of a Dropdown. This component is
  * inherited from DismissWindow and widen its implementation into Dropdown.
  *
- * @module storage
+ * @module Dropdown
  * 
  * @author xturyt00
  */
-
-
-import { useContext, useMemo } from 'react'
-
+import { useContext } from 'react'
 import DismissWindow from "../DismissWindow/DismissWindow"
 import { placements } from '../../utils/common'
-
-import classes from "./Dropdown.module.css"
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
-import classNames from 'classnames'
 import { AppContext } from '../../context/AppContextProvider'
+import classes from "./Dropdown.module.css"
+import classNames from 'classnames'
 
-/** Dropdown item type */
 export type DropdownItemType = {
     id: string,
     value: string
 }
 
-/** Component props type */
 type PropsType = {
     value: string
     items: DropdownItemType[]
@@ -37,9 +31,14 @@ type PropsType = {
 }
 
 /**
- * Dropdown component, generates dropdown element on the page
+ * Dropdown component
  * 
- * @param props component props
+ * @param props - Component props
+ * @param props.label - Label text
+ * @param props.value - Value
+ * @param props.items - Dropdown items
+ * @param props.name - Name
+ * @param props.onChange - Callback to change the button
  * @returns Dropdown component
  */
 const Dropdown = ({
@@ -52,15 +51,11 @@ const Dropdown = ({
 
     const { isDark } = useContext(AppContext)
 
-    const currentValue = useMemo(
-        () => items.find(({ id }) => id === value)?.value,
-        [value]
-    )
+    const currentValue = items.find(({ id }) => id === value)?.value
 
     const dropdownStyles = classNames(classes.dropdown, { [classes.dark]: isDark })
 
     const itemStyles = classNames(classes.item, { [classes.dark]: isDark })
-
 
     return (
         <DismissWindow
@@ -69,7 +64,11 @@ const Dropdown = ({
             placement={placements.BOTTOM}
             element={(isActive) =>
                 <button className={dropdownStyles}>
-                    {label && <span className={classes.label}>{label}</span>}
+                    {label && (
+                        <span className={classes.label}>
+                            {label}
+                        </span>
+                    )}
                     {currentValue ?? "--"}
                     <Icon icon={isActive ? icons.arrowUp : icons.arrowDown} height={20} width={20} />
                 </button>}>

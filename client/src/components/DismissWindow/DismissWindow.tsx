@@ -33,7 +33,6 @@ import {
 import classNames from "classnames"
 import classes from './DismissWindow.module.css'
 
-/** Component props type */
 type PropsType = {
     children: (setIsActive: React.Dispatch<React.SetStateAction<boolean>>) => React.ReactNode
     element: (isActive: boolean) => ReactElement<any, string | JSXElementConstructor<any>>
@@ -48,15 +47,23 @@ type PropsType = {
 }
 
 /**
- * DismissWindow component, creates modal window at different pages
+ * DismissWindow component
  * 
  * @see https://floating-ui.com/ floating ui documentation
  * 
- * @param props component props
+ * @param props - Component props
+ * @param props.className - Classname
+ * @param props.placement - Modal window placement
+ * @param props.element - Element that toggles modal window
+ * @param props.align - Align window width with element (default = false)
+ * @param props.enableArrows - Enable arrow (default = false)
+ * @param props.dismissOnClick - Dismiss on click (default = false)
+ * @param props.boundary - Outer boundaries (default = document)
+ * @param props.offset - Offset from element (default = 10)
+ * @param props.disabled - Disable window (default = false)
  * @returns DismissWindow component
  * 
  * ```tsx
- * // ...
  * 
  * return (
  *  <div>
@@ -132,7 +139,7 @@ const DismissWindow = ({
         if (middlewareData?.hide?.referenceHidden) {
             setIsActive(false)
         }
-    }, [])
+    }, [middlewareData])
 
     // Calculates arrow style
     const arrowStyles = useMemo(

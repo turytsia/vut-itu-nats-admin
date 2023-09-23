@@ -1,5 +1,14 @@
+/**
+ * @fileoverview Filters component implementation
+ *
+ * This file contains implementation of a Filters component. This is a
+ * common component that is used on pages where filters are necessary.
+ *
+ * @module Filters
+ * 
+ * @author xturyt00
+ */
 import React from 'react'
-
 import classes from "./Filters.module.css"
 import SearchInput, { SearchInputConfigType } from '../SearchInput/SearchInput'
 import { FloatingDelayGroup } from '@floating-ui/react'
@@ -38,6 +47,14 @@ type PropsType = {
     renderActions?: React.ReactNode
 }
 
+/**
+ * Filters component
+ * 
+ * @param props - Component props 
+ * @param props.filtersConfig - Filters config
+ * @param props.renderActions - Render elements on the right side
+ * @returns Filters component
+ */
 const Filters = ({
     filtersConfig,
     renderActions

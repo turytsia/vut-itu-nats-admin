@@ -1,11 +1,19 @@
-import React, { ChangeEvent, ChangeEventHandler, useCallback, useContext, useMemo } from 'react'
+/**
+ * @fileoverview Input component implementation
+ *
+ * This file contains implementation of a Input component. This is a
+ * common component for an input in the entire application.
+ *
+ * @module Input
+ * 
+ * @author xturyt00
+ */
+import React, { ChangeEventHandler, useContext } from 'react'
 import classes from "./Input.module.css"
 import classNames from 'classnames'
 import CopyButton from '../CopyButton/CopyButton'
 import InputContainer from "../InputContainer/InputContainer"
 import { AppContext } from '../../context/AppContextProvider'
-
-
 
 type PropsType = {
 	isRequired?: boolean
@@ -22,6 +30,24 @@ type PropsType = {
 	onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
+/**
+ * Input component
+ * 
+ * @param props - Component props
+ * @param props.value - Value
+ * @param props.labelText - Label text
+ * @param props.placeholder - Placeholder
+ * @param props.hintText - Tooltip text
+ * @param props.isRequired - Require input (default = false)
+ * @param props.disabled - Disable input (default = false)
+ * @param props.renderLeft - Render elements to the left from label
+ * @param props.isFlex - Flex input (default = false)
+ * @param props.isCopy - Enable copy button (default = false)
+ * @param props.width - Manually set width
+ * @param props.name - Name
+ * @param props.onChange - Callback to change an input
+ * @returns Input component
+ */
 const Input = ({
 	value = "",
 	labelText = "",

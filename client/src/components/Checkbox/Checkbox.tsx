@@ -1,9 +1,18 @@
-import React, { ChangeEventHandler, useContext, useMemo } from 'react'
-
-import classes from "./Checkbox.module.css"
+/**
+ * @fileoverview Checkbox component implementation
+ *
+ * This file contains implementation of a Checkbox component.
+ * Checkbox is a common component in the application.
+ *
+ * @module Checkbox
+ * 
+ * @author xturyt00
+ */
+import { ChangeEventHandler, useContext } from 'react'
+import { AppContext } from '../../context/AppContextProvider'
 import InputContainer from '../InputContainer/InputContainer'
 import classNames from 'classnames'
-import { AppContext } from '../../context/AppContextProvider'
+import classes from "./Checkbox.module.css"
 
 type PropsType = {
     labelText?: string
@@ -14,6 +23,18 @@ type PropsType = {
     onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
+/**
+ * Checkbox component
+ * 
+ * @param props - Component props
+ * @param props.labelText - Label text
+ * @param props.hintText - Tooltip text
+ * @param props.isRequired - Set checkbox to be required field (default = false)
+ * @param props.name - Name
+ * @param props.value - Value
+ * @param props.onChange - Callback to change the checkbox
+ * @returns Checkbox component
+ */
 const Checkbox = ({
     labelText = "",
     hintText = "",
@@ -25,10 +46,7 @@ const Checkbox = ({
 
     const { isDark } = useContext(AppContext)
 
-    const inputStyles = useMemo(
-        () => classNames(classes.input, { [classes.dark]: isDark }),
-        []
-    )
+    const inputStyles = classNames(classes.input, { [classes.dark]: isDark })
 
     return (
         <InputContainer
