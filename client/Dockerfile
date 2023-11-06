@@ -1,11 +1,14 @@
 FROM node:20-alpine3.17
 
+ARG CACHE_DIR="/root/.npm"
+
 WORKDIR /client
 
 COPY package.json .
 
-RUN npm install
+RUN --mount=type=cache,mode=0777,target=${CACHE_DIR} npm install
 
 COPY . .
 
-CMD npm start
+ENTRYPOINT ["npm"]
+CMD ["start"]
