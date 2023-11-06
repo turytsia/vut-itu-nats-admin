@@ -477,7 +477,7 @@ const GetRequest: GetRequestActions = {
     },
     accounts: async (operator) => {
         try {
-            const { data } = await get(`/operators/${operator}/accounts`);
+            const { data } = await get(`/operator/${operator}/accounts`);
             return data;
         } catch (error) {
             console.error(error);
