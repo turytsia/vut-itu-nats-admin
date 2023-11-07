@@ -592,8 +592,14 @@ const PatchRequest: PatchRequestActions = {
     operator: function (operator: string, payload: OperatorPatchType): Promise<ResponseType> {
         throw new Error("Function not implemented.");
     },
-    account: function (operator: string, account: string, payload: AccountPatchType): Promise<ResponseType> {
-        throw new Error("Function not implemented.");
+    account: async (operator: string, account: string, payload: AccountPatchType): Promise<ResponseType> => {
+        try {
+            const response = await put(`/operator/${operator}/account/${account}`, payload);
+            return {type: "success", data: response.data};
+        } catch (error) {
+            const err = error as AxiosError;
+            return {type: "error", data: err.response?.data};
+        }
     },
     user: function (operator: string, account: string, payload: UserPatchType): Promise<ResponseType> {
         throw new Error("Function not implemented.");
