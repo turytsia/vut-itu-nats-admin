@@ -6,10 +6,10 @@
  * a backend.
  *
  * @module axios
- * 
+ *
  * @author xturyt00
  */
-import axios, { AxiosError } from "axios";
+import axios, {AxiosError} from "axios";
 
 
 type ResponseType = {
@@ -48,7 +48,7 @@ export type OperatorPatchType = {
 
 /**
  * Request body to add an operator to the store
- * 
+ *
  * @see http://localhost:8080/docs/index.html#/Operator/post_operator
  */
 export type OperatorPayloadType = {
@@ -63,7 +63,8 @@ export type OperatorPayloadType = {
 /**
  * @todo
  */
-export type AccoundPayloadType = {
+export type AccountPayloadType = {
+    "operator": string,
     "allow_pub": string | null,
     "allow_pub_response": string | null,
     "allow_pubsub": string | null,
@@ -103,6 +104,7 @@ export type AccountType = {
                 [key: string]: any
             }
         },
+        "description": string,
         "limits": {
             "conn": number,
             "data": number,
@@ -378,10 +380,14 @@ type PatchOperatorType = RequestType<[operator: string, payload: OperatorPatchTy
 type GetAccountsType = RequestType<[operator: string], { accounts: string[] }>
 type GetAccountType = RequestType<[operator: string, account: string], AccountType>
 type GetBindOperatorType = RequestType<[], { [key: string]: string[] }>
-type PostAccountType = RequestType<[operator: string, payload: AccoundPayloadType], ResponseType>
+type PostAccountType = RequestType<[operator: string, payload: AccountPayloadType], ResponseType>
 type PatchAccountType = RequestType<[operator: string, account: string, payload: AccountPatchType], ResponseType>
-type PostBindOperatorType = RequestType<[payload: { account: string, operator: string, server: string }], { [key: string]: string[] }>
-type PostPushAccountType = RequestType<[payload: { account: string, operator: string, server_list: string[] }], { [key: string]: string[] }>
+type PostBindOperatorType = RequestType<[payload: { account: string, operator: string, server: string }], {
+    [key: string]: string[]
+}>
+type PostPushAccountType = RequestType<[payload: { account: string, operator: string, server_list: string[] }], {
+    [key: string]: string[]
+}>
 
 type GetUsersType = RequestType<[operator: string, account: string], { users: string[] }>
 type GetUserType = RequestType<[operator: string, account: string, user: string], UserType>
@@ -447,7 +453,7 @@ interface RequestActions {
     delete: DeleteRequestActions
 }
 
-const { get, post } = axios.create({
+const {get, post, put} = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
         "Accept": "application/json"
@@ -460,16 +466,16 @@ const { get, post } = axios.create({
 const GetRequest: GetRequestActions = {
     operators: async () => {
         try {
-            const { data } = await get("/operators");
+            const {data} = await get("/operators");
             return data;
         } catch (error) {
             console.error(error);
         }
-        return { operators: [] };
+        return {operators: []};
     },
     operator: async (operator) => {
         try {
-            const { data } = await get(`/operator/${operator}`);
+            const {data} = await get(`/operator/${operator}`);
             return data;
         } catch (error) {
             console.error(error);
@@ -477,16 +483,16 @@ const GetRequest: GetRequestActions = {
     },
     accounts: async (operator) => {
         try {
-            const { data } = await get(`/operator/${operator}/accounts`);
+            const {data} = await get(`/operator/${operator}/accounts`);
             return data;
         } catch (error) {
             console.error(error);
         }
-        return { accounts: [] };
+        return {accounts: []};
     },
     account: async (operator, account) => {
         try {
-            const { data } = await get(`/operator/${operator}/account/${account}`);
+            const {data} = await get(`/operator/${operator}/account/${account}`);
             return data;
         } catch (error) {
             console.error(error);
@@ -495,16 +501,16 @@ const GetRequest: GetRequestActions = {
     },
     users: async (operator, account) => {
         try {
-            const { data } = await get(`/operators/${operator}/account/${account}/users`);
+            const {data} = await get(`/operators/${operator}/account/${account}/users`);
             return data;
         } catch (error) {
             console.error(error);
         }
-        return { users: [] };
+        return {users: []};
     },
     user: async (operator, account, user) => {
         try {
-            const { data } = await get(`/operators/${operator}/account/${account}/user/${user}`);
+            const {data} = await get(`/operators/${operator}/account/${account}/user/${user}`);
             return data;
         } catch (error) {
             console.error(error);
@@ -538,34 +544,38 @@ const PostRequest: PostRequestActions = {
     operator: async (payload) => {
         try {
             const response = await post("/operator", payload);
-            return { type: "success", data: response.data };
+            return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;
-            return { type: "error", data: err.response?.data };
+            return {type: "error", data: err.response?.data};
         }
     },
     account: async (operator, payload) => {
         try {
             const response = await post(`/operator/${operator}/account`, payload);
-            return { type: "success", data: response.data };
+            return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;
-            return { type: "error", data: err.response?.data };
+            return {type: "error", data: err.response?.data};
         }
     },
     user: async (operator, account, payload) => {
         try {
             const response = await post(`/operator/${operator}/account/${account}/user`, payload);
-            return { type: "success", data: response.data };
+            return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;
-            return { type: "error", data: err.response?.data };
+            return {type: "error", data: err.response?.data};
         }
     },
-    bind: function (payload: { account: string; operator: string; server: string; }): Promise<{ [key: string]: string[]; }> {
+    bind: function (payload: { account: string; operator: string; server: string; }): Promise<{
+        [key: string]: string[];
+    }> {
         throw new Error("Function not implemented.");
     },
-    pushAccount: function (payload: { account: string; operator: string; server_list: string[]; }): Promise<{ [key: string]: string[]; }> {
+    pushAccount: function (payload: { account: string; operator: string; server_list: string[]; }): Promise<{
+        [key: string]: string[];
+    }> {
         throw new Error("Function not implemented.");
     },
     config: function (payload: { name: string; operator: string; }): Promise<ResponseType> {
@@ -617,10 +627,10 @@ const DeleteRequest: DeleteRequestActions = {
 
 /**
  * Request protocol
- * 
+ *
  * Request protocol is the object that helps to make requests to
  * a backend.
- * 
+ *
  * @example
  * const { operators } = await request.get.operators() // fetches requests
  */
