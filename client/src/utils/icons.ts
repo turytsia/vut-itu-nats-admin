@@ -42,7 +42,8 @@ enum icons {
     account = 'material-symbols:account-tree-outline',
     users = 'lucide:users',
     filterOff = 'mdi:filter-off',
-    table = 'fe:table'
+    table = 'fe:table',
+    limit = 'material-symbols:shield-lock',
 }
 
 export default icons
