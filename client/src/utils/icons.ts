@@ -44,6 +44,8 @@ enum icons {
     filterOff = 'mdi:filter-off',
     table = 'fe:table',
     limit = 'material-symbols:shield-lock',
+    chat = 'material-symbols:chat-sharp',
+    info = 'material-symbols:info-outline',
 }
 
 export default icons
