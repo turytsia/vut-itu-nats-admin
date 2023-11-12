@@ -1,0 +1,17 @@
+.container {
+    display: grid;
+    gap: 20px;
+}
+
+.serverContainer {
+    display: flex;
+    align-items: flex-end;
+}
+
+.selectProtocol {
+    width: 25%;
+}
+
+.horizontalSpacer {
+    margin: 0 8px;
+}
