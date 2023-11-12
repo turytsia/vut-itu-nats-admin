@@ -46,7 +46,6 @@ const Select = (
     })
 
     const selectOptions = () => {
-        console.log(options)
         if (typeof options[0] === "string") {
             options = options as string[]
             return options.map((option) => {
