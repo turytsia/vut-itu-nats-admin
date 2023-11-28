@@ -27,6 +27,11 @@ export const accountHeaderMap = {
     "": ""
 }
 
+type RequestAccountType = {
+    operator: string
+    accounts: string[]
+}
+
 export const accountColumnDataTypes: ColumnTypes = {
     operator: columns.TEXT,
     name: columns.TEXT,
@@ -60,35 +65,44 @@ const Accounts = () => {
             try {
                 // fetch all operators,
                 //  operators will be set via hook but in lazy mode, due to fetch data races.
-                const operatorsResponse = (await request.get.operators()).operators
+                const operatorsResponse = await request.get.operators()
 
-                const fullFilledResponseSet: ExtendedAccountType[] = [];
-                // fetch all users
-                operatorsResponse.forEach((operator: string): void => {
-                    (async () => {
-                        const accountListResponsesSet = await Promise.allSettled(
-                            (await request.get.accounts(operator)).accounts.map(
-                                async (name: string): Promise<AccountType> => {
-                                    return await request.get.account(operator, name)
-                                }
-                            ))
+                const fulfilledOperatorsResponse = await Promise.allSettled(
+                    operatorsResponse.operators.map(async (operator: string) => ({
+                        operator,
+                        accounts: (await request.get.accounts(operator)).accounts
+                    }))
+                )
 
-                        // Filter out fulfilled promises and extract their values
-                        fullFilledResponseSet.push(...(accountListResponsesSet
-                                .filter((r): r is PromiseFulfilledResult<AccountType> => r.status === "fulfilled")
-                                .map((r) => r.value)
-                                .filter((v) => v)
-                        ).map((t: AccountType) => {
-                            let m = t as ExtendedAccountType;
-                            m.operator = operator;
-                            return m
-                        }))
-                    })()
-                })
+                const accountNames = fulfilledOperatorsResponse
+                    .filter((r): r is PromiseFulfilledResult<RequestAccountType> => r.status === "fulfilled")
+                    .flatMap(({ value }) => value)
+                    .filter((v) => v.accounts)
+                
+                const accountResponses = await Promise.allSettled(
+                    accountNames.map(async (accountRequest: RequestAccountType) => {
+                        const operator = accountRequest.operator
 
-                console.log(fullFilledResponseSet)
-                setOperators(operatorsResponse)
-                setAccounts(fullFilledResponseSet)
+                        const responses = await Promise.allSettled(
+                            accountRequest.accounts.map(async (account: string) => await request.get.account(operator, account))
+                        )
+
+                        return responses
+                            .filter((r): r is PromiseFulfilledResult<ExtendedAccountType> => r.status === "fulfilled")
+                            .flatMap(({ value }) => ({ ...value, operator }))
+                            .filter((v) => v)
+                    })
+                )
+                
+
+                const fulfilledAccountResponses = accountResponses
+                    .filter((r): r is PromiseFulfilledResult<ExtendedAccountType[]> => r.status === "fulfilled")
+                    .flatMap(({ value }) => value)
+                    .filter((v) => v)
+
+                setOperators(accountNames.map(({ operator }) => operator))
+                setAccounts(fulfilledAccountResponses)
+
             } catch (error) {
                 console.error(error)
             } finally {
@@ -126,7 +140,7 @@ const Accounts = () => {
     const onAccountSubmit = useCallback(
         async (form: AccountPayloadType) => {
             try {
-                const response = await request.post.account(form.operator, form)
+                const response = await request.post.account(form.operator as string, form)
 
                 if (response.type === "error") {
                     setError(response.data?.message || "An error occurred.");
