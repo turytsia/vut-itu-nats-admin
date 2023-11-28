@@ -75,7 +75,7 @@ const Table = ({
     // filters
 
     const [search, setSearch] = useState<string>("")
-    const [dropdownItem, setDropdownItem] = useState("name")
+    const [dropdownItem, setDropdownItem] = useState<string | null>("name")
     const [date, setDate] = useState<{ [k: string]: [string, string] }>({})
     const [activeColumns, setActiveColumns] = useState<string[]>(Object.values(tableConfig.columnMapNames))
 
@@ -103,7 +103,7 @@ const Table = ({
      * TODO
      */
     const onChangeDropdown = useCallback(
-        (value: string) => setDropdownItem(value),
+        (value: string | null) => setDropdownItem(value),
         []
     )
     
@@ -131,7 +131,7 @@ const Table = ({
         [filtersConfig, tableConfig]
     )
 
-    const searchData = sortData.filter(item => item[dropdownItem]?.trim().toLowerCase()?.includes(search.trim().toLowerCase()))
+    const searchData = sortData.filter(item => dropdownItem ? item[dropdownItem]?.trim().toLowerCase()?.includes(search.trim().toLowerCase()) : true)
 
     const columns = Object.keys(tableConfig.columnMapNames).filter(k => activeColumns.includes(tableConfig.columnMapNames[k]))
 
@@ -190,7 +190,7 @@ const Table = ({
                     className={containerStyles}
                     style={{ gridTemplateColumns: `repeat(${activeColumns.length}, 1fr)` }}>
                     {isLoading ?
-                        Array(20).fill(Cell).map((CellSkeleton, i) => <CellSkeleton key={getId()} isLoading />)
+                        Array(columns.length * 4).fill(Cell).map((CellSkeleton, i) => <CellSkeleton key={getId()} isLoading />)
                         :
                         searchData.map((item, i) =>
                             columns.map(key =>

@@ -27,6 +27,7 @@ type PropsType = {
 	placeholder?: string
 	hintText?: string
 	name?: string
+	type?: string
 	onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
@@ -45,6 +46,7 @@ type PropsType = {
  * @param props.isCopy - Enable copy button (default = false)
  * @param props.width - Manually set width
  * @param props.name - Name
+ * @param props.type - Type of input
  * @param props.onChange - Callback to change an input
  * @returns Input component
  */
@@ -60,6 +62,7 @@ const Input = ({
 	isCopy,
 	width,
 	name,
+	type = "text",
 	onChange = () => { }
 }: PropsType) => {
 
@@ -83,6 +86,7 @@ const Input = ({
 				disabled={disabled}
 				placeholder={placeholder}
 				name={name}
+				type={type}
 				onChange={onChange} />
 
 			{isCopy && <CopyButton className={classes.copy} value={value} />}

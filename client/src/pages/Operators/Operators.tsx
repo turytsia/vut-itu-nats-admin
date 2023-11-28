@@ -17,38 +17,13 @@ import icons from '../../utils/icons'
 
 // components
 import Page from '../../components/Page/Page'
-import Table, { FiltersConfigType, TableConfigType } from '../../components/Table/Table'
+import Table from '../../components/Table/Table'
 import { Icon } from '@iconify/react'
 import CreateOperatorModal from "./modals/CreateOperatorModal/CreateOperatorModal"
 import Button from '../../components/Button/Button'
 import OperatorRowActions from "./components/OperatorRowActions/OperatorRowActions"
+import {defaultFiltersConfig, defaultTableConfig } from '../../utils/views/tables'
 
-const OperatorHeaderMap = {
-    "name": "Name",
-    "iss": "Issuer ID",
-    "sub": "Subject",
-    "iat": "Issued",
-    "": ""
-}
-
-const columnDataTypes: ColumnTypes = {
-    name: columns.TEXT,
-    iss: columns.TEXT,
-    sub: columns.TEXT,
-    iat: columns.NUMBER,
-    "": columns.NONE
-}
-
-const tableConfig: TableConfigType = {
-    columnMapNames: OperatorHeaderMap,
-    columnTypes: columnDataTypes
-}
-
-const filtersConfig: FiltersConfigType = {
-    searchBy: ["name", "sub", "iss"],
-    dateRange: ["iat"],
-    columnToggler: true
-}
 
 /**
  * Operators page component
@@ -147,8 +122,8 @@ const Operators = () => {
             <Table
                 data={operators}
                 isLoading={isLoading}
-                tableConfig={tableConfig}
-                filtersConfig={filtersConfig}
+                tableConfig={defaultTableConfig}
+                filtersConfig={defaultFiltersConfig}
                 renderContent={renderContent}
                 renderActions={
                     <Button isBlue onClick={() => setIsCreateActive(true)}>
