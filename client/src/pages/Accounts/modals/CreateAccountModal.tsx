@@ -30,7 +30,7 @@ type PropsType = {
 
 // initial state for form inputs
 const initialState: AccountPayloadType = {
-    "operator": "",
+    "operator": null,
     "name": "",
     "expiry": null,
     "start": null,
@@ -57,7 +57,6 @@ const initialState: AccountPayloadType = {
  */
 const CreateAccountModal = ({onClose, onSubmit, error, operatorList}: PropsType) => {
     // set active operator as default
-    initialState.operator = operatorList[0];
 
     const [state, setState] = useState<AccountPayloadType>(initialState)
 
@@ -72,6 +71,10 @@ const CreateAccountModal = ({onClose, onSubmit, error, operatorList}: PropsType)
         },
         []
     )
+
+    const handleOperatorChange = (value: string | null) => {
+        setState(prev => ({ ...prev, operator: value }))
+    } 
 
     /**
      * Handle date changes
@@ -112,9 +115,10 @@ const CreateAccountModal = ({onClose, onSubmit, error, operatorList}: PropsType)
                     isRequired={true}
                 >
                     <Select
-                        options={operatorList}
+                        value={state.operator}
+                        items={operatorList.map(name => ({ id: name, value: name }))}
                         name="operator"
-                        onChange={handleInputChange}
+                        onChange={handleOperatorChange}
                     />
                 </InputContainer>
                 <Input

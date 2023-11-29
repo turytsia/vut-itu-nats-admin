@@ -24,9 +24,9 @@ export type SearchInputType = {
 }
 
 export type SearchInputDropdownType = {
-    value: string
+    value: string | null
     items: DropdownItemType[],
-    onChange: (v: string) => void
+    onChange: (v: string | null) => void
 }
 
 export type SearchInputConfigType = {

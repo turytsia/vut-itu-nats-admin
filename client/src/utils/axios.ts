@@ -64,7 +64,7 @@ export type OperatorPayloadType = {
  * @todo
  */
 export type AccountPayloadType = {
-    "operator": string,
+    "operator": string | null,
     "allow_pub": string | null,
     "allow_pub_response": string | null,
     "allow_pubsub": string | null,

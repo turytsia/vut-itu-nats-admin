@@ -19,3 +19,16 @@
     border: 1px solid var(--gray);
     color: var(--white);
 }
+
+.dropdown {
+    display: flex;
+    background-color: #F8F8F8;
+    color: var(--black);
+    padding: 12px;
+    border-radius: 3px;
+    border: 1px solid #D9D9D9;
+    font-size: 8px;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+}

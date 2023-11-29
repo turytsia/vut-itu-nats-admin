@@ -19,7 +19,7 @@ const AddDataFlowContext = ({onClose, onSubmit}: PropsType) => {
     const [name, setName] = useState<string>("")
     const [server, setServer] = useState<string>("")
     const [port, setPort] = useState<string>("9000")
-    const [protocol, setProtocol] = useState<string>("ws://")
+    const [protocol, setProtocol] = useState<string | null>("ws://")
 
     const onSave = () => {
         onSubmit({
@@ -46,8 +46,7 @@ const AddDataFlowContext = ({onClose, onSubmit}: PropsType) => {
         []
     )
 
-    const handleProtocolChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const {value} = e.target
+    const handleProtocolChange = (value: string | null) => {
         setProtocol(value)
     }
 
@@ -67,7 +66,10 @@ const AddDataFlowContext = ({onClose, onSubmit}: PropsType) => {
                     onChange={handleInputChange}/>
                 <div>
                     <div className={classes.serverContainer}>
-                        <Select options={protocolOptions} name={"protocol"} className={classes.selectProtocol}
+                        <Select
+                            value={protocol}
+                            items={protocolOptions.map(opt => ({ id: opt, value: opt }))}
+                            name={"protocol"} className={classes.selectProtocol}
                         onChange={handleProtocolChange}/>
                         <div className={classes.horizontalSpacer}/>
                         <Input
