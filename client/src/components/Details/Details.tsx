@@ -118,17 +118,17 @@ const filterDetailsConfig = (detailsConfig: DetailsConfigType, filtersConfig?: F
  * @returns Details component
  */
 const Details = ({
-                     detailsConfig,
-                     filtersConfig,
-                     renderActions,
-                     children = null,
-                     sectionChangeCb = (_: number) => {
-                     },
-                     deletable = {
-                         isDeletable: false,
-                         onDelete: (_: string, __: number) => {}
-                     }
-                 }: PropsType) => {
+    detailsConfig,
+    filtersConfig,
+    renderActions,
+    children = null,
+    sectionChangeCb = (_: number) => {
+    },
+    deletable = {
+        isDeletable: false,
+        onDelete: (_: string, __: number) => {}
+    }
+}: PropsType) => {
     const [sectionIndex, setSectionIndex] = useState<number>(0)
 
     const config = filterDetailsConfig(detailsConfig, filtersConfig)
@@ -165,7 +165,7 @@ const Details = ({
                     filtersConfig={filtersConfig}
                 />
             )}
-            {config.length === 0 && (
+            {(config.length === 0 && detailsConfig.length !== 0) && (
                 <p className={classes.textNotFound}>
                     Unfortunately, the search of "{searchValue}" yielded no results.
                 </p>

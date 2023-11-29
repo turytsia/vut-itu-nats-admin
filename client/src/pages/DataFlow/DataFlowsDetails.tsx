@@ -122,13 +122,12 @@ const DataFlowsDetails = () => {
                     onDelete: handleDelete
                 }}
             >
-                {
-                    getDataflow(dataFlowIndex) ?
-                        <DataflowWindow
-                            server={dataFlows[dataFlowIndex]?.server}
-                        ></DataflowWindow>
-                        : <div></div>
-                }
+                {getDataflow(dataFlowIndex) && (
+                    <DataflowWindow
+                        server={dataFlows[dataFlowIndex]?.server}
+                        name={dataFlows[dataFlowIndex]?.name}
+                    />
+                )}
             </Details>
             {(isEditModal) && (
                 <AddDataFlowContext

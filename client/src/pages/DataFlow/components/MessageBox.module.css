@@ -1,6 +1,7 @@
 .messageContainer {
     display: flex;
-    justify-content: flex-start;
+    flex-direction: column;
+    width: 100%;
 }
 
 .messageContainer.own {
@@ -15,22 +16,39 @@
     font-weight: 400;
     display: flex;
     justify-content: space-between;
+    background-color: #fff;
+    border-bottom: 1px solid var(--gray-light);
     padding: 10px 8px;
-    color: var(--white);
-    border-bottom: 2px solid #00000050;
-    background-color: #4d92e3;
-    margin: 10px 10px 0 10px;
+    color: var(--black);
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     position: relative;
+    margin-top: 8px;
+    font-weight: 600;
 
-    min-width: 250px;
-    max-width: 400px;
 }
 
-.containerHeader.own {
+.containerData {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 14px;
+    overflow-wrap: break-word;
+    font-weight: 400;
+    padding: 25px 8px;
+    color: var(--black);
+    background-color: #ffffff;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+
+}
+
+.container svg {
+    color: var(--black);
+}
+
+/* .containerHeader.own {
     background-color: #16212c;
-}
+} */
 
 .containerHeaders {
     text-overflow: ellipsis;
@@ -39,15 +57,10 @@
     font-weight: 400;
     padding: 10px 8px;
     color: var(--black);
-    border-bottom: 3px solid #00000096;
-    background-color: #91b3de;
-    margin: 0 10px;
+    background-color: var(--gray-light);
     animation: slideIn 1s;
     position: relative;
     transition: margin 2s ease;
-
-    min-width: 250px;
-    max-width: 400px;
 }
 
 .headerKey {
@@ -75,28 +88,6 @@
     justify-content: space-between;
 }
 
-.containerData {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    font-size: 14px;
-    overflow-wrap: break-word;
-    font-weight: 400;
-    padding: 25px 8px;
-    color: var(--black);
-    border-bottom: 3px solid #00000096;
-    background-color: #ffffff;
-    margin: 0 10px 10px 10px;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-
-    min-width: 250px;
-    max-width: 400px;
-}
-
-.container svg {
-    color: var(--black);
-}
-
 .darkContainer {
     background-color: #26405e;
 }
@@ -115,4 +106,19 @@
 
 .hover {
     background-color: #681a6b;
+}
+
+.containerHeadersEmpty{
+    text-align: center;
+    color: var(--gray);
+}
+
+.ownSubject{
+    font-size: 14px;
+}
+
+.subject{
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }

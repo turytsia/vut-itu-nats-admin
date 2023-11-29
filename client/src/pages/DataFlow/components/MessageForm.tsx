@@ -78,24 +78,36 @@ const MessageForm = (
                        onChange={handleSubjectChange}/>
             </div>
             <div className={classes.headerBox}>
-                {
-                    state.headerKeys.map((key, index) => {
+                {state.headerKeys.map((key, index) => {
                         return (
                             <div className={classes.inputBox} key={index}>
-                                <Input name={`headerKey-${index}`} placeholder="Key" width={"150"} value={key}
-                                       onChange={handleHeaderChange}/>
-                                <span className={classes.colon}> </span>
-                                <Input name={`headerValue-${index}`} placeholder="Value" width={"150"}
-                                       value={state.headerValues[index]}
-                                       onChange={handleHeaderChange}/>
+                                <Input
+                                    name={`headerKey-${index}`}
+                                    placeholder="Key" width={"150"}
+                                    value={key}
+                                    onChange={handleHeaderChange}
+                                />
+                                <span className={classes.colon} />
+                                <Input
+                                    name={`headerValue-${index}`}
+                                    placeholder="Value"
+                                    width={"150"}
+                                    value={state.headerValues[index]}
+                                    onChange={handleHeaderChange}
+                                />
                             </div>
                         )
                     })
                 }
             </div>
             <div className={classes.inputBox}>
-                <Input name="data" placeholder="Data" width={"300"} value={state.data}
-                       onChange={handleSubjectChange}/>
+                <Input
+                    name="data"
+                    placeholder="Data"
+                    width={"300"}
+                    value={state.data}
+                    onChange={handleSubjectChange}
+                />
             </div>
             <Button isBlue={true} onClick={handleSubmit}>Send</Button>
         </div>

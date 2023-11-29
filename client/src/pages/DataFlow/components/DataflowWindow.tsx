@@ -1,23 +1,28 @@
-import React, {useContext, useEffect, useState} from "react";
-import {connect, Msg, NatsConnection, MsgHdrs} from "nats.ws"
+import React, { useContext, useEffect, useState } from "react";
+import { connect, Msg, NatsConnection, MsgHdrs } from "nats.ws"
 import MessageBox from "./MessageBox";
-import {AppContext} from "../../../context/AppContextProvider";
+import { AppContext } from "../../../context/AppContextProvider";
 import MessageForm from "./MessageForm";
 import classes from "./DataFlowsWindow.module.css"
+import uuid from "react-uuid";
 
 const allSubjects = ">";
 const jetonoUUIDHeader = "X-Jetono-UUID";
 
 type Props = {
     server: string
+    name: string
 }
 
 function decode(data: Uint8Array): string {
     return new TextDecoder().decode(data)
 }
 
-const DataflowWindow = ({server}: Props) => {
-    const {isDark} = useContext(AppContext)
+const DataflowWindow = ({
+    server,
+    name
+}: Props) => {
+    const { isDark } = useContext(AppContext)
 
     const [messages, setMessages] = useState<Msg[]>([])
     const [nc, setNc] = useState<NatsConnection | null>(null)
@@ -38,7 +43,7 @@ const DataflowWindow = ({server}: Props) => {
 
             let natsConnection: NatsConnection
             try {
-                natsConnection = await connect({servers: [server]});
+                natsConnection = await connect({ servers: [server] });
             } catch (err) {
                 console.log(err)
                 return
@@ -70,7 +75,7 @@ const DataflowWindow = ({server}: Props) => {
         (async () => {
             let nc: NatsConnection
             try {
-                nc = await connect({servers: [server]})
+                nc = await connect({ servers: [server] })
             } catch (err) {
                 console.log(err)
                 return
@@ -80,7 +85,7 @@ const DataflowWindow = ({server}: Props) => {
             const uuid = crypto.randomUUID();
             headers.append(jetonoUUIDHeader, uuid)
 
-            nc.publish(subject, data, {headers: headers})
+            nc.publish(subject, data, { headers: headers })
 
             setOwnMessages((prev: string[]) => [...prev, uuid])
         })()
@@ -88,18 +93,21 @@ const DataflowWindow = ({server}: Props) => {
 
     return (
         <div className={classes.main}>
+            <h1 className={classes.title}>
+                {name}
+                <span className={classes.subtitle}>{server}</span>
+            </h1>
             <div className={classes.container}>
-                <h1>{server}</h1>
-                {messages.map((m, i) => (
+                {messages.map(message => (
                     <MessageBox
-                        subject={m.subject}
-                        data={decode(m.data)}
-                        headers={m.headers}
+                        key={uuid()}
+                        subject={message.subject}
+                        data={decode(message.data)}
+                        headers={message.headers}
                         isDark={isDark}
                         jetonoMsgs={ownMessages}
-                    ></MessageBox>
-                ))
-                }
+                    />
+                ))}
             </div>
             <div className={classes.formContainer}>
                 <MessageForm onSubmit={onSend}></MessageForm>
