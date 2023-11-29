@@ -65,7 +65,8 @@ const Select = ({
             value={value}
             items={items}
             name={name}
-            onChange={onChange} />
+            onChange={onChange}
+        />
         // <select
         //     className={selectStyles}
         //     disabled={disabled}

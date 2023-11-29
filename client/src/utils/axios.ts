@@ -364,6 +364,11 @@ export type SecretPayloadType = {
     "user": string | null
 }
 
+export type DataFlowType = {
+    "name": string,
+    "server": string,
+}
+
 /**
  * Request type template
  */
@@ -395,6 +400,7 @@ type GetUserCredsType = RequestType<[operator: string, account: string, user: st
 type PostUserType = RequestType<[operator: string, account: string, payload: UserType], ResponseType>
 type PatchUserType = RequestType<[operator: string, account: string, payload: UserPatchType], ResponseType>
 type DeleteUserType = RequestType<[operator: string, account: string, user: string], { [key: string]: string }>
+type DeleteDataflowType = RequestType<[dataflow: string], { [key: string]: string }>
 
 type GetConsumersType = RequestType<[], ResponseType> // todo
 type PostConsumerType = RequestType<[payload: ConsumerPayloadType], ResponseType>
@@ -407,6 +413,8 @@ type PostUserStreamType = RequestType<[payload: UserStreamPayloadType], Response
 
 type PostSecretType = RequestType<[payload: SecretPayloadType], ResponseType>
 
+type GetDataFlowType = RequestType<[], { [key: string]: DataFlowType[] }>
+type PostDataFlowType = RequestType<[payload: DataFlowType], ResponseType>
 
 interface GetRequestActions {
     bind: GetBindOperatorType
@@ -421,6 +429,7 @@ interface GetRequestActions {
     consumers: GetConsumersType
     kv: GetUserKvType
     streams: GetUserStreamType
+    dataflows: GetDataFlowType
 }
 
 interface PostRequestActions {
@@ -434,6 +443,7 @@ interface PostRequestActions {
     kv: PostUserKvType
     stream: PostUserStreamType
     secret: PostSecretType
+    dataflows: PostDataFlowType
 }
 
 interface PatchRequestActions {
@@ -444,6 +454,7 @@ interface PatchRequestActions {
 
 interface DeleteRequestActions {
     user: DeleteUserType
+    dataflow: DeleteDataflowType
 }
 
 interface RequestActions {
@@ -453,7 +464,7 @@ interface RequestActions {
     delete: DeleteRequestActions
 }
 
-const {get, post, put} = axios.create({
+const {get, post, put, delete: adelete} = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
         "Accept": "application/json"
@@ -534,6 +545,15 @@ const GetRequest: GetRequestActions = {
     },
     streams: function (): Promise<ResponseType> {
         throw new Error("Function not implemented.");
+    },
+    dataflows: async (): Promise<{ [key: string]: DataFlowType[]; }> => {
+        try {
+            const {data} = await get(`/dataflows`);
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+        return {};
     }
 }
 
@@ -592,6 +612,15 @@ const PostRequest: PostRequestActions = {
     },
     secret: function (payload: SecretPayloadType): Promise<ResponseType> {
         throw new Error("Function not implemented.");
+    },
+    dataflows: async (payload: DataFlowType): Promise<ResponseType> => {
+        try {
+            const response = await post(`/dataflows`, payload);
+            return {type: "success", data: response.data};
+        } catch (error) {
+            const err = error as AxiosError;
+            return {type: "error", data: err.response?.data};
+        }
     }
 }
 
@@ -622,6 +651,15 @@ const PatchRequest: PatchRequestActions = {
 const DeleteRequest: DeleteRequestActions = {
     user: function (operator: string, account: string, user: string): Promise<{ [key: string]: string; }> {
         throw new Error("Function not implemented.");
+    },
+    dataflow: async (name: string): Promise<ResponseType> => {
+        try {
+            const response = await adelete(`/dataflows/${name}`);
+            return {type: "success", data: response.data};
+        } catch (error) {
+            const err = error as AxiosError;
+            return {type: "error", data: err.response?.data};
+        }
     }
 }
 

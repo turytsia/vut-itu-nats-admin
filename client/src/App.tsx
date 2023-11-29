@@ -25,6 +25,7 @@ import Users from "./pages/Users/Users"
 import Servers from "./pages/Servers/Servers"
 import OperatorsDetail from "./pages/OperatorsDetail/OperatorsDetail"
 import AccountsDetail from "./pages/AccountDetail/AccountsDetail";
+import DataFlowsDetails from "./pages/DataFlow/DataFlowsDetails"
 
 const App = () => {
 
@@ -42,6 +43,7 @@ const App = () => {
             <Route path="/servers" element={<Servers />} />
             <Route path="/operators/:operator" element={<OperatorsDetail />} />
             <Route path="/operators/:operator/accounts/:account" element={<AccountsDetail />} />
+            <Route path="/dataflows" element={<DataFlowsDetails/>} />
           </Routes>
         </Main>
       </Container>
