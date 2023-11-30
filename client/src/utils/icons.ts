@@ -46,6 +46,7 @@ enum icons {
     limit = 'material-symbols:shield-lock',
     chat = 'material-symbols:chat-sharp',
     info = 'material-symbols:info-outline',
+    dashboard = 'ic:round-dashboard'
 }
 
 export default icons
