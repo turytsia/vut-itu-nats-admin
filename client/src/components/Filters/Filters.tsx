@@ -8,7 +8,7 @@
  * 
  * @author xturyt00
  */
-import React from 'react'
+import React, { useContext } from 'react'
 import classes from "./Filters.module.css"
 import SearchInput, { SearchInputConfigType } from '../SearchInput/SearchInput'
 import { FloatingDelayGroup } from '@floating-ui/react'
@@ -17,6 +17,8 @@ import ButtonIcon from '../ButtonIcon/ButtonIcon'
 import icons from '../../utils/icons'
 import MultipleDropdown from '../MultipleDropdown/MultipleDropdown'
 import DateInputRange from '../DateInputRange/DateInputRange'
+import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
 
 export type FiltersConfigDateRangeType = {
     items: {
@@ -60,8 +62,14 @@ const Filters = ({
     renderActions
 }: PropsType) => {
 
+    const { isDark } = useContext(AppContext)
+    
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+ 
     return (
-        <div className={classes.container}>
+        <div className={containerStyles}>
             <div className={classes.filters}>
                 {filtersConfig.searchConfig && (
                     <SearchInput

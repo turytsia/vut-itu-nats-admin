@@ -84,13 +84,13 @@ const Welcome = () => {
             />
             <Grid>
                 {filteredData.operators.map(operator => (
-                    <Card key={uuid()} data={operator} icon={icons.account} />
+                    <Card key={uuid()} data={operator} icon={icons.operator} />
                 ))}
                 {filteredData.accounts.map(account => (
                     <Card key={uuid()} data={account} icon={icons.account} />
                 ))}
                 {filteredData.users.map(user => (
-                    <Card key={uuid()} data={user} icon={icons.account} />
+                    <Card key={uuid()} data={user} icon={icons.users} />
                 ))}
             </Grid>
             {isSettinsActive && (

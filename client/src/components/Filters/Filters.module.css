@@ -13,3 +13,7 @@
     flex-wrap: wrap;
     margin-right: 20px;
 }
+
+.container.dark svg {
+    color: white;
+}

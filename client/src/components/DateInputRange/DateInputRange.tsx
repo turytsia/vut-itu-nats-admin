@@ -11,6 +11,9 @@
 import DatePicker from 'react-datepicker'
 import { dateFormat } from '../../utils/common'
 import classes from "./DateInputRange.module.css"
+import { useContext } from 'react'
+import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
 
 type DateInputType = {
     placeholder?: string,
@@ -41,12 +44,22 @@ const DateInputRange = ({
     fromDate,
     toDate
 }: PropsType) => {
+    const { isDark } = useContext(AppContext)
+
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+
+    const inputStyles = classNames(classes.input, {
+        [classes.dark]: isDark
+    })
+
     return (
-        <div className={classes.container}>
+        <div className={containerStyles}>
             {label && <span className={classes.label}>{label}</span>}
             <div className={classes.inputContainer}>
                 <DatePicker
-                    className={classes.input}
+                    className={inputStyles}
                     placeholderText={fromDate.placeholder}
                     disabled={disabled}
                     value={fromDate.value ? dateFormat(fromDate.value[0]) : ""}
@@ -56,7 +69,7 @@ const DateInputRange = ({
             <div className={classes.separator} />
             <div className={classes.inputContainer}>
                 <DatePicker
-                    className={classes.input}
+                    className={inputStyles}
                     placeholderText={toDate.placeholder}
                     disabled={disabled}
                     value={toDate.value ? dateFormat(toDate.value[1]) : ""}

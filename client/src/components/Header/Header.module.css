@@ -10,6 +10,7 @@
 .dark.container {
     background-color: var(--dark-blue-light);
     color: white;
+    border-bottom: 1px solid var(--gray);
 }
 
 .actions{

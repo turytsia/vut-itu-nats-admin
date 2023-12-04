@@ -9,7 +9,7 @@
  * @author xturyt00
  */
 import { useState } from 'react'
-import JWTModal from '../../../../pages/OperatorsDetail/modals/JWTModal/JWTModal'
+import SecretModal from "../../modals/SecretModal/SecretModal"
 import Button from '../../../Button/Button'
 import { Icon } from '@iconify/react'
 import icons from '../../../../utils/icons'
@@ -52,7 +52,11 @@ const Attribute = ({
                     <Icon icon={icons.eye} height={20} width={20} />
                 </Button>
                 {isSecretActive && (
-                    <JWTModal token={attributeConfig.value} onClose={() => setIsSecretActive(false)} />
+                    <SecretModal
+                        name={attributeConfig.name as string}
+                        secret={attributeConfig.value}
+                        onClose={() => setIsSecretActive(false)}
+                    />
                 )}
             </div>
         )

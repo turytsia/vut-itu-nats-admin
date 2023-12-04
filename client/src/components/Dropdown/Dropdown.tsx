@@ -66,7 +66,9 @@ const Dropdown = ({
             offset={0}
             placement={placements.BOTTOM}
             element={(isActive) =>
-                <button className={dropdownStyles}>
+                <button className={classNames(dropdownStyles, {
+                    [classes.active]: isActive
+                })}>
                     {label && (
                         <span className={classes.label}>
                             {label}

@@ -5,6 +5,12 @@
     font-weight: 600;
     background-color: #fff;
     border-radius: var(--radius);
+    border: 1px solid transparent;
+}
+
+.container.dark {
+    background-color: var(--dark-blue-light);
+    border: 1px solid var(--gray);
 }
 
 .separator {
@@ -19,6 +25,7 @@
 }
 
 .input {
+    background-color: transparent;
     text-align: center;
     border: none;
     padding: 10px;
@@ -31,6 +38,10 @@
     max-width: 150px;
     font-size: 12px;
     font-weight: 600;
+}
+
+.input.dark{
+    color: white;
 }
 
 .input::placeholder {
