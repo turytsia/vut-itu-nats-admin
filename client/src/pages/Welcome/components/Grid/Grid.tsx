@@ -11,7 +11,7 @@ const Grid = ({
     children
 }: PropsType) => {
     return (
-        <div className={classes.container} style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}>{children}</div>
+        <div className={classes.container} style={{ gridTemplateColumns: `repeat(${cols}, minmax(300px, 1fr))` }}>{children}</div>
     )
 }
 

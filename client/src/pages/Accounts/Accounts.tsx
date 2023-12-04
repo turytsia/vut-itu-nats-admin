@@ -13,7 +13,7 @@ import {defaultFiltersConfig} from "../../utils/views/tables";
 import Button from "../../components/Button/Button";
 import {Icon} from "@iconify/react";
 import icons from "../../utils/icons";
-import {dateFormat} from "../../utils/common";
+import {dateFormat, fetchAccounts} from "../../utils/common";
 import {columns, ColumnTypes} from "../../hooks/useSort";
 import CreateAccountModal from "./modals/CreateAccountModal";
 import AccountRowActions from "./components/AccountRowActions/AccountRowActions";
@@ -27,10 +27,6 @@ export const accountHeaderMap = {
     "": ""
 }
 
-type RequestAccountType = {
-    operator: string
-    accounts: string[]
-}
 
 export const accountColumnDataTypes: ColumnTypes = {
     operator: columns.TEXT,
@@ -46,7 +42,8 @@ export const accountTableConfig: TableConfigType = {
     columnTypes: accountColumnDataTypes
 }
 
-export type ExtendedAccountType = AccountType & { operator: string }
+export type AccountsExtention = { operator: string }
+export type ExtendedAccountType = AccountType & AccountsExtention
 
 const Accounts = () => {
     const {request} = useContext(AppContext)
@@ -58,7 +55,7 @@ const Accounts = () => {
     const [isCreateActive, setIsCreateActive] = useState<boolean>(false)
 
     const [operators, setOperators] = useState<string[]>([])
-    const fetchAccounts = useCallback(
+    const fetch = useCallback(
         async () => {
             setIsLoading(true);
 
@@ -67,41 +64,10 @@ const Accounts = () => {
                 //  operators will be set via hook but in lazy mode, due to fetch data races.
                 const operatorsResponse = await request.get.operators()
 
-                const fulfilledOperatorsResponse = await Promise.allSettled(
-                    operatorsResponse.operators.map(async (operator: string) => ({
-                        operator,
-                        accounts: (await request.get.accounts(operator)).accounts
-                    }))
-                )
+                const accounts = await fetchAccounts()
 
-                const accountNames = fulfilledOperatorsResponse
-                    .filter((r): r is PromiseFulfilledResult<RequestAccountType> => r.status === "fulfilled")
-                    .flatMap(({ value }) => value)
-                    .filter((v) => v.accounts)
-                
-                const accountResponses = await Promise.allSettled(
-                    accountNames.map(async (accountRequest: RequestAccountType) => {
-                        const operator = accountRequest.operator
-
-                        const responses = await Promise.allSettled(
-                            accountRequest.accounts.map(async (account: string) => await request.get.account(operator, account))
-                        )
-
-                        return responses
-                            .filter((r): r is PromiseFulfilledResult<ExtendedAccountType> => r.status === "fulfilled")
-                            .flatMap(({ value }) => ({ ...value, operator }))
-                            .filter((v) => v)
-                    })
-                )
-                
-
-                const fulfilledAccountResponses = accountResponses
-                    .filter((r): r is PromiseFulfilledResult<ExtendedAccountType[]> => r.status === "fulfilled")
-                    .flatMap(({ value }) => value)
-                    .filter((v) => v)
-
-                setOperators(accountNames.map(({ operator }) => operator))
-                setAccounts(fulfilledAccountResponses)
+                setOperators(operatorsResponse.operators)
+                setAccounts(accounts)
 
             } catch (error) {
                 console.error(error)
@@ -147,18 +113,18 @@ const Accounts = () => {
                 } else {
                     setError("");
                     setIsCreateActive(false)
-                    fetchAccounts()
+                    fetch()
                 }
             } catch (e) {
                 console.error(e)
             }
         },
-        [request, fetchAccounts]
+        [request, fetch]
     )
 
     useEffect(() => {
-        fetchAccounts()
-    }, [fetchAccounts])
+        fetch()
+    }, [fetch])
 
     return (
         <Page title={`Accounts (${accounts.length})`}>

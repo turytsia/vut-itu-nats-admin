@@ -9,6 +9,11 @@
  * @author xturyt00
  */
 import { timeFormat } from "d3-time-format"
+import { request } from "../context/AppContextProvider"
+import { AccountType, OperatorType } from "./axios"
+import { ExtendedAccountType } from "../pages/Accounts/Accounts"
+import { NSCDataType, RequestAccountType, RequestUserType } from "./types"
+import { ExtendedUserType } from "../pages/Users/Users"
 
 /** 
  * Possible placements for floating elements 
@@ -38,7 +43,233 @@ export const timesecondsFormat = (date: string | number) => {
  * @returns Date format string
  */
 export const dateFormat = (date: string | number) => {
-    if(!date) return ""
+    if (!date) return ""
     const format = timeFormat("%Y.%m.%d")
     return format(new Date(date))
+}
+
+export const fetchOperators = async (): Promise<OperatorType[]> => {
+    const { operators } = await request.get.operators();
+
+    // Fetch operator details concurrently using Promise.allSettled
+    const responses = await Promise.allSettled(
+        operators.map(async (name) => await request.get.operator(name))
+    );
+
+    // Filter out fulfilled promises and extract their values
+    return responses
+        .filter((r): r is PromiseFulfilledResult<OperatorType> => r.status === "fulfilled")
+        .map((r) => r.value)
+        .filter((v) => v);
+}
+
+export const fetchAccounts = async (): Promise<ExtendedAccountType[]> => {
+    const operatorsResponse = await request.get.operators()
+
+    const fulfilledOperatorsResponse = await Promise.allSettled(
+        operatorsResponse.operators.map(async (operator: string) => ({
+            operator,
+            accounts: (await request.get.accounts(operator)).accounts
+        }))
+    )
+
+    const accountNames = fulfilledOperatorsResponse
+        .filter((r): r is PromiseFulfilledResult<RequestAccountType> => r.status === "fulfilled")
+        .flatMap(({ value }) => value)
+        .filter((v) => v.accounts)
+
+    const accountResponses = await Promise.allSettled(
+        accountNames.map(async (accountRequest: RequestAccountType) => {
+            const operator = accountRequest.operator
+
+            const responses = await Promise.allSettled(
+                accountRequest.accounts.map(async (account: string) => await request.get.account(operator, account))
+            )
+
+            return responses
+                .filter((r): r is PromiseFulfilledResult<ExtendedAccountType> => r.status === "fulfilled")
+                .flatMap(({ value }) => ({ ...value, operator }))
+                .filter((v) => v)
+        })
+    )
+
+
+    return accountResponses
+        .filter((r): r is PromiseFulfilledResult<ExtendedAccountType[]> => r.status === "fulfilled")
+        .flatMap(({ value }) => value)
+        .filter((v) => v)
+}
+
+export const fetchUsers = async (): Promise<ExtendedUserType[]> => {
+    const operatorsResponse = await request.get.operators()
+
+    const fulfilledOperatorsResponse = await Promise.allSettled(
+        operatorsResponse.operators.map(async (operator: string) => ({
+            operator,
+            accounts: (await request.get.accounts(operator)).accounts
+        }))
+    )
+
+    const accountNames = fulfilledOperatorsResponse
+        .filter((r): r is PromiseFulfilledResult<RequestAccountType> => r.status === "fulfilled")
+        .map(({ value }) => value)
+        .filter((v) => v)
+
+    const userResponses = 
+        await Promise.allSettled(
+            accountNames.map(async (accountRequest: RequestAccountType) => {
+                const operator = accountRequest.operator
+
+                const responses = await Promise.allSettled(
+                    accountRequest.accounts.map(async (account: string) => {
+
+                        return {
+                            operator,
+                            account,
+                            users: (await request.get.users(operator, account)).users
+                        }
+                    })
+                )
+
+                const userNameResponses = responses
+                    .filter((r): r is PromiseFulfilledResult<RequestUserType> => r.status === "fulfilled")
+                    .map(({ value }) => value)
+                    .filter((v) => v)
+
+                const userResponses =
+                    await Promise.allSettled(
+                        userNameResponses.flatMap(async ({ operator, account, users }) => {
+                            const responses = await Promise.allSettled(
+                                users.map(async name => {
+                                    const user = await request.get.user(operator, account, name)
+
+                                    return { ...user, operator, account } as ExtendedUserType
+                                }) as Promise<ExtendedUserType>[]
+                            )
+
+                            return responses
+                                .filter((r): r is PromiseFulfilledResult<ExtendedUserType> => r.status === "fulfilled")
+                                .map(({ value }) => value)
+                                .filter((v) => v)
+                        }))
+
+                return userResponses
+                    .filter((r): r is PromiseFulfilledResult<ExtendedUserType[]> => r.status === "fulfilled")
+                    .map(({ value }) => value)
+                    .flat(1)
+                    .filter((v) => v)
+            })
+        )
+    
+
+
+    return userResponses
+        .filter((r): r is PromiseFulfilledResult<ExtendedUserType[]> => r.status === "fulfilled")
+        .map(({ value }) => value)
+        .flat(1)
+        .filter((v) => v)
+}
+
+export const fetchAll = async (): Promise<NSCDataType> => {
+    const operatorsResponse = await request.get.operators()
+
+    const operatorsSettled = await Promise.allSettled(
+        operatorsResponse.operators.map(async operator => await request.get.operator(operator))
+    )
+
+    const operators = operatorsSettled
+        .filter((r): r is PromiseFulfilledResult<OperatorType> => r.status === "fulfilled")
+        .map(({ value }) => value)
+        .filter((v) => v)
+
+    const accountNamesSettled = await Promise.allSettled(
+        operatorsResponse.operators.map(async (operator: string) => ({
+            operator,
+            accounts: (await request.get.accounts(operator)).accounts
+        } as RequestAccountType))
+    )
+
+    const accountNamesFulfilled = accountNamesSettled
+        .filter((r): r is PromiseFulfilledResult<RequestAccountType> => r.status === "fulfilled")
+        .flatMap(({ value }) => value)
+        .filter((v) => v)
+
+    const accountResponses = await Promise.allSettled(
+        accountNamesFulfilled.map(async (accountRequest: RequestAccountType) => {
+            const operator = accountRequest.operator
+
+            const responses = await Promise.allSettled(
+                accountRequest.accounts.map(async (account: string) => await request.get.account(operator, account))
+            )
+
+            return responses
+                .filter((r): r is PromiseFulfilledResult<ExtendedAccountType> => r.status === "fulfilled")
+                .flatMap(({ value }) => ({ ...value, operator }))
+                .filter((v) => v)
+        }))
+    
+
+
+    const accounts = accountResponses
+        .filter((r): r is PromiseFulfilledResult<ExtendedAccountType[]> => r.status === "fulfilled")
+        .flatMap(({ value }) => value)
+        .filter((v) => v)
+
+    const userResponses =
+        await Promise.allSettled(
+            accountNamesFulfilled.map(async (accountRequest: RequestAccountType) => {
+                const operator = accountRequest.operator
+
+                const responses = await Promise.allSettled(
+                    accountRequest.accounts.map(async (account: string) => {
+
+                        return {
+                            operator,
+                            account,
+                            users: (await request.get.users(operator, account)).users
+                        }
+                    })
+                )
+
+                const userNameResponses = responses
+                    .filter((r): r is PromiseFulfilledResult<RequestUserType> => r.status === "fulfilled")
+                    .map(({ value }) => value)
+                    .filter((v) => v)
+
+                const userResponses =
+                    await Promise.allSettled(
+                        userNameResponses.flatMap(async ({ operator, account, users }) => {
+                            const responses = await Promise.allSettled(
+                                users.map(async name => {
+                                    const user = await request.get.user(operator, account, name)
+
+                                    return { ...user, operator, account } as ExtendedUserType
+                                }) as Promise<ExtendedUserType>[]
+                            )
+
+                            return responses
+                                .filter((r): r is PromiseFulfilledResult<ExtendedUserType> => r.status === "fulfilled")
+                                .map(({ value }) => value)
+                                .filter((v) => v)
+                        }))
+
+                return userResponses
+                    .filter((r): r is PromiseFulfilledResult<ExtendedUserType[]> => r.status === "fulfilled")
+                    .map(({ value }) => value)
+                    .flat(1)
+                    .filter((v) => v)
+            })
+        )
+
+    const users = userResponses
+        .filter((r): r is PromiseFulfilledResult<ExtendedUserType[]> => r.status === "fulfilled")
+        .map(({ value }) => value)
+        .flat(1)
+        .filter((v) => v)
+
+    return {
+        operators,
+        accounts,
+        users
+    }
 }

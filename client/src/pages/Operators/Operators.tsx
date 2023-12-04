@@ -10,9 +10,9 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContextProvider'
 
-import { OperatorType, OperatorPayloadType } from '../../utils/axios'
+import { OperatorType, OperatorPayloadType, NSCBaseType } from '../../utils/axios'
 import { ColumnTypes, columns } from '../../hooks/useSort'
-import { dateFormat } from '../../utils/common'
+import { dateFormat, fetchOperators } from '../../utils/common'
 import icons from '../../utils/icons'
 
 // components
@@ -44,26 +44,14 @@ const Operators = () => {
     /**
      * Fetch operators and update the component state.
      */
-    const fetchOperators = useCallback(
+    const fetch = useCallback(
         async () => {
             try {
                 setIsLoading(true);
 
-                // Fetch the list of operators
-                const { operators } = await request.get.operators();
+                const operators = await fetchOperators()
 
-                // Fetch operator details concurrently using Promise.allSettled
-                const responses = await Promise.allSettled(
-                    operators.map(async (name) => await request.get.operator(name))
-                );
-
-                // Filter out fulfilled promises and extract their values
-                const fulfilledResponses = responses
-                    .filter((r): r is PromiseFulfilledResult<OperatorType> => r.status === "fulfilled")
-                    .map((r) => r.value)
-                    .filter((v) => v);
-
-                setOperators(fulfilledResponses);
+                setOperators(operators);
             } catch (error) {
                 console.error(error)
             } finally {
@@ -83,11 +71,18 @@ const Operators = () => {
 
                 if (response.type === "error") {
                     setError(response.data?.message || "An error occurred.");
-                } else {
-                    setError("");
-                }
+                    return
+                } 
+
+                const operators = await fetchOperators()
+
+                setOperators(operators)
+                setError("");
+                setIsCreateActive(false)
             } catch (e) {
                 console.error(e)
+            } finally {
+
             }
         },
         [request]
@@ -113,8 +108,8 @@ const Operators = () => {
     )
 
     useEffect(() => {
-        fetchOperators()
-    }, [fetchOperators])
+        fetch()
+    }, [fetch])
 
     return (
         <Page

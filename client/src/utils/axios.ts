@@ -18,35 +18,6 @@ type ResponseType = {
 }
 
 /**
- * @todo
- */
-export type OperatorType = {
-    "iat": number
-    "iss": string
-    "jti": string
-    "name": string
-    "nats": {
-        "type": string,
-        "version": number,
-        "account_server_url"?: string,
-        "signing_keys"?: string[],
-        "tags"?: string[]
-    }
-    "sub": string
-}
-
-export type OperatorPatchType = {
-    "account_jwt_server_url": string | null,
-    "require_signing_keys": boolean,
-    "rm_account_jwt_server_url": string | null,
-    "rm_service_url": string | null,
-    "rm_tag": string | null,
-    "service_url": string | null,
-    "system_account": string | null,
-    "tag": string | null
-}
-
-/**
  * Request body to add an operator to the store
  *
  * @see http://localhost:8080/docs/index.html#/Operator/post_operator
@@ -58,6 +29,38 @@ export type OperatorPayloadType = {
     "expiry": string | null,
     "start": string | null,
     "sys": boolean
+}
+
+export type NSCBaseType = {
+    "iat": number
+    "iss": string
+    "jti": string
+    "name": string
+    "sub": string
+}
+
+/**
+ * @todo
+ */
+export type OperatorType = NSCBaseType & {
+    "nats": {
+        "type": string,
+        "version": number,
+        "account_server_url"?: string,
+        "signing_keys"?: string[],
+        "tags"?: string[]
+    }
+}
+
+export type OperatorPatchType = {
+    "account_jwt_server_url": string | null,
+    "require_signing_keys": boolean,
+    "rm_account_jwt_server_url": string | null,
+    "rm_service_url": string | null,
+    "rm_tag": string | null,
+    "service_url": string | null,
+    "system_account": string | null,
+    "tag": string | null
 }
 
 /**
@@ -87,11 +90,7 @@ export type UserPayload = {
 /**
  * @todo
  */
-export type AccountType = {
-    "iat": number,
-    "iss": string,
-    "jti": string,
-    "name": string,
+export type AccountType = NSCBaseType & {
     "nats": {
         "authorization": {
             "auth_users": string[]
@@ -118,7 +117,6 @@ export type AccountType = {
         "type": string,
         "version": number
     },
-    "sub": string
 }
 
 export type AccountPatchType = {
@@ -148,11 +146,7 @@ export type AccountPatchType = {
     "wildcard_exports": boolean
 }
 
-export type UserType = {
-    "iat": number,
-    "iss": string,
-    "jti": string,
-    "name": string,
+export type UserType = NSCBaseType & {
     "nats": {
         "data": number,
         "payload": number,
@@ -166,7 +160,6 @@ export type UserType = {
         "type": string,
         "version": number
     },
-    "sub": string
 }
 
 export type UserPatchType = {
@@ -512,7 +505,7 @@ const GetRequest: GetRequestActions = {
     },
     users: async (operator, account) => {
         try {
-            const {data} = await get(`/operators/${operator}/account/${account}/users`);
+            const {data} = await get(`/operator/${operator}/account/${account}/users`);
             return data;
         } catch (error) {
             console.error(error);
@@ -521,7 +514,7 @@ const GetRequest: GetRequestActions = {
     },
     user: async (operator, account, user) => {
         try {
-            const {data} = await get(`/operators/${operator}/account/${account}/user/${user}`);
+            const {data} = await get(`/operator/${operator}/account/${account}/user/${user}`);
             return data;
         } catch (error) {
             console.error(error);
