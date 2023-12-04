@@ -20,7 +20,7 @@ body {
 
 *:focus-visible {
     outline: 1px solid var(--blue);
-    border-radius: var(--radius);
+    /* border-radius: var(--radius); */
 }
 
 :root {

@@ -29,10 +29,18 @@ export type DetailsConfigType = {
     attributes: DetailsConfigAttributeType[]
 }[]
 
+type DeletableSectionType = {
+    isDeletable?: boolean,
+    onDelete: (details: string, i: number) => void
+}
+
 type PropsType = {
     detailsConfig: DetailsConfigType,
     filtersConfig?: FiltersConfigType
-    renderActions?: React.ReactNode
+    renderActions?: React.ReactNode,
+    children?: React.ReactNode,
+    sectionChangeCb?: (index: number) => void
+    deletable?: DeletableSectionType
 }
 
 // accessors
@@ -112,7 +120,14 @@ const filterDetailsConfig = (detailsConfig: DetailsConfigType, filtersConfig?: F
 const Details = ({
     detailsConfig,
     filtersConfig,
-    renderActions
+    renderActions,
+    children = null,
+    sectionChangeCb = (_: number) => {
+    },
+    deletable = {
+        isDeletable: false,
+        onDelete: (_: string, __: number) => {}
+    }
 }: PropsType) => {
     const [sectionIndex, setSectionIndex] = useState<number>(0)
 
@@ -124,11 +139,23 @@ const Details = ({
 
     const searchValue = getSearchValue(filtersConfig)
 
+    const onSectionChange = (i: number) => {
+        sectionChangeCb(i)
+        setSectionIndex(i)
+    }
+
     // If selected index is not 0, it will change it back to 0
     // if the user tries to filter attributes
     useEffect(() => {
         setSectionIndex(0)
     }, [searchValue])
+
+    const yieldDeleteHandler = (name: string, sectionIndex: number) => {
+        return (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+            e.stopPropagation()
+            deletable.onDelete(name, sectionIndex)
+        }
+    }
 
     return (
         <div className={classes.container}>
@@ -138,7 +165,7 @@ const Details = ({
                     filtersConfig={filtersConfig}
                 />
             )}
-            {config.length === 0 && (
+            {(config.length === 0 && detailsConfig.length !== 0) && (
                 <p className={classes.textNotFound}>
                     Unfortunately, the search of "{searchValue}" yielded no results.
                 </p>
@@ -150,10 +177,10 @@ const Details = ({
                             key={title.value}
                             className={classes.menuButton}
                             isTransparent={i !== sectionIndex}
-                            onClick={() => setSectionIndex(i)}
+                            onClick={() => onSectionChange(i)}
                         >
                             <span>
-                                <Icon icon={title.icon} height={20} width={20} />
+                                <Icon icon={title.icon} height={20} width={20}/>
                                 {title.value}
                             </span>
                             {searchValue && (
@@ -161,14 +188,19 @@ const Details = ({
                                     {attributes.length}
                                 </span>
                             )}
+                            {deletable.isDeletable && (
+                                <span>
+                                    <Icon color={"red"} icon={icons.close} height={20} width={20} onClick={yieldDeleteHandler(title.value, i)}/>
+                                </span>
+                            )}
                         </Button>
                     ))
                     }
                 </aside>
-                {attributes.length > 0 && (
+                {children ? children : attributes.length > 0 && (
                     <div className={classes.attributes}>
                         <TextSection text={title}>
-                            {attributes.map(config => <Attribute key={getId()} attributeConfig={config} />)}
+                            {attributes.map(config => <Attribute key={getId()} attributeConfig={config}/>)}
                         </TextSection>
                     </div>
                 )}

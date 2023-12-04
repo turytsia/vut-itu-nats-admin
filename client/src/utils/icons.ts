@@ -34,15 +34,19 @@ enum icons {
     plus = 'ic:round-plus',
     pen = 'material-symbols:edit',
     open = 'fluent:open-20-filled',
-    settings = 'material-symbols:settings-outline',
+    settings = 'mdi:gear',
     nats = 'logos:nats-icon',
     message = 'mi:message',
     arrowBack = 'formkit:arrowleft',
-    control = 'ant-design:control-outlined',
-    account = 'material-symbols:account-tree-outline',
-    users = 'lucide:users',
+    operator = 'ant-design:control-filled',
+    account = 'mdi:account-cog',
+    users = 'mdi:users',
     filterOff = 'mdi:filter-off',
-    table = 'fe:table'
+    table = 'fe:table',
+    limit = 'material-symbols:shield-lock',
+    chat = 'material-symbols:chat-sharp',
+    info = 'material-symbols:info-outline',
+    dashboard = 'ic:round-dashboard'
 }
 
 export default icons

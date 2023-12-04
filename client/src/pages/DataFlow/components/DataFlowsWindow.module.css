@@ -1,0 +1,43 @@
+.container {
+    width: 100%;
+    overflow-y: auto;
+
+    z-index: 1;
+
+    flex: 1;
+    border-radius: var(--radius);
+}
+
+.formContainer {
+    height: 20%;
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.title{
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px;
+    border-radius: var(--radius);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.subtitle{
+    font-size: 14px;
+    font-weight: 400;
+    background-color: #c8c8c8;
+    padding: 4px;
+    color: #fff;
+    border-radius: var(--radius);
+}

@@ -33,7 +33,7 @@ type PropsType = {
 const storage = new Storage()
 
 // Request protocol
-const request = new Request()
+export const request = new Request()
 
 // Initial application state context
 const initialValue: AppContextType = {

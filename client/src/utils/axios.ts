@@ -6,10 +6,10 @@
  * a backend.
  *
  * @module axios
- * 
+ *
  * @author xturyt00
  */
-import axios, { AxiosError } from "axios";
+import axios, {AxiosError} from "axios";
 
 
 type ResponseType = {
@@ -18,13 +18,31 @@ type ResponseType = {
 }
 
 /**
- * @todo
+ * Request body to add an operator to the store
+ *
+ * @see http://localhost:8080/docs/index.html#/Operator/post_operator
  */
-export type OperatorType = {
+export type OperatorPayloadType = {
+    "name": string,
+    "force": boolean,
+    "generate_signing_key": boolean,
+    "expiry": string | null,
+    "start": string | null,
+    "sys": boolean
+}
+
+export type NSCBaseType = {
     "iat": number
     "iss": string
     "jti": string
     "name": string
+    "sub": string
+}
+
+/**
+ * @todo
+ */
+export type OperatorType = NSCBaseType & {
     "nats": {
         "type": string,
         "version": number,
@@ -32,7 +50,6 @@ export type OperatorType = {
         "signing_keys"?: string[],
         "tags"?: string[]
     }
-    "sub": string
 }
 
 export type OperatorPatchType = {
@@ -47,23 +64,10 @@ export type OperatorPatchType = {
 }
 
 /**
- * Request body to add an operator to the store
- * 
- * @see http://localhost:8080/docs/index.html#/Operator/post_operator
- */
-export type OperatorPayloadType = {
-    "name": string,
-    "force": boolean,
-    "generate_signing_key": boolean,
-    "expiry": string | null,
-    "start": string | null,
-    "sys": boolean
-}
-
-/**
  * @todo
  */
-export type AccoundPayloadType = {
+export type AccountPayloadType = {
+    "operator": string | null,
     "allow_pub": string | null,
     "allow_pub_response": string | null,
     "allow_pubsub": string | null,
@@ -86,11 +90,7 @@ export type UserPayload = {
 /**
  * @todo
  */
-export type AccountType = {
-    "iat": number,
-    "iss": string,
-    "jti": string,
-    "name": string,
+export type AccountType = NSCBaseType & {
     "nats": {
         "authorization": {
             "auth_users": string[]
@@ -103,6 +103,7 @@ export type AccountType = {
                 [key: string]: any
             }
         },
+        "description": string,
         "limits": {
             "conn": number,
             "data": number,
@@ -116,7 +117,6 @@ export type AccountType = {
         "type": string,
         "version": number
     },
-    "sub": string
 }
 
 export type AccountPatchType = {
@@ -146,11 +146,7 @@ export type AccountPatchType = {
     "wildcard_exports": boolean
 }
 
-export type UserType = {
-    "iat": number,
-    "iss": string,
-    "jti": string,
-    "name": string,
+export type UserType = NSCBaseType & {
     "nats": {
         "data": number,
         "payload": number,
@@ -164,7 +160,6 @@ export type UserType = {
         "type": string,
         "version": number
     },
-    "sub": string
 }
 
 export type UserPatchType = {
@@ -362,6 +357,11 @@ export type SecretPayloadType = {
     "user": string | null
 }
 
+export type DataFlowType = {
+    "name": string,
+    "server": string,
+}
+
 /**
  * Request type template
  */
@@ -378,10 +378,14 @@ type PatchOperatorType = RequestType<[operator: string, payload: OperatorPatchTy
 type GetAccountsType = RequestType<[operator: string], { accounts: string[] }>
 type GetAccountType = RequestType<[operator: string, account: string], AccountType>
 type GetBindOperatorType = RequestType<[], { [key: string]: string[] }>
-type PostAccountType = RequestType<[operator: string, payload: AccoundPayloadType], ResponseType>
+type PostAccountType = RequestType<[operator: string, payload: AccountPayloadType], ResponseType>
 type PatchAccountType = RequestType<[operator: string, account: string, payload: AccountPatchType], ResponseType>
-type PostBindOperatorType = RequestType<[payload: { account: string, operator: string, server: string }], { [key: string]: string[] }>
-type PostPushAccountType = RequestType<[payload: { account: string, operator: string, server_list: string[] }], { [key: string]: string[] }>
+type PostBindOperatorType = RequestType<[payload: { account: string, operator: string, server: string }], {
+    [key: string]: string[]
+}>
+type PostPushAccountType = RequestType<[payload: { account: string, operator: string, server_list: string[] }], {
+    [key: string]: string[]
+}>
 
 type GetUsersType = RequestType<[operator: string, account: string], { users: string[] }>
 type GetUserType = RequestType<[operator: string, account: string, user: string], UserType>
@@ -389,6 +393,7 @@ type GetUserCredsType = RequestType<[operator: string, account: string, user: st
 type PostUserType = RequestType<[operator: string, account: string, payload: UserType], ResponseType>
 type PatchUserType = RequestType<[operator: string, account: string, payload: UserPatchType], ResponseType>
 type DeleteUserType = RequestType<[operator: string, account: string, user: string], { [key: string]: string }>
+type DeleteDataflowType = RequestType<[dataflow: string], { [key: string]: string }>
 
 type GetConsumersType = RequestType<[], ResponseType> // todo
 type PostConsumerType = RequestType<[payload: ConsumerPayloadType], ResponseType>
@@ -401,6 +406,8 @@ type PostUserStreamType = RequestType<[payload: UserStreamPayloadType], Response
 
 type PostSecretType = RequestType<[payload: SecretPayloadType], ResponseType>
 
+type GetDataFlowType = RequestType<[], { [key: string]: DataFlowType[] }>
+type PostDataFlowType = RequestType<[payload: DataFlowType], ResponseType>
 
 interface GetRequestActions {
     bind: GetBindOperatorType
@@ -415,6 +422,7 @@ interface GetRequestActions {
     consumers: GetConsumersType
     kv: GetUserKvType
     streams: GetUserStreamType
+    dataflows: GetDataFlowType
 }
 
 interface PostRequestActions {
@@ -428,6 +436,7 @@ interface PostRequestActions {
     kv: PostUserKvType
     stream: PostUserStreamType
     secret: PostSecretType
+    dataflows: PostDataFlowType
 }
 
 interface PatchRequestActions {
@@ -438,6 +447,7 @@ interface PatchRequestActions {
 
 interface DeleteRequestActions {
     user: DeleteUserType
+    dataflow: DeleteDataflowType
 }
 
 interface RequestActions {
@@ -447,7 +457,7 @@ interface RequestActions {
     delete: DeleteRequestActions
 }
 
-const { get, post } = axios.create({
+const {get, post, put, delete: adelete} = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
         "Accept": "application/json"
@@ -460,16 +470,16 @@ const { get, post } = axios.create({
 const GetRequest: GetRequestActions = {
     operators: async () => {
         try {
-            const { data } = await get("/operators");
+            const {data} = await get("/operators");
             return data;
         } catch (error) {
             console.error(error);
         }
-        return { operators: [] };
+        return {operators: []};
     },
     operator: async (operator) => {
         try {
-            const { data } = await get(`/operator/${operator}`);
+            const {data} = await get(`/operator/${operator}`);
             return data;
         } catch (error) {
             console.error(error);
@@ -477,16 +487,16 @@ const GetRequest: GetRequestActions = {
     },
     accounts: async (operator) => {
         try {
-            const { data } = await get(`/operators/${operator}/accounts`);
+            const {data} = await get(`/operator/${operator}/accounts`);
             return data;
         } catch (error) {
             console.error(error);
         }
-        return { accounts: [] };
+        return {accounts: []};
     },
     account: async (operator, account) => {
         try {
-            const { data } = await get(`/operator/${operator}/account/${account}`);
+            const {data} = await get(`/operator/${operator}/account/${account}`);
             return data;
         } catch (error) {
             console.error(error);
@@ -495,16 +505,16 @@ const GetRequest: GetRequestActions = {
     },
     users: async (operator, account) => {
         try {
-            const { data } = await get(`/operators/${operator}/account/${account}/users`);
+            const {data} = await get(`/operator/${operator}/account/${account}/users`);
             return data;
         } catch (error) {
             console.error(error);
         }
-        return { users: [] };
+        return {users: []};
     },
     user: async (operator, account, user) => {
         try {
-            const { data } = await get(`/operators/${operator}/account/${account}/user/${user}`);
+            const {data} = await get(`/operator/${operator}/account/${account}/user/${user}`);
             return data;
         } catch (error) {
             console.error(error);
@@ -528,6 +538,15 @@ const GetRequest: GetRequestActions = {
     },
     streams: function (): Promise<ResponseType> {
         throw new Error("Function not implemented.");
+    },
+    dataflows: async (): Promise<{ [key: string]: DataFlowType[]; }> => {
+        try {
+            const {data} = await get(`/dataflows`);
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+        return {};
     }
 }
 
@@ -538,34 +557,38 @@ const PostRequest: PostRequestActions = {
     operator: async (payload) => {
         try {
             const response = await post("/operator", payload);
-            return { type: "success", data: response.data };
+            return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;
-            return { type: "error", data: err.response?.data };
+            return {type: "error", data: err.response?.data};
         }
     },
     account: async (operator, payload) => {
         try {
             const response = await post(`/operator/${operator}/account`, payload);
-            return { type: "success", data: response.data };
+            return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;
-            return { type: "error", data: err.response?.data };
+            return {type: "error", data: err.response?.data};
         }
     },
     user: async (operator, account, payload) => {
         try {
             const response = await post(`/operator/${operator}/account/${account}/user`, payload);
-            return { type: "success", data: response.data };
+            return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;
-            return { type: "error", data: err.response?.data };
+            return {type: "error", data: err.response?.data};
         }
     },
-    bind: function (payload: { account: string; operator: string; server: string; }): Promise<{ [key: string]: string[]; }> {
+    bind: function (payload: { account: string; operator: string; server: string; }): Promise<{
+        [key: string]: string[];
+    }> {
         throw new Error("Function not implemented.");
     },
-    pushAccount: function (payload: { account: string; operator: string; server_list: string[]; }): Promise<{ [key: string]: string[]; }> {
+    pushAccount: function (payload: { account: string; operator: string; server_list: string[]; }): Promise<{
+        [key: string]: string[];
+    }> {
         throw new Error("Function not implemented.");
     },
     config: function (payload: { name: string; operator: string; }): Promise<ResponseType> {
@@ -582,6 +605,15 @@ const PostRequest: PostRequestActions = {
     },
     secret: function (payload: SecretPayloadType): Promise<ResponseType> {
         throw new Error("Function not implemented.");
+    },
+    dataflows: async (payload: DataFlowType): Promise<ResponseType> => {
+        try {
+            const response = await post(`/dataflows`, payload);
+            return {type: "success", data: response.data};
+        } catch (error) {
+            const err = error as AxiosError;
+            return {type: "error", data: err.response?.data};
+        }
     }
 }
 
@@ -592,8 +624,14 @@ const PatchRequest: PatchRequestActions = {
     operator: function (operator: string, payload: OperatorPatchType): Promise<ResponseType> {
         throw new Error("Function not implemented.");
     },
-    account: function (operator: string, account: string, payload: AccountPatchType): Promise<ResponseType> {
-        throw new Error("Function not implemented.");
+    account: async (operator: string, account: string, payload: AccountPatchType): Promise<ResponseType> => {
+        try {
+            const response = await put(`/operator/${operator}/account/${account}`, payload);
+            return {type: "success", data: response.data};
+        } catch (error) {
+            const err = error as AxiosError;
+            return {type: "error", data: err.response?.data};
+        }
     },
     user: function (operator: string, account: string, payload: UserPatchType): Promise<ResponseType> {
         throw new Error("Function not implemented.");
@@ -606,15 +644,24 @@ const PatchRequest: PatchRequestActions = {
 const DeleteRequest: DeleteRequestActions = {
     user: function (operator: string, account: string, user: string): Promise<{ [key: string]: string; }> {
         throw new Error("Function not implemented.");
+    },
+    dataflow: async (name: string): Promise<ResponseType> => {
+        try {
+            const response = await adelete(`/dataflows/${name}`);
+            return {type: "success", data: response.data};
+        } catch (error) {
+            const err = error as AxiosError;
+            return {type: "error", data: err.response?.data};
+        }
     }
 }
 
 /**
  * Request protocol
- * 
+ *
  * Request protocol is the object that helps to make requests to
  * a backend.
- * 
+ *
  * @example
  * const { operators } = await request.get.operators() // fetches requests
  */

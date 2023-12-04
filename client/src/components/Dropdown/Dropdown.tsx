@@ -8,7 +8,7 @@
  * 
  * @author xturyt00
  */
-import { useContext } from 'react'
+import { ChangeEvent, useContext } from 'react'
 import DismissWindow from "../DismissWindow/DismissWindow"
 import { placements } from '../../utils/common'
 import { Icon } from '@iconify/react'
@@ -23,11 +23,12 @@ export type DropdownItemType = {
 }
 
 type PropsType = {
-    value: string
+    value: string | null
     items: DropdownItemType[]
     name?: string
     label?: string
-    onChange: (value: string, name: string) => void
+    onChange: (value: string | null, name: string) => void,
+    className?: string
 }
 
 /**
@@ -39,6 +40,7 @@ type PropsType = {
  * @param props.items - Dropdown items
  * @param props.name - Name
  * @param props.onChange - Callback to change the button
+ * @param props.className - Classname
  * @returns Dropdown component
  */
 const Dropdown = ({
@@ -46,14 +48,15 @@ const Dropdown = ({
     value,
     items,
     name = "",
-    onChange
+    onChange,
+    className = ""
 }: PropsType) => {
 
     const { isDark } = useContext(AppContext)
 
     const currentValue = items.find(({ id }) => id === value)?.value
 
-    const dropdownStyles = classNames(classes.dropdown, { [classes.dark]: isDark })
+    const dropdownStyles = classNames(classes.dropdown, className, { [classes.dark]: isDark })
 
     const itemStyles = classNames(classes.item, { [classes.dark]: isDark })
 
@@ -72,14 +75,26 @@ const Dropdown = ({
                     {currentValue ?? "--"}
                     <Icon icon={isActive ? icons.arrowUp : icons.arrowDown} height={20} width={20} />
                 </button>}>
-            {setIsActive =>
-                <div className={classes.container}>
-                    {items.map(({ id, value }) => (
-                        <button key={id} className={itemStyles} onClick={() => { setIsActive(false); onChange(id, name) }}>
-                            {value}
+            {setIsActive => {
+
+                const selectOption = (value: string | null, name: string) => {
+                    setIsActive(false)
+                    onChange(value, name)
+                }
+
+                return (
+                    <div className={classes.container}>
+                        <button className={itemStyles} onClick={() => selectOption(null, name)}>
+                            --
                         </button>
-                    ))}
-                </div>}
+                        {items.map(({ id, value }) => (
+                            <button key={id} className={itemStyles} onClick={() => selectOption(id, name)}>
+                                {value}
+                            </button>
+                        ))}
+                    </div>
+               )
+            }}
         </DismissWindow>
     )
 }

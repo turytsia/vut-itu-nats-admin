@@ -1,0 +1,42 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    background-color: #fff;
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-light);
+    padding: 24px 16px 16px;
+}
+
+.icon{
+    width: 30%;
+    height: 30%;
+}
+
+.name{
+    font-size: 21px;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+    width: 100%;
+}
+
+.actions{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 0 8px;
+}
+
+.btnDetails{
+    text-decoration: none;
+}

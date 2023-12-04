@@ -10,45 +10,20 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { AppContext } from '../../context/AppContextProvider'
 
-import { OperatorType, OperatorPayloadType } from '../../utils/axios'
+import { OperatorType, OperatorPayloadType, NSCBaseType } from '../../utils/axios'
 import { ColumnTypes, columns } from '../../hooks/useSort'
-import { dateFormat } from '../../utils/common'
+import { dateFormat, fetchOperators } from '../../utils/common'
 import icons from '../../utils/icons'
 
 // components
 import Page from '../../components/Page/Page'
-import Table, { FiltersConfigType, TableConfigType } from '../../components/Table/Table'
+import Table from '../../components/Table/Table'
 import { Icon } from '@iconify/react'
 import CreateOperatorModal from "./modals/CreateOperatorModal/CreateOperatorModal"
 import Button from '../../components/Button/Button'
 import OperatorRowActions from "./components/OperatorRowActions/OperatorRowActions"
+import {defaultFiltersConfig, defaultTableConfig } from '../../utils/views/tables'
 
-const OperatorHeaderMap = {
-    "name": "Name",
-    "iss": "Issuer ID",
-    "sub": "Subject",
-    "iat": "Issued",
-    "": ""
-}
-
-const columnDataTypes: ColumnTypes = {
-    name: columns.TEXT,
-    iss: columns.TEXT,
-    sub: columns.TEXT,
-    iat: columns.NUMBER,
-    "": columns.NONE
-}
-
-const tableConfig: TableConfigType = {
-    columnMapNames: OperatorHeaderMap,
-    columnTypes: columnDataTypes
-}
-
-const filtersConfig: FiltersConfigType = {
-    searchBy: ["name", "sub", "iss"],
-    dateRange: ["iat"],
-    columnToggler: true
-}
 
 /**
  * Operators page component
@@ -69,26 +44,14 @@ const Operators = () => {
     /**
      * Fetch operators and update the component state.
      */
-    const fetchOperators = useCallback(
+    const fetch = useCallback(
         async () => {
             try {
                 setIsLoading(true);
 
-                // Fetch the list of operators
-                const { operators } = await request.get.operators();
+                const operators = await fetchOperators()
 
-                // Fetch operator details concurrently using Promise.allSettled
-                const responses = await Promise.allSettled(
-                    operators.map(async (name) => await request.get.operator(name))
-                );
-
-                // Filter out fulfilled promises and extract their values
-                const fulfilledResponses = responses
-                    .filter((r): r is PromiseFulfilledResult<OperatorType> => r.status === "fulfilled")
-                    .map((r) => r.value)
-                    .filter((v) => v);
-
-                setOperators(fulfilledResponses);
+                setOperators(operators);
             } catch (error) {
                 console.error(error)
             } finally {
@@ -108,11 +71,18 @@ const Operators = () => {
 
                 if (response.type === "error") {
                     setError(response.data?.message || "An error occurred.");
-                } else {
-                    setError("");
-                }
+                    return
+                } 
+
+                const operators = await fetchOperators()
+
+                setOperators(operators)
+                setError("");
+                setIsCreateActive(false)
             } catch (e) {
                 console.error(e)
+            } finally {
+
             }
         },
         [request]
@@ -138,8 +108,8 @@ const Operators = () => {
     )
 
     useEffect(() => {
-        fetchOperators()
-    }, [fetchOperators])
+        fetch()
+    }, [fetch])
 
     return (
         <Page
@@ -147,8 +117,8 @@ const Operators = () => {
             <Table
                 data={operators}
                 isLoading={isLoading}
-                tableConfig={tableConfig}
-                filtersConfig={filtersConfig}
+                tableConfig={defaultTableConfig}
+                filtersConfig={defaultFiltersConfig}
                 renderContent={renderContent}
                 renderActions={
                     <Button isBlue onClick={() => setIsCreateActive(true)}>

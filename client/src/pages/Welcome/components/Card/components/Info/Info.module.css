@@ -1,0 +1,19 @@
+.container{
+    display: flex;
+    gap: 16px;
+    white-space: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    font-weight: 600;
+}
+
+.value {
+    flex: 1;
+    max-width: 50%;
+    text-overflow: ellipsis;
+    overflow-x: hidden;
+}

@@ -29,10 +29,11 @@ const Menu = () => {
 
     return (
         <aside className={containerStyles}>
-            <Button to="/operators" icon={icons.control} textRight='53'>Operators</Button>
+            <Button to="" icon={icons.dashboard} textRight='53'>Dashboard</Button>
+            <Button to="/operators" icon={icons.operator} textRight='53'>Operators</Button>
             <Button to="/accounts" icon={icons.account} textRight='124'>Accounts</Button>
             <Button to="/users" icon={icons.users} textRight='1.1K'>Users</Button>
-            <Button to="/servers" textRight='3'>Servers</Button>
+            <Button to="/dataflows" icon={icons.chat}>Data Flows</Button>
         </aside>
     )
 }

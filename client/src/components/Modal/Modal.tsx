@@ -86,9 +86,12 @@ const Modal = ({
                     <footer className={classes.footer}>
                         <div className={classes.errorContainer}>
                             {error && (
-                                <p className={classes.error}>
-                                    <Icon icon={icons.error} height={20} width={20} /> {error}
-                                </p>
+                                <>
+                                    <div>
+                                        <Icon icon={icons.error} height={20} width={20} />
+                                    </div>
+                                    <span>{error}</span>
+                                </>
                             )}
                         </div>
                         <div className={classes.actions}>
