@@ -35,7 +35,7 @@ body {
     --test: #6c7279;
     --gray-light: #dde3ea;
     --gray-background: #F0F0F0;
-    --radius: 7px;
+    --radius: 3px;
 }
 
 *::-webkit-scrollbar {

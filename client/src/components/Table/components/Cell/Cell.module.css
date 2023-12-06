@@ -10,6 +10,10 @@
     background-color: #fff;
     display: flex;
     align-items: center;
+    width: 100%;
+}
+.container span[aria-busy] {
+    width: 100%;
 }
 
 .container.dark {

@@ -8,7 +8,7 @@
  * 
  * @author xturyt00
  */
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext } from 'react'
 import DismissWindow from '../DismissWindow/DismissWindow'
 import Checkbox from '../Checkbox/Checkbox'
 import { placements } from '../../utils/common'
@@ -16,6 +16,8 @@ import Button from '../Button/Button'
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
 import classes from "./MultipleDropdown.module.css"
+import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
 
 type PropsType = {
     label: string,
@@ -44,12 +46,22 @@ const MultipleDropdown = ({
     onChange = (k) => {}
 }: PropsType) => {
 
+    const { isDark } = useContext(AppContext)
+
     const onChangeCheckbox = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => {
             onChange(e.target.name)
         },
         [onChange]
     )
+
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+
+    const inputStyles = classNames(classes.input, {
+        [classes.dark]: isDark
+    })
 
     return (
         <DismissWindow
@@ -62,9 +74,9 @@ const MultipleDropdown = ({
                     {icon && <Icon icon={icon} width={20} height={20} />}
                 </Button>}>
             {(setIsActive) =>
-                <div className={classes.container}>
+                <div className={containerStyles}>
                     {items.map(key =>
-                        <label key={key} className={classes.input}>
+                        <label key={key} className={inputStyles}>
                             <Checkbox name={key} value={values.includes(key)} onChange={onChangeCheckbox} />
                             {key}
                         </label>

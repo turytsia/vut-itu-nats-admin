@@ -8,12 +8,14 @@
  * 
  * @author xturyt00
  */
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import SecretModal from "../../modals/SecretModal/SecretModal"
 import Button from '../../../Button/Button'
 import { Icon } from '@iconify/react'
 import icons from '../../../../utils/icons'
 import classes from "./Attribute.module.css"
+import { AppContext } from '../../../../context/AppContextProvider'
+import classNames from 'classnames'
 
 export type DetailsConfigAttributeType = {
     name?: string,
@@ -37,17 +39,30 @@ type PropsType = {
 const Attribute = ({
     attributeConfig
 }: PropsType) => {
+    const { isDark } = useContext(AppContext)
     const [isSecretActive, setIsSecretActive] = useState<boolean>(false)
 
     const { name, value, isSecret } = attributeConfig
+
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+
+    const labelStyles = classNames(classes.label, {
+        [classes.dark]: isDark
+    })
+
+    const valueStyles = classNames(classes.value, {
+        [classes.dark]: isDark
+    })
 
     if (!name || !value) return null
 
     if (isSecret) {
         return (
-            <div className={classes.container}>
-                <p className={classes.label}>{attributeConfig.name}</p>
-                <Button className={classes.button} onClick={() => setIsSecretActive(true)} isTransparent>
+            <div className={containerStyles}>
+                <p className={labelStyles}>{attributeConfig.name}</p>
+                <Button className={classes.button} onClick={() => setIsSecretActive(true)}>
                     View
                     <Icon icon={icons.eye} height={20} width={20} />
                 </Button>
@@ -63,9 +78,9 @@ const Attribute = ({
     }
 
     return (
-        <div className={classes.container}>
-            <p className={classes.label}>{attributeConfig.name}</p>
-            <div className={classes.value}>{attributeConfig.value}</div>
+        <div className={containerStyles}>
+            <p className={labelStyles}>{attributeConfig.name}</p>
+            <div className={valueStyles}>{attributeConfig.value}</div>
         </div>
     )
 }

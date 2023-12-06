@@ -5,6 +5,10 @@
     overflow: hidden;
 }
 
+.container.dark {
+    color: white !important;
+}
+
 .details{
     display: flex;
     gap: 10px;
@@ -20,6 +24,10 @@
     flex: 1;
     overflow: auto;
     padding: 8px;
+}
+
+.attributes.dark {
+    /* color: aliceblue; */
 }
 
 .aside {

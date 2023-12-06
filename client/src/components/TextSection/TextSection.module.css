@@ -5,8 +5,8 @@
     padding: 16px 0 0 24px;
 }
 
-.container {
-
+.container.dark {
+    color: white;
 }
 
 .title{
@@ -20,6 +20,10 @@
     color: var(--black);
     gap: 8px;
     padding-bottom: 20px;
+}
+
+.title.dark {
+    color: white;
 }
 
 .title::after {

@@ -9,7 +9,7 @@
  */
 
 import React, { useMemo } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 import classes from "./Breadcrumbs.module.css"
 import icons from '../../../../utils/icons'
@@ -50,12 +50,17 @@ const getRef = (paths: string[], i: number) => paths.slice(1, i + 1).join("/")
 const Breadcrumbs = () => {
 
     const { pathname } = useLocation()
+    const navigate = useNavigate()
 
     const paths = useMemo(() => getPath(pathname), [pathname])
 
+    const handleReturn = () => {
+        navigate(paths.slice(1, paths.length - 1).join("/"))
+    }
+
     return (
         <div className={classes.container}>
-            <ButtonIcon icon={icons.arrowBack} onClick={() => alert("Not implemented")} />
+            <ButtonIcon icon={icons.arrowBack} onClick={handleReturn} />
             {paths.map((p, i) => (
                 <React.Fragment key={i}>
                     <span className={classes.separator}>{i > 0 ? "•" : ""}</span>

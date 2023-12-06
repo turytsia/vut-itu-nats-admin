@@ -7,11 +7,13 @@
  * 
  * @author xturyt00
  */
-import React, { forwardRef } from 'react'
+import React, { forwardRef, useContext } from 'react'
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
 
 import classes from './ButtonIcon.module.css'
+import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
 
 type PropsType = {
     icon: icons,
@@ -28,10 +30,19 @@ type PropsType = {
 const ButtonIcon = forwardRef<HTMLButtonElement, PropsType>(({
     icon,
     onClick
-}, ref) => (
-    <button ref={ref} className={classes.container} onClick={onClick}>
-        <Icon icon={icon} width={20} height={20} />
-    </button>
-))
+}, ref) => {
+    const { isDark } = useContext(AppContext)
+
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+
+    return (
+
+        <button ref={ref} className={containerStyles} onClick={onClick}>
+            <Icon icon={icon} width={20} height={20} />
+        </button>
+    )
+})
 
 export default ButtonIcon

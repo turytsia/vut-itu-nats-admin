@@ -8,7 +8,7 @@
  * 
  * @author xturyt00
  */
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
 import classes from "./Details.module.css"
 import Button from '../Button/Button'
@@ -18,6 +18,8 @@ import TextSection from '../TextSection/TextSection'
 import Attribute, { DetailsConfigAttributeType } from "./components/Attribute/Attribute"
 import { getId } from '../../utils/id'
 import Filters, { FiltersConfigType } from '../Filters/Filters'
+import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
 
 type DetailsConfigTitleType = {
     value: any,
@@ -129,6 +131,8 @@ const Details = ({
         onDelete: (_: string, __: number) => {}
     }
 }: PropsType) => {
+    const {isDark} = useContext(AppContext)
+
     const [sectionIndex, setSectionIndex] = useState<number>(0)
 
     const config = filterDetailsConfig(detailsConfig, filtersConfig)
@@ -157,8 +161,12 @@ const Details = ({
         }
     }
 
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+
     return (
-        <div className={classes.container}>
+        <div className={containerStyles}>
             {filtersConfig && (
                 <Filters
                     renderActions={renderActions}
