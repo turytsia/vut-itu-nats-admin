@@ -10,7 +10,7 @@
 
 import classNames from 'classnames'
 import React, { useCallback, useContext } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { AppContext } from '../../../../context/AppContextProvider'
 
 import icons from '../../../../utils/icons'
@@ -29,6 +29,7 @@ type PropsType = {
   to: string
   icon?: icons
   textRight?: string
+  pattern: RegExp
 }
 
 /**
@@ -38,17 +39,19 @@ type PropsType = {
  * @returns Button
  */
 const Button = ({
+  pattern,
   children,
   to,
   icon,
   textRight
 }: PropsType) => {
 
+  const {pathname} = useLocation()
   const { isDark } = useContext(AppContext)
 
   const linkStyles = useCallback(
-    ({ isActive, isPending }: ClassnameType) => classNames(classes.container, { [classes.active]: isActive, [classes.dark]: isDark }),
-    [isDark]
+    ({ isActive, isPending }: ClassnameType) => classNames(classes.container, { [classes.active]: pathname.match(pattern), [classes.dark]: isDark }),
+    [isDark, pattern, pathname]
   )
 
   return (

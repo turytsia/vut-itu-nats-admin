@@ -12,7 +12,7 @@ import { timeFormat } from "d3-time-format"
 import { request } from "../context/AppContextProvider"
 import { AccountType, OperatorType } from "./axios"
 import { ExtendedAccountType } from "../pages/Accounts/Accounts"
-import { NSCDataType, RequestAccountType, RequestUserType } from "./types"
+import { DataFlowContextFormType, NSCDataType, RequestAccountType, RequestUserType } from "./types"
 import { ExtendedUserType } from "../pages/Users/Users"
 import { NatsConnection, connect } from "nats.ws"
 
@@ -276,7 +276,7 @@ export const fetchAll = async (): Promise<NSCDataType> => {
     
     const dataflowsResponse = await request.get.dataflows();
 
-    const dataflows = dataflowsResponse.dataflows
+    const dataflows = dataflowsResponse.dataflows ?? []
 
     return {
         operators,
@@ -295,4 +295,8 @@ export const NSCDateFormat = (date: string | number | null) => {
 
 export const SecondsToMs = (date: number) => {
     return date * 1000
+}
+
+export const dataflowContextToServerUrl = (context: DataFlowContextFormType): string => {
+    return context.protocol + context.server + ":" + context.port
 }

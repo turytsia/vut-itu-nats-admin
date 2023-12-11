@@ -168,7 +168,7 @@ const Table = ({
             />
             <div style={{
                 display: "grid",
-                gridTemplateColumns: `repeat(${activeColumns.length}, 1fr)`
+                gridTemplateColumns: `repeat(${activeColumns.length - 1}, 1fr) auto`
             }}>
                 {columns.map(key =>
                     <Head
@@ -188,7 +188,7 @@ const Table = ({
             }}>
                 <div
                     className={containerStyles}
-                    style={{ gridTemplateColumns: `repeat(${activeColumns.length}, 1fr)` }}>
+                    style={{ gridTemplateColumns: `repeat(${activeColumns.length - 1}, 1fr) auto` }}>
                     {isLoading ?
                         Array(columns.length * 4).fill(Cell).map((CellSkeleton, i) => <CellSkeleton key={getId()} isLoading />)
                         :

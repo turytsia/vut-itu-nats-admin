@@ -10,6 +10,9 @@ import EditOperatorModal, { EditOperatorType } from './modals/EditOperatorModal/
 import Tag from '../../components/Tag/Tag'
 import { SecondsToMs, dateFormat, datetimeFormat } from '../../utils/common'
 import Details from "../../components/Details/Details"
+import uuid from 'react-uuid'
+
+import classes from "./OperatorsDetail.module.css"
 
 const OperatorsDetail = () => {
 	const { operator: name } = useParams()
@@ -21,7 +24,6 @@ const OperatorsDetail = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [operator, setOperator] = useState<OperatorType | null>(null)
 
-	const [isJWTView, setIsJWTView] = useState<string>("")
 	const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
 	const fetch = useCallback(
@@ -49,7 +51,9 @@ const OperatorsDetail = () => {
 			const response = await request.patch.operator(name as string, settings)
 			setError(response.type === "success" ? "" : response.data.message)
 			if (response.type === "success") {
-				console.log(response)
+				const operator = await request.get.operator(name as string)
+				setOperator(operator)
+				setIsEditModal(false)
 			}
 		}
 		catch (e) {
@@ -141,12 +145,28 @@ const OperatorsDetail = () => {
 							},
 							{
 								name: "Account server URL",
-								value: operator?.jti,
+								value: operator?.nats.account_server_url,
+							},
+							{
+								name: "System account",
+								value: operator?.nats.system_account,
 								isSecret: true
 							},
 							{
 								name: "Tags",
-								value: operator?.nats.tags ? operator?.nats.tags.map(tag => <Tag isBlue>{tag}</Tag>) : null,
+								value: operator?.nats.tags ? (
+									<span className={classes.tags}>{operator?.nats.tags.map(tag => <Tag key={uuid()} isBlue>{tag}</Tag>)}</span>
+								) : null,
+							},
+							{
+								name: "Service URLs",
+								value: operator?.nats.operator_service_urls ? (
+									<span className={classes.tags}>{operator?.nats.operator_service_urls.map(tag => <Tag key={uuid()} isBlue>{tag}</Tag>)}</span>
+								) : null,
+							},
+							{
+								name: "Require entities to be signed with a key",
+								value: operator?.nats.strict_signing_key_usage ? "Yes" : "No",
 							},
 							{
 								name: "Version",

@@ -9,7 +9,7 @@ export type Headers = {
 }
 
 
-type Props = {
+type PropsType = {
     onSubmit: (subject: string, headers: MsgHdrs, data: string) => void
 }
 
@@ -20,9 +20,9 @@ type MsgState = {
     data: string
 }
 
-const MessageForm = (
-    {onSubmit}: Props
-) => {
+const MessageForm = ({
+    onSubmit
+}: PropsType) => {
     const [state, setState] = useState<MsgState>({
         subject: "",
         headerKeys: [""],
@@ -74,42 +74,41 @@ const MessageForm = (
     return (
         <div className={classes.messageContainer}>
             <div className={classes.inputBox}>
-                <Input name="subject" placeholder="Subject" width={"300"} value={state.subject}
-                       onChange={handleSubjectChange}/>
-            </div>
-            <div className={classes.headerBox}>
-                {state.headerKeys.map((key, index) => {
-                        return (
-                            <div className={classes.inputBox} key={index}>
-                                <Input
-                                    name={`headerKey-${index}`}
-                                    placeholder="Key" width={"150"}
-                                    value={key}
-                                    onChange={handleHeaderChange}
-                                />
-                                <span className={classes.colon} />
-                                <Input
-                                    name={`headerValue-${index}`}
-                                    placeholder="Value"
-                                    width={"150"}
-                                    value={state.headerValues[index]}
-                                    onChange={handleHeaderChange}
-                                />
-                            </div>
-                        )
-                    })
-                }
-            </div>
-            <div className={classes.inputBox}>
+                <Input
+                    name="subject"
+                    labelText="Subject"
+                    value={state.subject}
+                    onChange={handleSubjectChange} />
                 <Input
                     name="data"
-                    placeholder="Data"
+                    labelText="Data"
                     width={"300"}
                     value={state.data}
                     onChange={handleSubjectChange}
                 />
             </div>
-            <Button isBlue={true} onClick={handleSubmit}>Send</Button>
+            <div className={classes.headerBox}>
+                {state.headerKeys.map((key, index) => (
+                    <div className={classes.headerInputs} key={index}>
+                        <Input
+                            name={`headerKey-${index}`}
+                            placeholder="Key" width={"150"}
+                            value={key}
+                            onChange={handleHeaderChange}
+                        />
+                        <Input
+                            name={`headerValue-${index}`}
+                            placeholder="Value"
+                            width={"150"}
+                            value={state.headerValues[index]}
+                            onChange={handleHeaderChange}
+                        />
+                    </div>
+                ))}
+            </div>
+            <div className={classes.actions}>
+                <Button isBlue onClick={handleSubmit}>Send</Button>
+            </div>
         </div>
     )
 }

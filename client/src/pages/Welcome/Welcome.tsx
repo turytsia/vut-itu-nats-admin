@@ -42,6 +42,7 @@ const Welcome = () => {
     const [search, setSearch] = useState<string>("")
 
     const DashboardFormToRequest = (form: DashboardSettingsFormType): RequestDashboardType => {
+        console.log(data.dataflows)
         return {
             dataflows: form.dataflows.map(name => data.dataflows.find(({ name: n }) => n === name)!),
             operators: form.operators.map(name => ({ name })),
@@ -96,7 +97,7 @@ const Welcome = () => {
                 setIsLoading(false);
             }
         },
-        []
+        [DashboardFormToRequest]
     )
 
     useEffect(() => {

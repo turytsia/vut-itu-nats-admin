@@ -12,6 +12,10 @@
     transition: .1s;
 }
 
+.map *{
+  transition: none;
+}
+
 html,
 body {
   overflow: hidden;

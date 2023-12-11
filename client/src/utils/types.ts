@@ -26,3 +26,16 @@ export type RequestDashboardType = {
     accounts: { operator: string, name: string }[]
     users: { operator: string, account: string, name: string }[]
 }
+
+export type DataFlowMapType = DataFlowType & {
+    lat: number,
+    long: number
+}
+
+export type DataFlowContextFormType = {
+    name: string,
+    server: string,
+    port: string,
+    protocol: string | null,
+    location: string
+}
