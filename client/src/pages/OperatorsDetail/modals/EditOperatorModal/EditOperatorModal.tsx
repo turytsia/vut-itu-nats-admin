@@ -4,15 +4,16 @@ import icons from "../../../../utils/icons"
 import Modal from "../../../../components/Modal/Modal"
 import Input from "../../../../components/Input/Input"
 import InputTags from "../../../../components/InputTags/InputTags"
-import { OperatorType } from '../../../../utils/axios'
+import { OperatorPatchType, OperatorType } from '../../../../utils/axios'
 import Checkbox from '../../../../components/Checkbox/Checkbox'
 
 import classes from "./EditOperatorModal.module.css"
 
 type PropsType = {
     onClose: () => void
-    onSubmit: (settings: EditOperatorType) => void
+    onSubmit: (settings: OperatorPatchType) => void
     operator: OperatorType
+    error: string
 }
 
 export type EditOperatorType = {
@@ -26,28 +27,34 @@ export type EditOperatorType = {
 const EditOperatorModal = ({
     onClose,
     onSubmit,
-    operator
+    operator,
+    error
 }: PropsType) => {
+
+    const [tags, setTags] = useState<string[]>(operator.nats.tags ?? [])
 
     const [jwtServerUrl, setJwtServerUrl] = useState<string>("")
     const [systemAccount, setSystemAccount] = useState<string>("")
-    const [tags, setTags] = useState<string[]>(operator.nats.tags ?? [])
     const [serviceUrls, setServerUrls] = useState<string[]>([])
     const [isSigningKey, setIsSigningKey] = useState<boolean>(false)
 
     const onSave = () => {
         onSubmit({
-            jwtServerUrl,
-            systemAccount,
-            tags,
-            serviceUrls,
-            isSigningKey
-        })
+            account_jwt_server_url: null,
+            require_signing_keys: false,
+            rm_account_jwt_server_url: null,
+            rm_service_url: null,
+            rm_tag: null,
+            service_url: null,
+            system_account: null,
+            tag: tags.join(",")
+        } as OperatorPatchType)
     }
 
     return (
         <Modal
             title={"Update operator: " + operator.name}
+            error={error}
             textProceed='Save'
             textCancel='Cancel'
             icon={icons.pen}

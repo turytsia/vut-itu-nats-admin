@@ -34,6 +34,7 @@ const Menu = () => {
             <Button to="/accounts" icon={icons.account} textRight='124'>Accounts</Button>
             <Button to="/users" icon={icons.users} textRight='1.1K'>Users</Button>
             <Button to="/dataflows" icon={icons.chat}>Data Flows</Button>
+            <Button to="/map" icon={icons.map}>Map</Button>
         </aside>
     )
 }

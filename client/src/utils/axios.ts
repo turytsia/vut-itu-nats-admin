@@ -10,6 +10,7 @@
  * @author xturyt00
  */
 import axios, {AxiosError} from "axios";
+import { RequestDashboardType } from "./types";
 
 
 type ResponseType = {
@@ -31,11 +32,14 @@ export type OperatorPayloadType = {
     "sys": boolean
 }
 
-export type NSCBaseType = {
+export type NameType = {
+    "name": string
+}
+
+export type NSCBaseType = NameType & {
     "iat": number
     "iss": string
     "jti": string
-    "name": string
     "sub": string
 }
 
@@ -386,6 +390,8 @@ type PostBindOperatorType = RequestType<[payload: { account: string, operator: s
 type PostPushAccountType = RequestType<[payload: { account: string, operator: string, server_list: string[] }], {
     [key: string]: string[]
 }>
+type GetDashboardType = RequestType<[], RequestDashboardType>
+type PatchDashboardType = RequestType<[data: RequestDashboardType], ResponseType>
 
 type GetUsersType = RequestType<[operator: string, account: string], { users: string[] }>
 type GetUserType = RequestType<[operator: string, account: string, user: string], UserType>
@@ -410,6 +416,7 @@ type GetDataFlowType = RequestType<[], { [key: string]: DataFlowType[] }>
 type PostDataFlowType = RequestType<[payload: DataFlowType], ResponseType>
 
 interface GetRequestActions {
+    dashboard: GetDashboardType
     bind: GetBindOperatorType
     operators: GetOperatorsType
     operator: GetOperatorType
@@ -440,6 +447,7 @@ interface PostRequestActions {
 }
 
 interface PatchRequestActions {
+    dashboard: PatchDashboardType
     operator: PatchOperatorType
     account: PatchAccountType
     user: PatchUserType
@@ -457,7 +465,7 @@ interface RequestActions {
     delete: DeleteRequestActions
 }
 
-const {get, post, put, delete: adelete} = axios.create({
+const { get, post, put, patch, delete: adelete} = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
         "Accept": "application/json"
@@ -468,6 +476,14 @@ const {get, post, put, delete: adelete} = axios.create({
  * @todo
  */
 const GetRequest: GetRequestActions = {
+    dashboard: async () => {
+        try {
+            const { data } = await get("/dashboard");
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+    },
     operators: async () => {
         try {
             const {data} = await get("/operators");
@@ -621,8 +637,23 @@ const PostRequest: PostRequestActions = {
  * @todo
  */
 const PatchRequest: PatchRequestActions = {
-    operator: function (operator: string, payload: OperatorPatchType): Promise<ResponseType> {
-        throw new Error("Function not implemented.");
+    dashboard: async (payload: RequestDashboardType) => {
+        try {
+            const response = await put(`/dashboard`, payload);
+            return { type: "success", data: response.data };
+        } catch (error) {
+            const err = error as AxiosError;
+            return { type: "error", data: err.response?.data };
+        }
+    },
+    operator: async (operator: string, payload: OperatorPatchType): Promise<ResponseType> => {
+        try {
+            const response = await patch(`/operator/${operator}`, payload);
+            return { type: "success", data: response.data };
+        } catch (error) {
+            const err = error as AxiosError;
+            return { type: "error", data: err.response?.data };
+        }
     },
     account: async (operator: string, account: string, payload: AccountPatchType): Promise<ResponseType> => {
         try {

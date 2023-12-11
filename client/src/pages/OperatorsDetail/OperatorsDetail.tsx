@@ -5,16 +5,17 @@ import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
 import { useParams } from 'react-router-dom'
 import { AppContext } from '../../context/AppContextProvider'
-import { OperatorType } from '../../utils/axios'
+import { OperatorPatchType, OperatorType } from '../../utils/axios'
 import EditOperatorModal, { EditOperatorType } from './modals/EditOperatorModal/EditOperatorModal'
 import Tag from '../../components/Tag/Tag'
-import { dateFormat } from '../../utils/common'
+import { SecondsToMs, dateFormat, datetimeFormat } from '../../utils/common'
 import Details from "../../components/Details/Details"
 
 const OperatorsDetail = () => {
 	const { operator: name } = useParams()
 
 	const [search, setSearch] = useState<string>("")
+	const [error, setError] = useState<string>("")
 
 	const { request } = useContext(AppContext)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -41,8 +42,22 @@ const OperatorsDetail = () => {
 		[]
 	)
 
-	const onEditSubmit = (settings: EditOperatorType) => {
-		console.log(settings)
+	const onEditSubmit = async (settings: OperatorPatchType) => {
+		try {
+			setIsLoading(true)
+
+			const response = await request.patch.operator(name as string, settings)
+			setError(response.type === "success" ? "" : response.data.message)
+			if (response.type === "success") {
+				console.log(response)
+			}
+		}
+		catch (e) {
+			console.error(e)
+		}
+		finally {
+			setIsLoading(false)
+		}
 	}
 
 	const onChangeInput = useCallback(
@@ -92,7 +107,7 @@ const OperatorsDetail = () => {
 							},
 							{
 								name: "Created at",
-								value: dateFormat(operator?.iat!),
+								value: datetimeFormat(SecondsToMs(operator?.iat!)),
 							},
 						]
 					},
@@ -142,6 +157,7 @@ const OperatorsDetail = () => {
 				]} />
 			{(isEditModal && operator) && (
 				<EditOperatorModal
+					error={error}
 					operator={operator}
 					onSubmit={onEditSubmit}
 					onClose={() => setIsEditModal(false)}

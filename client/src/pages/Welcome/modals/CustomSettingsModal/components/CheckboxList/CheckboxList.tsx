@@ -1,14 +1,19 @@
 import React from 'react'
 import classes from "./CheckboxList.module.css"
 import Checkbox from '../../../../../../components/Checkbox/Checkbox'
-import { NSCBaseType } from '../../../../../../utils/axios'
+import { NSCBaseType, NameType } from '../../../../../../utils/axios'
 import uuid from 'react-uuid'
 import { AccountsExtention } from '../../../../../Accounts/Accounts'
 import { UsersExtention } from '../../../../../Users/Users'
 
+export type CheckboxListType = {
+    id: string
+    value: string | React.ReactNode
+}
+
 type PropsType = {
     values: string[]
-    items: NSCBaseType[]
+    items: CheckboxListType[]
     title: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -25,8 +30,8 @@ const CheckboxList = ({
           <div className={classes.list}>
               {items.map(item => (
                   <div key={uuid()} className={classes.item}>
-                      <Checkbox onChange={onChange} value={values.includes(item.sub)} name={item.sub} />
-                      <p>{item.name}</p>
+                      <Checkbox onChange={onChange} value={values.includes(item.id)} name={item.id} />
+                      <p>{item.value}</p>
                   </div>
               ))}
           </div>

@@ -4,15 +4,19 @@ import Modal from '../../../../components/Modal/Modal'
 import icons from '../../../../utils/icons'
 import { NSCDataType } from '../../../../utils/types'
 import Checkbox from '../../../../components/Checkbox/Checkbox'
-import CheckboxList from "./components/CheckboxList/CheckboxList"
+import CheckboxList, { CheckboxListType } from "./components/CheckboxList/CheckboxList"
+import { DataFlowType, NSCBaseType } from '../../../../utils/axios'
+import uuid from 'react-uuid'
 
 export type DashboardSettingsFormType = {
     operators: string[],
     accounts: string[],
     users: string[],
+    dataflows: string[]
 }
 
 type PropsType = {
+    error: string
     defaultForm?: DashboardSettingsFormType,
     data: NSCDataType
     onClose: () => void
@@ -22,14 +26,24 @@ type PropsType = {
 export const initialFormState: DashboardSettingsFormType = {
     operators: [],
     accounts: [],
-    users: []
+    users: [],
+    dataflows: []
+}
+
+const NSCBaseToCheckboxList = (data: NSCBaseType[]): CheckboxListType[] => {
+    return data.map(({ name, sub }) => ({ id: sub, value: name }))
+}
+
+const DataflowToCheckboxList = (data: DataFlowType[]): CheckboxListType[] => {
+    return data.map(({ name }) => ({ id: name, value: name }))
 }
 
 const CustomSettingsModal = ({
     defaultForm,
     data,
     onClose,
-    onSubmit
+    onSubmit,
+    error
 }: PropsType) => {
     const [form, setForm] = useState<DashboardSettingsFormType>(defaultForm ?? initialFormState)
 
@@ -58,12 +72,19 @@ const CustomSettingsModal = ({
         }))
     }
 
+    const changeDataflows = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm(prev => ({
+            ...prev,
+            dataflows: prev.dataflows.includes(e.target.name) ? prev.dataflows.filter(sub => sub !== e.target.name) : [...prev.users, e.target.name]
+        }))
+    }
+
     console.log(form)
 
 
     return (
         <Modal
-            error={""}
+            error={error}
             title="Custom settings"
             textProceed='Save'
             textCancel='Cancel'
@@ -74,20 +95,26 @@ const CustomSettingsModal = ({
                 <CheckboxList
                     values={form.operators}
                     title='Operators'
-                    items={data.operators}
+                    items={NSCBaseToCheckboxList(data.operators)}
                     onChange={changeOperators}
                 />
                 <CheckboxList
                     values={form.accounts}
                     title='Accounts'
-                    items={data.accounts}
+                    items={NSCBaseToCheckboxList(data.accounts)}
                     onChange={changeAccounts}
                 />
                 <CheckboxList
                     values={form.users}
                     title='Users'
-                    items={data.users}
+                    items={NSCBaseToCheckboxList(data.users)}
                     onChange={changeUsers}
+                />
+                <CheckboxList
+                    values={form.dataflows}
+                    title='Dataflows'
+                    items={DataflowToCheckboxList(data.dataflows)}
+                    onChange={changeDataflows}
                 />
             </div>
         </Modal>

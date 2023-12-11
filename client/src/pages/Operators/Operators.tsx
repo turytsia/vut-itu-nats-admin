@@ -12,7 +12,7 @@ import { AppContext } from '../../context/AppContextProvider'
 
 import { OperatorType, OperatorPayloadType, NSCBaseType } from '../../utils/axios'
 import { ColumnTypes, columns } from '../../hooks/useSort'
-import { dateFormat, fetchOperators } from '../../utils/common'
+import { NSCDateFormat, SecondsToMs, dateFormat, datetimeFormat, fetchOperators } from '../../utils/common'
 import icons from '../../utils/icons'
 
 // components
@@ -67,7 +67,11 @@ const Operators = () => {
     const onOperatorSubmit = useCallback(
         async (form: OperatorPayloadType) => {
             try {
-                const response = await request.post.operator(form)
+                const response = await request.post.operator({
+                    ...form,
+                    expiry: NSCDateFormat(form.expiry),
+                    start: NSCDateFormat(form.start),
+                })
 
                 if (response.type === "error") {
                     setError(response.data?.message || "An error occurred.");
@@ -97,7 +101,7 @@ const Operators = () => {
                 case "name": case "iss": case "sub":
                     return operator[key]
                 case "iat":
-                    return dateFormat(operator[key])
+                    return datetimeFormat(SecondsToMs(operator[key]))
                 case "":
                     return (
                         <OperatorRowActions operator={operator} />
