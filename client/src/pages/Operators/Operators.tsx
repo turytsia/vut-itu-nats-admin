@@ -8,7 +8,7 @@
  * @author xturyt00
  */
 import { useCallback, useContext, useEffect, useState } from 'react'
-import { AppContext } from '../../context/AppContextProvider'
+import { AppContext, notify } from '../../context/AppContextProvider'
 
 import { OperatorType, OperatorPayloadType, NSCBaseType } from '../../utils/axios'
 import { ColumnTypes, columns } from '../../hooks/useSort'
@@ -83,6 +83,8 @@ const Operators = () => {
                 setOperators(operators)
                 setError("");
                 setIsCreateActive(false)
+                notify(response.data.message, "success")
+                
             } catch (e) {
                 console.error(e)
             } finally {

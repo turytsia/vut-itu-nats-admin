@@ -12,7 +12,7 @@ import CustomSettingsModal, { DashboardSettingsFormType, initialFormState } from
 import { fetchAll } from '../../utils/common'
 import { NSCDataType, RequestDashboardType } from '../../utils/types'
 import uuid from 'react-uuid'
-import { request } from '../../context/AppContextProvider'
+import { notify, request } from '../../context/AppContextProvider'
 
 const initialData: NSCDataType = {
     dataflows: [],
@@ -89,6 +89,7 @@ const Welcome = () => {
                 if (response.type === "success") {
                     setDashboard(form)
                     setIsSettingsActive(false)
+                    notify(response.data.message, "success")
                 }
 
             } catch (error) {

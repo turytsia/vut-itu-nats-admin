@@ -46,7 +46,8 @@ export type FiltersConfigType = {
 
 type PropsType = {
     filtersConfig: FiltersConfigType
-    renderActions?: React.ReactNode
+    renderActions?: React.ReactNode,
+    onReset?: () => void
 }
 
 /**
@@ -59,7 +60,8 @@ type PropsType = {
  */
 const Filters = ({
     filtersConfig,
-    renderActions
+    renderActions,
+    onReset = () => {}
 }: PropsType) => {
 
     const { isDark } = useContext(AppContext)
@@ -102,7 +104,7 @@ const Filters = ({
                     />
                 )}
                 <FloatingDelayGroup delay={150}>
-                    <Popover element={<ButtonIcon icon={icons.filterOff} onClick={() => { }} />}>
+                    <Popover element={<ButtonIcon icon={icons.filterOff} onClick={onReset} />}>
                         <span>Reset filters</span>
                     </Popover>
                 </FloatingDelayGroup>

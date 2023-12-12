@@ -19,6 +19,7 @@ import "./index.css"
 import 'react-datepicker/dist/react-datepicker.module.css'
 import "react-datetime/css/react-datetime.css"
 import 'react-loading-skeleton/dist/skeleton.css'
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const root = ReactDOM.createRoot(

@@ -4,7 +4,7 @@ import Button from '../../components/Button/Button'
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
 import { useParams } from 'react-router-dom'
-import { AppContext } from '../../context/AppContextProvider'
+import { AppContext, notify } from '../../context/AppContextProvider'
 import { OperatorPatchType, OperatorType } from '../../utils/axios'
 import EditOperatorModal, { EditOperatorType } from './modals/EditOperatorModal/EditOperatorModal'
 import Tag from '../../components/Tag/Tag'
@@ -54,6 +54,7 @@ const OperatorsDetail = () => {
 				const operator = await request.get.operator(name as string)
 				setOperator(operator)
 				setIsEditModal(false)
+				notify(response.data.message, "success")
 			}
 		}
 		catch (e) {

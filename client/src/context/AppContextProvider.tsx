@@ -13,6 +13,7 @@ import React, { createContext, useCallback, useState } from 'react'
 // modules
 import Storage from "../utils/storage"
 import Request from "../utils/axios"
+import { ToastContainer, toast } from 'react-toastify'
 
 // Type of application context provider
 type AppContextProviderType = (props: PropsType) => JSX.Element
@@ -40,6 +41,22 @@ const initialValue: AppContextType = {
     isDark: false,
     toggleIsDark: () => { },
     request
+}
+
+export type MessageType = "error" | "success" | "info"
+
+export const notify = (message: string, type: MessageType) => {
+    toast[type](message, {
+        
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+    });
 }
 
 /** 
@@ -80,7 +97,26 @@ const AppContextProvider: AppContextProviderType = ({
         toggleIsDark,
     }
 
-    return <AppContext.Provider value={value}>{children}</AppContext.Provider>
+    return (
+        <AppContext.Provider value={value}>
+            <ToastContainer
+                style={{
+                    top: "80px"
+                }}
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+            {children}
+        </AppContext.Provider>
+    )
 }
 
 export default AppContextProvider

@@ -12,9 +12,15 @@
 import axios, {AxiosError} from "axios";
 import { RequestDashboardType } from "./types";
 
+type ResponseStatusType = "error" | "success"
+
+type ResponseMessageType = {
+    type: ResponseStatusType
+    message: string
+}
 
 type ResponseType = {
-    type: "error" | "success"
+    type: ResponseStatusType
     data: any
 }
 

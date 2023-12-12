@@ -3,7 +3,7 @@ import Button from "../../components/Button/Button";
 import {Icon} from "@iconify/react";
 import icons from "../../utils/icons";
 import React, {useCallback, useContext, useEffect, useState} from "react";
-import {AppContext} from "../../context/AppContextProvider";
+import {AppContext, notify} from "../../context/AppContextProvider";
 import {DataFlowType} from "../../utils/axios";
 import Details from "../../components/Details/Details";
 import AddDataFlowContext from "./modals/AddDataFlowContextModal";
@@ -68,9 +68,10 @@ const DataFlowsDetails = () => {
                 const { lat, lng } = results[0].geometry.location;
                 console.log(lat, lng)
 
-                await request.post.dataflows(dataflow);
+                const response = await request.post.dataflows(dataflow);
                 await fetchDataFlows();
                 setIsEditModal(false);
+                notify(response.data.message, "success")
             } catch (e) {
                 console.error(e);
             }
@@ -89,8 +90,10 @@ const DataFlowsDetails = () => {
     const handleDelete = useCallback(
         async (name: string, _: number) => {
             try {
-                await request.delete.dataflow(name);
+                const response = await request.delete.dataflow(name);
                 await fetchDataFlows();
+
+                // notify(response.data.message, "success")
             } catch (e) {
                 console.error(e);
             }
