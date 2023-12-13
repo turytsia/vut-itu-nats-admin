@@ -23,9 +23,12 @@ import classNames from 'classnames'
  */
 const Menu = () => {
 
-    const { isDark } = useContext(AppContext)
+    const { isDark, isMenuActive } = useContext(AppContext)
 
-    const containerStyles = classNames(classes.container, { [classes.dark]: isDark })
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark,
+        [classes.active]: isMenuActive
+    })
 
     return (
         <aside className={containerStyles}>

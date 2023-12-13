@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import classes from "./CustomSettingsModal.module.css"
 import Modal from '../../../../components/Modal/Modal'
 import icons from '../../../../utils/icons'
@@ -7,6 +7,7 @@ import Checkbox from '../../../../components/Checkbox/Checkbox'
 import CheckboxList, { CheckboxListType } from "./components/CheckboxList/CheckboxList"
 import { DataFlowType, NSCBaseType } from '../../../../utils/axios'
 import uuid from 'react-uuid'
+import Input from '../../../../components/Input/Input'
 
 export type DashboardSettingsFormType = {
     operators: string[],
@@ -46,9 +47,15 @@ const CustomSettingsModal = ({
     error
 }: PropsType) => {
     const [form, setForm] = useState<DashboardSettingsFormType>(defaultForm ?? initialFormState)
+    const [search, setSearch] = useState("")
 
     const handleSubmit = () => {
         onSubmit(form)
+    }
+
+
+    const changeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.target.value)
     }
 
     const changeOperators = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,8 +86,12 @@ const CustomSettingsModal = ({
         }))
     }
 
-    console.log(form)
-
+    const filteredData = {
+        operators: data.operators.filter(({name}) => name.trim().toLowerCase().includes(search.trim().toLowerCase())),
+        accounts: data.accounts.filter(({ name }) => name.trim().toLowerCase().includes(search.trim().toLowerCase())),
+        users: data.users.filter(({ name }) => name.trim().toLowerCase().includes(search.trim().toLowerCase())),
+        dataflows: data.dataflows.filter(({ name }) => name.trim().toLowerCase().includes(search.trim().toLowerCase())),
+    } as NSCDataType  
 
     return (
         <Modal
@@ -92,30 +103,39 @@ const CustomSettingsModal = ({
             onClose={onClose}
             onSubmit={handleSubmit}>
             <div className={classes.container}>
-                <CheckboxList
-                    values={form.operators}
-                    title='Operators'
-                    items={NSCBaseToCheckboxList(data.operators)}
-                    onChange={changeOperators}
-                />
-                <CheckboxList
-                    values={form.accounts}
-                    title='Accounts'
-                    items={NSCBaseToCheckboxList(data.accounts)}
-                    onChange={changeAccounts}
-                />
-                <CheckboxList
-                    values={form.users}
-                    title='Users'
-                    items={NSCBaseToCheckboxList(data.users)}
-                    onChange={changeUsers}
-                />
-                <CheckboxList
-                    values={form.dataflows}
-                    title='Dataflows'
-                    items={DataflowToCheckboxList(data.dataflows)}
-                    onChange={changeDataflows}
-                />
+                <Input className={classes.search} value={search} onChange={changeSearch} placeholder='Search...' />
+                {filteredData.operators.length > 0 && (
+                    <CheckboxList
+                        values={form.operators}
+                        title='Operators'
+                        items={NSCBaseToCheckboxList(filteredData.operators)}
+                        onChange={changeOperators}
+                    />
+                )}
+                {filteredData.accounts.length > 0 && (
+                    <CheckboxList
+                        values={form.accounts}
+                        title='Accounts'
+                        items={NSCBaseToCheckboxList(filteredData.accounts)}
+                        onChange={changeAccounts}
+                    />
+                )}
+                {filteredData.users.length > 0 && (
+                    <CheckboxList
+                        values={form.users}
+                        title='Users'
+                        items={NSCBaseToCheckboxList(filteredData.users)}
+                        onChange={changeUsers}
+                    />
+                )}
+                {filteredData.dataflows.length > 0 && (
+                    <CheckboxList
+                        values={form.dataflows}
+                        title='Dataflows'
+                        items={DataflowToCheckboxList(filteredData.dataflows)}
+                        onChange={changeDataflows}
+                    />
+                )}
             </div>
         </Modal>
     )

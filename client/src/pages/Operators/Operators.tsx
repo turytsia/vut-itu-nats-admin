@@ -32,9 +32,8 @@ import {defaultFiltersConfig, defaultTableConfig } from '../../utils/views/table
  */
 const Operators = () => {
 
-    const { request } = useContext(AppContext)
+    const { request, isLoading, setIsLoading } = useContext(AppContext)
 
-    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [operators, setOperators] = useState<OperatorType[]>([])
 
     const [error, setError] = useState<string>("")

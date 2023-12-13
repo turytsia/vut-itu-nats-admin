@@ -1,17 +1,24 @@
 import React from 'react'
 import classes from "./Grid.module.css"
+import BaseCard from '../BaseCard/BaseCard'
+import uuid from 'react-uuid'
 
 type PropsType = {
     cols?: number
     children?: React.ReactNode
+    isLoading?: boolean
 }
 
 const Grid = ({
-    cols = 3,
-    children
+    children,
+    isLoading
 }: PropsType) => {
     return (
-        <div className={classes.container} style={{ gridTemplateColumns: `repeat(${cols}, minmax(300px, 1fr))` }}>{children}</div>
+        <div className={classes.container}>
+            {isLoading ? ( [...Array(8)].map(_ => <BaseCard key={uuid()} isLoading />) ): (
+                children
+            )}
+        </div>
     )
 }
 

@@ -9,6 +9,8 @@
     border-radius: var(--radius);
     border: 1px solid var(--gray-light);
     padding: 24px 16px 16px;
+    justify-self: stretch;
+    align-self: stretch;
 }
 
 .icon{
@@ -32,11 +34,29 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 8px;
     width: 100%;
     padding: 0 8px;
+    flex-wrap: wrap;
 }
 
 .btnDetails{
     text-decoration: none;
+}
+
+.skeletonContainer {
+    display: block;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.skeletonContainerRight {
+    display: block;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 1250px) {
+  /* … */
 }

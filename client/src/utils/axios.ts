@@ -373,6 +373,7 @@ export type SecretPayloadType = {
 export type DataFlowType = {
     "name": string,
     "server": string,
+    "created"?: string
 }
 
 /**

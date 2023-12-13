@@ -26,7 +26,7 @@ const CheckboxList = ({
 }: PropsType) => {
   return (
       <div className={classes.container}>
-          <h4 className={classes.title}>{title}</h4>
+          <h4 className={classes.title}>{title} ({items.length})</h4>
           <div className={classes.list}>
               {items.map(item => (
                   <div key={uuid()} className={classes.item}>

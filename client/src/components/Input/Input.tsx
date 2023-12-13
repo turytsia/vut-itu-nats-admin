@@ -28,6 +28,7 @@ type PropsType = {
 	hintText?: string
 	name?: string
 	type?: string
+	className?: string
 	onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
@@ -62,13 +63,14 @@ const Input = ({
 	isCopy,
 	width,
 	name,
+	className,
 	type = "text",
 	onChange = () => { }
 }: PropsType) => {
 
 	const { isDark } = useContext(AppContext)
 
-	const inputStyles = classNames(classes.input, { [classes.dark]: isDark })
+	const inputStyles = classNames(classes.input, className, { [classes.dark]: isDark })
 
 	return (
 		<InputContainer

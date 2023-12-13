@@ -46,8 +46,7 @@ export type AccountsExtention = { operator: string }
 export type ExtendedAccountType = AccountType & AccountsExtention
 
 const Accounts = () => {
-    const {request} = useContext(AppContext)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const { request, isLoading, setIsLoading } = useContext(AppContext)
     const [accounts, setAccounts] = useState<ExtendedAccountType[]>([])
 
     const [error, setError] = useState<string>("")
