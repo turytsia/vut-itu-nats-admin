@@ -1,8 +1,10 @@
-import {ChangeEventHandler, FormEventHandler, useState} from "react";
+import {ChangeEventHandler, FormEventHandler, useContext, useState} from "react";
 import Button from "../../../components/Button/Button";
 import Input from "../../../components/Input/Input";
 import classes from "./MessageForm.module.css"
 import {MsgHdrs, headers} from "nats.ws";
+import { AppContext } from "../../../context/AppContextProvider";
+import classNames from "classnames";
 
 export type Headers = {
     [key: string]: string
@@ -29,6 +31,8 @@ const MessageForm = ({
         headerValues: [""],
         data: ""
     })
+
+    const {isDark} = useContext(AppContext)
 
     const handleSubmit: FormEventHandler<HTMLButtonElement> = (event) => {
         const NATSHeaders = headers();
@@ -71,8 +75,12 @@ const MessageForm = ({
         setState(newState)
     }
 
+    const messageContainerStyles = classNames(classes.messageContainer, {
+        [classes.dark]: isDark
+    })
+
     return (
-        <div className={classes.messageContainer}>
+        <div className={messageContainerStyles}>
             <div className={classes.inputBox}>
                 <Input
                     name="subject"

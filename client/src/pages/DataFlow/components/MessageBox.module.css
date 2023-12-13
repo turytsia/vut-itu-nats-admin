@@ -30,6 +30,25 @@
 
 }
 
+.containerHeader.dark {
+    background-color: #52565b;
+    border-bottom: 1px solid  var(--gray);
+
+}
+
+.dark {
+    color: white !important;
+}
+
+.dark .containerData {
+    color: white !important;
+}
+
+.messageContainer.dark {
+     background-color: #52565b !important;
+    border: 1px solid var(--gray);
+}
+
 .containerData {
     text-overflow: ellipsis;
     overflow: hidden;
@@ -45,6 +64,7 @@
 
 .container svg {
     color: var(--black);
+    cursor: pointer;
 }
 
 /* .containerHeader.own {
@@ -64,6 +84,11 @@
     transition: margin 2s ease;
 }
 
+.dark .containerHeaders{
+    background-color: var(--dark-blue-light);
+    color: white;
+}
+
 .headerKey {
     margin-right: 10px;
     overflow-wrap: break-word;
@@ -81,6 +106,10 @@
     background: #00000050;
     height: 0.5px;
     border-width: 0;
+}
+
+.dark .line {
+    background-color: var(--gray);
 }
 
 

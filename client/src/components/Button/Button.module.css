@@ -21,6 +21,14 @@
     background-color: #DDD !important;
 }
 
+.dark:disabled {
+    background-color: var(--gray) !important;
+    color: #999;
+}
+.dark:disabled:hover {
+     background-color: var(--gray) !important;
+}
+
 .dark {
     background-color: #52565b;
     color: var(--white);

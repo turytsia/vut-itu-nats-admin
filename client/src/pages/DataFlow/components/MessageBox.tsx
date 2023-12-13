@@ -30,6 +30,7 @@ const MessageBox = ({
     })
 
     const messageStyles = classNames(classes.messageContainer, {
+        [classes.dark]: isDark,
         [classes.own]: isOwn
     })
 

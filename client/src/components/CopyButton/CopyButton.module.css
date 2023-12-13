@@ -8,3 +8,7 @@
 .container:hover{
     color: var(--black);
 }
+
+.container.dark:hover {
+    color: var(--gray-light);
+}
