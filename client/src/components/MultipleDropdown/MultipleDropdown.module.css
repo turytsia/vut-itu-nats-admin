@@ -6,8 +6,20 @@
     box-shadow: 0px 2px 5px -1px rgba(0, 0, 0, .3);
 }
 
+.container.dark {
+    background-color: var(--dark-blue);
+    border-right: 1px solid var(--gray);
+    border-bottom: 1px solid var(--gray);
+    border-left: 1px solid var(--gray);
+}
+
 .button{
     min-width: 150px;
+}
+
+.input.dark {
+    border-top: 1px solid var(--gray);
+    color: white;
 }
 
 .input{

@@ -53,7 +53,7 @@ const Cell = ({
 
     return (
         <div className={containerStyles}>
-            {isLoading ? <Skeleton highlightColor='' width="100%" height="18px" {...sekeletonProps} /> : children}
+            {isLoading ? <Skeleton highlightColor={isDark ? "#eee" : ""} width="100%" height="18px" {...sekeletonProps} /> : children}
         </div>
     )
 }

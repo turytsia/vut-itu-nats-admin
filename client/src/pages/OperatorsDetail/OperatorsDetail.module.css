@@ -9,7 +9,7 @@
 }
 
 .tags{
-    max-width: 50%;
+    /* max-width: 50%; */
     display: flex;
     flex-wrap: wrap;
     gap: 8px;  

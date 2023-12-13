@@ -8,6 +8,17 @@
     color: var(--black);
     border-bottom: 1px solid #D9D9D9;
     background-color: #fff;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.container span[aria-busy] {
+    width: 100%;
+}
+
+.container.dark {
+    background-color: var(--dark-blue);
+    border-bottom: 1px solid var(--gray);
 }
 
 .container svg {
@@ -19,7 +30,7 @@
 }
 
 .darkContainer.dark {
-    background-color: #F4F4F4;
+    background-color: var(--dark-blue-light);
 }
 
 

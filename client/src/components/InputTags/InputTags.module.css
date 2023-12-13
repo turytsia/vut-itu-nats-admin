@@ -30,6 +30,14 @@
     padding: 12px 30px 12px 12px;
 }
 
+.inputBox.dark {
+    background-color: var(--dark-blue-light);
+    border: 1px solid var(--gray);
+}
+
+.inputBox.dark svg {
+color: var(--white);
+}
 
 .input:disabled{
     color: #a6a6a6;
@@ -37,7 +45,7 @@
 
 .input.dark {
     background-color: var(--dark-blue-light);
-    border: 1px solid var(--gray);
+    /* border: 1px solid var(--gray); */
     color: var(--white);
 }
 

@@ -12,8 +12,9 @@ import { timeFormat } from "d3-time-format"
 import { request } from "../context/AppContextProvider"
 import { AccountType, OperatorType } from "./axios"
 import { ExtendedAccountType } from "../pages/Accounts/Accounts"
-import { NSCDataType, RequestAccountType, RequestUserType } from "./types"
+import { DataFlowContextFormType, NSCDataType, RequestAccountType, RequestUserType } from "./types"
 import { ExtendedUserType } from "../pages/Users/Users"
+import { NatsConnection, connect } from "nats.ws"
 
 /** 
  * Possible placements for floating elements 
@@ -45,6 +46,12 @@ export const timesecondsFormat = (date: string | number) => {
 export const dateFormat = (date: string | number) => {
     if (!date) return ""
     const format = timeFormat("%Y.%m.%d")
+    return format(new Date(date))
+}
+
+export const datetimeFormat = (date: string | number) => {
+    if (!date) return ""
+    const format = timeFormat("%Y.%m.%d %H:%M:%S")
     return format(new Date(date))
 }
 
@@ -266,10 +273,30 @@ export const fetchAll = async (): Promise<NSCDataType> => {
         .map(({ value }) => value)
         .flat(1)
         .filter((v) => v)
+    
+    const dataflowsResponse = await request.get.dataflows();
+
+    const dataflows = dataflowsResponse.dataflows ?? []
 
     return {
         operators,
         accounts,
-        users
+        users,
+        dataflows
     }
+}
+
+export const NSCDateFormat = (date: string | number | null) => {
+    if (date === null) return date
+    
+    const format = timeFormat("%Y-%m-%d")
+    return format(new Date(date))
+}
+
+export const SecondsToMs = (date: number) => {
+    return date * 1000
+}
+
+export const dataflowContextToServerUrl = (context: DataFlowContextFormType): string => {
+    return context.protocol + context.server + ":" + context.port
 }

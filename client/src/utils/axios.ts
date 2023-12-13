@@ -10,10 +10,17 @@
  * @author xturyt00
  */
 import axios, {AxiosError} from "axios";
+import { RequestDashboardType } from "./types";
 
+type ResponseStatusType = "error" | "success"
+
+type ResponseMessageType = {
+    type: ResponseStatusType
+    message: string
+}
 
 type ResponseType = {
-    type: "error" | "success"
+    type: ResponseStatusType
     data: any
 }
 
@@ -31,11 +38,14 @@ export type OperatorPayloadType = {
     "sys": boolean
 }
 
-export type NSCBaseType = {
+export type NameType = {
+    "name": string
+}
+
+export type NSCBaseType = NameType & {
     "iat": number
     "iss": string
     "jti": string
-    "name": string
     "sub": string
 }
 
@@ -49,6 +59,9 @@ export type OperatorType = NSCBaseType & {
         "account_server_url"?: string,
         "signing_keys"?: string[],
         "tags"?: string[]
+        "operator_service_urls"?: string[],
+        "strict_signing_key_usage"?: boolean
+        "system_account"?: string
     }
 }
 
@@ -386,6 +399,8 @@ type PostBindOperatorType = RequestType<[payload: { account: string, operator: s
 type PostPushAccountType = RequestType<[payload: { account: string, operator: string, server_list: string[] }], {
     [key: string]: string[]
 }>
+type GetDashboardType = RequestType<[], RequestDashboardType>
+type PatchDashboardType = RequestType<[data: RequestDashboardType], ResponseType>
 
 type GetUsersType = RequestType<[operator: string, account: string], { users: string[] }>
 type GetUserType = RequestType<[operator: string, account: string, user: string], UserType>
@@ -406,10 +421,14 @@ type PostUserStreamType = RequestType<[payload: UserStreamPayloadType], Response
 
 type PostSecretType = RequestType<[payload: SecretPayloadType], ResponseType>
 
-type GetDataFlowType = RequestType<[], { [key: string]: DataFlowType[] }>
+type GetDataFlowType = RequestType<[], { [key: string]: DataFlowType[] | null }>
 type PostDataFlowType = RequestType<[payload: DataFlowType], ResponseType>
 
+type GetLocationType = RequestType<[location: string], any>
+
 interface GetRequestActions {
+    location: GetLocationType
+    dashboard: GetDashboardType
     bind: GetBindOperatorType
     operators: GetOperatorsType
     operator: GetOperatorType
@@ -440,6 +459,7 @@ interface PostRequestActions {
 }
 
 interface PatchRequestActions {
+    dashboard: PatchDashboardType
     operator: PatchOperatorType
     account: PatchAccountType
     user: PatchUserType
@@ -457,7 +477,7 @@ interface RequestActions {
     delete: DeleteRequestActions
 }
 
-const {get, post, put, delete: adelete} = axios.create({
+const { get, post, put, patch, delete: adelete} = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
         "Accept": "application/json"
@@ -468,6 +488,25 @@ const {get, post, put, delete: adelete} = axios.create({
  * @todo
  */
 const GetRequest: GetRequestActions = {
+    location: async (address: string) => {
+        try {
+            const { data } = await axios.get(
+                `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+            );
+            
+            return data
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    dashboard: async () => {
+        try {
+            const { data } = await get("/dashboard");
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+    },
     operators: async () => {
         try {
             const {data} = await get("/operators");
@@ -539,7 +578,7 @@ const GetRequest: GetRequestActions = {
     streams: function (): Promise<ResponseType> {
         throw new Error("Function not implemented.");
     },
-    dataflows: async (): Promise<{ [key: string]: DataFlowType[]; }> => {
+    dataflows: async (): Promise<{ [key: string]: DataFlowType[] | null; }> => {
         try {
             const {data} = await get(`/dataflows`);
             return data;
@@ -621,8 +660,23 @@ const PostRequest: PostRequestActions = {
  * @todo
  */
 const PatchRequest: PatchRequestActions = {
-    operator: function (operator: string, payload: OperatorPatchType): Promise<ResponseType> {
-        throw new Error("Function not implemented.");
+    dashboard: async (payload: RequestDashboardType) => {
+        try {
+            const response = await put(`/dashboard`, payload);
+            return { type: "success", data: response.data };
+        } catch (error) {
+            const err = error as AxiosError;
+            return { type: "error", data: err.response?.data };
+        }
+    },
+    operator: async (operator: string, payload: OperatorPatchType): Promise<ResponseType> => {
+        try {
+            const response = await patch(`/operator/${operator}`, payload);
+            return { type: "success", data: response.data };
+        } catch (error) {
+            const err = error as AxiosError;
+            return { type: "error", data: err.response?.data };
+        }
     },
     account: async (operator: string, account: string, payload: AccountPatchType): Promise<ResponseType> => {
         try {
@@ -647,7 +701,7 @@ const DeleteRequest: DeleteRequestActions = {
     },
     dataflow: async (name: string): Promise<ResponseType> => {
         try {
-            const response = await adelete(`/dataflows/${name}`);
+            const response = await adelete(`/dataflow/${name}`);
             return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;

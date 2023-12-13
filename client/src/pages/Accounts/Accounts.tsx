@@ -6,7 +6,7 @@
 
 import React, {useCallback, useContext, useEffect, useState} from 'react'
 import Page from '../../components/Page/Page'
-import {AppContext} from "../../context/AppContextProvider";
+import {AppContext, notify} from "../../context/AppContextProvider";
 import {AccountPayloadType, AccountType} from "../../utils/axios";
 import Table, {TableConfigType} from "../../components/Table/Table";
 import {defaultFiltersConfig} from "../../utils/views/tables";
@@ -114,6 +114,7 @@ const Accounts = () => {
                     setError("");
                     setIsCreateActive(false)
                     fetch()
+                    notify(response.data.message, "success")
                 }
             } catch (e) {
                 console.error(e)

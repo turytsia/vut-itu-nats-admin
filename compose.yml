@@ -9,6 +9,7 @@ services:
     volumes:
       - ./client/src:/client/src
       - ./client/package.json:/client/package.json
+      - ./client/.env:/client/.env
       - /node_modules
     stdin_open: true
     tty: true

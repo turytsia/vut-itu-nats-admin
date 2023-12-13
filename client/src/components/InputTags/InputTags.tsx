@@ -29,6 +29,7 @@ type PropsType = {
     placeholder?: string
     hintText?: string
     name?: string
+    onDelete?: (tag: string) => void
     onChange?: React.Dispatch<React.SetStateAction<string[]>>
 }
 
@@ -60,6 +61,7 @@ const InputTags = ({
     isFlex,
     width,
     name,
+    onDelete,
     onChange: setTags = () => { }
 }: PropsType) => {
 
@@ -89,6 +91,8 @@ const InputTags = ({
     }
 
     const onTagDelete = (tag: string) => {
+        if (onDelete) onDelete(tag)
+        
         setTags(prev => prev.filter(t => t !== tag))
     }
 

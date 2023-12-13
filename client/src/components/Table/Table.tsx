@@ -20,6 +20,7 @@ import useSort, { ColumnTypes } from '../../hooks/useSort'
 import classes from './Table.module.css'
 import { AppContext } from '../../context/AppContextProvider'
 import classNames from 'classnames'
+import { SecondsToMs } from '../../utils/common'
 
 type ColumnMapNamesType = {
     [key: string]: string
@@ -89,6 +90,13 @@ const Table = ({
         isSortable
     } = useSort(initialData, tableConfig.columnTypes)
 
+    const resetFilters = () => {
+        setSearch("")
+        setDropdownItem("name")
+        setDate({})
+        setActiveColumns(Object.values(tableConfig.columnMapNames))
+    }
+
     // FIXME
 
     /**
@@ -131,7 +139,36 @@ const Table = ({
         [filtersConfig, tableConfig]
     )
 
-    const searchData = sortData.filter(item => dropdownItem ? item[dropdownItem]?.trim().toLowerCase()?.includes(search.trim().toLowerCase()) : true)
+    const filterData = () => {
+        return sortData.filter(item =>
+            (dropdownItem ? item[dropdownItem]?.trim().toLowerCase()?.includes(search.trim().toLowerCase()) : true) &&
+            Object.keys(date).every(key => {
+                const [dateFromStr, dateToStr] = date[key]
+
+                const dateFrom = dateFromStr ? new Date(dateFromStr) : null
+                const dateTo = dateToStr ? new Date(dateToStr) : null
+
+                const time = SecondsToMs(item[key])
+
+                if (dateFrom === null && dateTo === null) {
+                    return true
+                }
+
+                if (dateFrom !== null && dateTo === null) {
+                    return dateFrom.getTime() < time
+                }
+
+                if (dateFrom === null && dateTo !== null) {
+                    return dateTo.getTime() > time
+                }
+
+                return dateFrom!.getTime() < time && time < dateTo!.getTime()
+
+            })
+        )
+    }
+
+    const filteredData = filterData()
 
     const columns = Object.keys(tableConfig.columnMapNames).filter(k => activeColumns.includes(tableConfig.columnMapNames[k]))
 
@@ -140,6 +177,7 @@ const Table = ({
     return (
         <div className={classes.outer}>
             <Filters
+                onReset={resetFilters}
                 renderActions={renderActions}
                 filtersConfig={{
                     searchConfig: {
@@ -165,10 +203,11 @@ const Table = ({
                         onChange: onToggleColumn
                     }
                 }}
+                
             />
             <div style={{
                 display: "grid",
-                gridTemplateColumns: `repeat(${activeColumns.length}, 1fr)`
+                gridTemplateColumns: `repeat(${activeColumns.length - 1}, 1fr) auto`
             }}>
                 {columns.map(key =>
                     <Head
@@ -188,11 +227,11 @@ const Table = ({
             }}>
                 <div
                     className={containerStyles}
-                    style={{ gridTemplateColumns: `repeat(${activeColumns.length}, 1fr)` }}>
+                    style={{ gridTemplateColumns: `repeat(${activeColumns.length - 1}, 1fr) auto` }}>
                     {isLoading ?
                         Array(columns.length * 4).fill(Cell).map((CellSkeleton, i) => <CellSkeleton key={getId()} isLoading />)
                         :
-                        searchData.map((item, i) =>
+                        filteredData.map((item, i) =>
                             columns.map(key =>
                                 <Cell
                                     isDark={i % 2 === 1}

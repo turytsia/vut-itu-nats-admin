@@ -8,7 +8,7 @@
  * 
  * @author xturyt00
  */
-import React from 'react'
+import React, { useContext } from 'react'
 import classes from "./Filters.module.css"
 import SearchInput, { SearchInputConfigType } from '../SearchInput/SearchInput'
 import { FloatingDelayGroup } from '@floating-ui/react'
@@ -17,6 +17,8 @@ import ButtonIcon from '../ButtonIcon/ButtonIcon'
 import icons from '../../utils/icons'
 import MultipleDropdown from '../MultipleDropdown/MultipleDropdown'
 import DateInputRange from '../DateInputRange/DateInputRange'
+import { AppContext } from '../../context/AppContextProvider'
+import classNames from 'classnames'
 
 export type FiltersConfigDateRangeType = {
     items: {
@@ -44,7 +46,8 @@ export type FiltersConfigType = {
 
 type PropsType = {
     filtersConfig: FiltersConfigType
-    renderActions?: React.ReactNode
+    renderActions?: React.ReactNode,
+    onReset?: () => void
 }
 
 /**
@@ -57,11 +60,18 @@ type PropsType = {
  */
 const Filters = ({
     filtersConfig,
-    renderActions
+    renderActions,
+    onReset = () => {}
 }: PropsType) => {
 
+    const { isDark } = useContext(AppContext)
+    
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+ 
     return (
-        <div className={classes.container}>
+        <div className={containerStyles}>
             <div className={classes.filters}>
                 {filtersConfig.searchConfig && (
                     <SearchInput
@@ -94,7 +104,7 @@ const Filters = ({
                     />
                 )}
                 <FloatingDelayGroup delay={150}>
-                    <Popover element={<ButtonIcon icon={icons.filterOff} onClick={() => { }} />}>
+                    <Popover element={<ButtonIcon icon={icons.filterOff} onClick={onReset} />}>
                         <span>Reset filters</span>
                     </Popover>
                 </FloatingDelayGroup>

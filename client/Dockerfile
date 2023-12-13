@@ -4,6 +4,7 @@ ARG CACHE_DIR="/root/.npm"
 
 WORKDIR /client
 
+COPY .env .env
 COPY package.json .
 
 RUN --mount=type=cache,mode=0777,target=${CACHE_DIR} npm install

@@ -1,0 +1,20 @@
+.aside {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 300px;
+    background-color: #fff;
+    padding: 8px;
+    border-radius: var(--radius);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header svg {
+    cursor: pointer;
+}

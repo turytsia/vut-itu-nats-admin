@@ -1,27 +1,31 @@
 import classes from "./MessageBox.module.css";
 import classNames from "classnames";
-import { MsgHdrs } from "nats.ws";
+import { Msg, MsgHdrs } from "nats.ws";
 import icons from "../../../utils/icons";
 import { Icon } from "@iconify/react";
-import React from "react";
+import React, { useContext } from "react";
 import uuid from "react-uuid";
+import { AppContext } from "../../../context/AppContextProvider";
+import { decode } from "../../../hooks/useNats";
 
-const MessageBox = (
-    props: {
-        className?: string
-        subject: string
-        data: string
-        headers: MsgHdrs | undefined
-        isDark: boolean
-        jetonoMsgs: string[]
-    }
-) => {
+type PropsType = {
+    className?: string
+    message: Msg,
+    isOwn: boolean
+}
+
+const MessageBox = ({
+    className,
+    message,
+    isOwn
+}: PropsType) => {
+
+    const { isDark } = useContext(AppContext)
+
     const [showHeaders, setShowHeaders] = React.useState(false)
 
-    const isOwn = props.jetonoMsgs.includes(props.headers?.get("X-Jetono-UUID") || "")
-
     const headerStyles = classNames(classes.containerHeader, {
-        [classes.dark]: props.isDark,
+        [classes.dark]: isDark,
         [classes.own]: isOwn
     })
 
@@ -34,12 +38,12 @@ const MessageBox = (
     }
 
 
-    let keys = props.headers?.keys();
+    let keys = message.headers?.keys();
     return (
         <div className={messageStyles}>
             <div className={headerStyles}>
                 <div className={classes.subject}>
-                    {props.subject}
+                    {message.subject}
                     {isOwn && <span className={classes.ownSubject}>(You)</span>}
                 </div>
 
@@ -51,14 +55,14 @@ const MessageBox = (
                     <div key={uuid()}>
                         <div className={classes.header}>
                             <div className={classes.headerKey}>{key}</div>
-                            <div className={classes.headerValue}>{props.headers?.get(key)}</div>
+                            <div className={classes.headerValue}>{message.headers?.get(key)}</div>
                         </div>
                         {keys && index !== keys.length - 1 && <hr className={classes.line} />}
                     </div>
                 ))}
             </div>
             <div className={classes.containerData}>
-                <div className={classes.data}>{props.data}</div>
+                <div className={classes.data}>{decode(message.data)}</div>
             </div>
         </div>
     )

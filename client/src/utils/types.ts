@@ -1,6 +1,6 @@
 import { ExtendedAccountType } from "../pages/Accounts/Accounts"
 import { ExtendedUserType } from "../pages/Users/Users"
-import { OperatorType } from "./axios"
+import { DataFlowType, OperatorType } from "./axios"
 
 export type RequestAccountType = {
     operator: string
@@ -16,5 +16,26 @@ export type RequestUserType = {
 export type NSCDataType = {
     operators: OperatorType[],
     accounts: ExtendedAccountType[],
-    users: ExtendedUserType[]
+    users: ExtendedUserType[],
+    dataflows: DataFlowType[]
+}
+
+export type RequestDashboardType = {
+    dataflows: DataFlowType[]
+    operators: { name: string }[]
+    accounts: { operator: string, name: string }[]
+    users: { operator: string, account: string, name: string }[]
+}
+
+export type DataFlowMapType = DataFlowType & {
+    lat: number,
+    long: number
+}
+
+export type DataFlowContextFormType = {
+    name: string,
+    server: string,
+    port: string,
+    protocol: string | null,
+    location: string
 }

@@ -69,6 +69,10 @@ const Modal = ({
 
     const closeStyles = classNames(classes.close, { [classes.dark]: isDark })
 
+    const errorRegex = /Error: (.+)/g;
+
+    const errors = error.match(errorRegex);
+
     return (
         <FloatingPortal root={floatingRoot}>
             <div className={classes.outer} onClick={onClose}>
@@ -90,7 +94,7 @@ const Modal = ({
                                     <div>
                                         <Icon icon={icons.error} height={20} width={20} />
                                     </div>
-                                    <span>{error}</span>
+                                    <span>{errors ? errors[0] : ""}</span>
                                 </>
                             )}
                         </div>

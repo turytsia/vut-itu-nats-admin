@@ -4,23 +4,26 @@ import Button from '../../components/Button/Button'
 import { Icon } from '@iconify/react'
 import icons from '../../utils/icons'
 import { useParams } from 'react-router-dom'
-import { AppContext } from '../../context/AppContextProvider'
-import { OperatorType } from '../../utils/axios'
+import { AppContext, notify } from '../../context/AppContextProvider'
+import { OperatorPatchType, OperatorType } from '../../utils/axios'
 import EditOperatorModal, { EditOperatorType } from './modals/EditOperatorModal/EditOperatorModal'
 import Tag from '../../components/Tag/Tag'
-import { dateFormat } from '../../utils/common'
+import { SecondsToMs, dateFormat, datetimeFormat } from '../../utils/common'
 import Details from "../../components/Details/Details"
+import uuid from 'react-uuid'
+
+import classes from "./OperatorsDetail.module.css"
 
 const OperatorsDetail = () => {
 	const { operator: name } = useParams()
 
 	const [search, setSearch] = useState<string>("")
+	const [error, setError] = useState<string>("")
 
 	const { request } = useContext(AppContext)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
 	const [operator, setOperator] = useState<OperatorType | null>(null)
 
-	const [isJWTView, setIsJWTView] = useState<string>("")
 	const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
 	const fetch = useCallback(
@@ -41,8 +44,25 @@ const OperatorsDetail = () => {
 		[]
 	)
 
-	const onEditSubmit = (settings: EditOperatorType) => {
-		console.log(settings)
+	const onEditSubmit = async (settings: OperatorPatchType) => {
+		try {
+			setIsLoading(true)
+
+			const response = await request.patch.operator(name as string, settings)
+			setError(response.type === "success" ? "" : response.data.message)
+			if (response.type === "success") {
+				const operator = await request.get.operator(name as string)
+				setOperator(operator)
+				setIsEditModal(false)
+				notify(response.data.message, "success")
+			}
+		}
+		catch (e) {
+			console.error(e)
+		}
+		finally {
+			setIsLoading(false)
+		}
 	}
 
 	const onChangeInput = useCallback(
@@ -92,7 +112,7 @@ const OperatorsDetail = () => {
 							},
 							{
 								name: "Created at",
-								value: dateFormat(operator?.iat!),
+								value: datetimeFormat(SecondsToMs(operator?.iat!)),
 							},
 						]
 					},
@@ -126,12 +146,28 @@ const OperatorsDetail = () => {
 							},
 							{
 								name: "Account server URL",
-								value: operator?.jti,
+								value: operator?.nats.account_server_url,
+							},
+							{
+								name: "System account",
+								value: operator?.nats.system_account,
 								isSecret: true
 							},
 							{
 								name: "Tags",
-								value: operator?.nats.tags ? operator?.nats.tags.map(tag => <Tag isBlue>{tag}</Tag>) : null,
+								value: operator?.nats.tags ? (
+									<span className={classes.tags}>{operator?.nats.tags.map(tag => <Tag key={uuid()} isBlue>{tag}</Tag>)}</span>
+								) : null,
+							},
+							{
+								name: "Service URLs",
+								value: operator?.nats.operator_service_urls ? (
+									<span className={classes.tags}>{operator?.nats.operator_service_urls.map(tag => <Tag key={uuid()} isBlue>{tag}</Tag>)}</span>
+								) : null,
+							},
+							{
+								name: "Require entities to be signed with a key",
+								value: operator?.nats.strict_signing_key_usage ? "Yes" : "No",
 							},
 							{
 								name: "Version",
@@ -142,6 +178,7 @@ const OperatorsDetail = () => {
 				]} />
 			{(isEditModal && operator) && (
 				<EditOperatorModal
+					error={error}
 					operator={operator}
 					onSubmit={onEditSubmit}
 					onClose={() => setIsEditModal(false)}

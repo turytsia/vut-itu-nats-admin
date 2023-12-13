@@ -109,24 +109,21 @@ const CreateAccountModal = ({onClose, onSubmit, error, operatorList}: PropsType)
             onClose={onClose}
             onSubmit={handleAccountModalSubmit}>
             <div className={classes.container}>
-                <InputContainer
-                    labelText="Operator"
-                    hintText="Operator under which the account will be created"
-                    isRequired={true}
-                >
-                    <Select
-                        value={state.operator}
-                        items={operatorList.map(name => ({ id: name, value: name }))}
-                        name="operator"
-                        onChange={handleOperatorChange}
-                    />
-                </InputContainer>
                 <Input
                     isRequired
                     labelText="Name"
                     name='name'
                     value={state.name}
-                    onChange={handleInputChange}/>
+                    onChange={handleInputChange} />
+                <Select
+                    labelText='Operator'
+                    hintText="Operator under which the account will be created"
+                    isRequired={true}
+                    value={state.operator}
+                    items={operatorList.map(name => ({ id: name, value: name }))}
+                    name="operator"
+                    onChange={handleOperatorChange}
+                />
                 <DateInput
                     placeholder='yyyy.mm.dd'
                     name='expiry'

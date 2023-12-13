@@ -2,7 +2,11 @@
     max-width: 100%;
     padding: 20px;
     background-color: var(--gray-background);
-    overflow: hidden;
+    overflow: auto;
     display: flex;
     flex-direction: column;
+}
+
+.container.dark {
+    background-color: var(--dark-blue);
 }

@@ -7,8 +7,11 @@
  * 
  * @author xturyt00
  */
+import { useContext } from "react"
 import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs"
 import classes from "./Main.module.css"
+import { AppContext } from "../../context/AppContextProvider"
+import classNames from "classnames"
 
 type PropsType = {
     children: React.ReactNode
@@ -25,8 +28,14 @@ type PropsType = {
 const Main = ({
     children
 }: PropsType) => {
+    const { isDark } = useContext(AppContext)
+
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+
     return (
-        <main className={classes.container}>
+        <main className={containerStyles}>
             <Breadcrumbs />
             {children}
         </main>
