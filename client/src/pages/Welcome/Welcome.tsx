@@ -109,8 +109,7 @@ const Welcome = () => {
         return searchTarget.trim().toLowerCase().includes(search.trim().toLowerCase())
     }
 
-    const filteredData = useMemo(() => (
-        {
+    const filteredData = useMemo(() => ({
             operators: data.operators.filter(({ sub, name }) => dashboard.operators.includes(sub) && searchIn(name, search)),
             accounts: data.accounts.filter(({ sub, name }) => dashboard.accounts.includes(sub) && searchIn(name, search)),
             users: data.users.filter(({ sub, name }) => dashboard.users.includes(sub) && searchIn(name, search)),

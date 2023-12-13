@@ -4,6 +4,8 @@ import MessageForm from "./MessageForm";
 import classes from "./DataFlowsWindow.module.css"
 import uuid from "react-uuid";
 import useNats from "../../../hooks/useNats"
+import { AppContext } from "../../../context/AppContextProvider";
+import classNames from "classnames";
 
 type Props = {
     server: string
@@ -16,10 +18,15 @@ const DataflowWindow = ({
 }: Props) => {
 
     const { messages, isOwn, publish } = useNats([server])
+    const { isDark } = useContext(AppContext)
+
+    const titleStyles = classNames(classes.title, {
+        [classes.dark]: isDark
+    })
 
     return (
         <div className={classes.main}>
-            <h1 className={classes.title}>
+            <h1 className={titleStyles}>
                 {name}
                 <span className={classes.subtitle}>{server}</span>
             </h1>

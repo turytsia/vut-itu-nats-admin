@@ -27,6 +27,11 @@
     display: flex;
     gap: 8px;
 }
-/* .messageContainer.dark {
-    background-color: #053159;
-} */
+.containerHeader.dark {
+    background-color: #52565b;
+}
+
+.messageContainer.dark {
+     background-color: #52565b;
+    color: white;
+}

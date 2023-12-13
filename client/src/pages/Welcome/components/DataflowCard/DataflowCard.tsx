@@ -28,7 +28,6 @@ const DataflowCard = ({
             actions={
                 <>
                     <Button onClick={() => setIsViewActive(true)}>
-                        View
                         <Icon icon={icons.eye} height={20} width={20} />
                     </Button>
                 </>

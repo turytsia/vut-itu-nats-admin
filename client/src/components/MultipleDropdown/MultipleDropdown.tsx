@@ -62,6 +62,10 @@ const MultipleDropdown = ({
     const inputStyles = classNames(classes.input, {
         [classes.dark]: isDark
     })
+    
+    const buttonStyles = classNames(classes.button, {
+        [classes.dark]: isDark
+    })
 
     return (
         <DismissWindow
@@ -69,7 +73,7 @@ const MultipleDropdown = ({
             offset={0}
             placement={placements.BOTTOM}
             element={(isActive) =>
-                <Button className={classes.button}>
+                <Button className={buttonStyles}>
                     {label}
                     {icon && <Icon icon={icon} width={20} height={20} />}
                 </Button>}>

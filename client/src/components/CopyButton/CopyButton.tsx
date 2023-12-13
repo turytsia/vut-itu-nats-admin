@@ -8,12 +8,13 @@
  * 
  * @author xturyt00
  */
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Icon } from "@iconify/react"
 import icons from "../../utils/icons"
 import Popover from '../Popover/Popover'
 import classNames from 'classnames'
 import classes from "./CopyButton.module.css"
+import { AppContext } from '../../context/AppContextProvider'
 
 type PropsType = {
     className?: string
@@ -34,12 +35,16 @@ const CopyButton = ({
 }: PropsType) => {
     const [isClick, setIsClick] = useState(false)
 
+    const { isDark } = useContext(AppContext)
+
     const onClick = () => {
         navigator.clipboard.writeText(value)
         setIsClick(true)
     }
 
-    const buttonStyles = classNames(classes.container, className)
+    const buttonStyles = classNames(classes.container, className, {
+        [classes.dark]: isDark
+    })
 
     return (
         <button className={buttonStyles} onClick={onClick}>

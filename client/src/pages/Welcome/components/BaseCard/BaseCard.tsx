@@ -7,6 +7,7 @@ import Button from '../../../../components/Button/Button'
 import { AppContext } from '../../../../context/AppContextProvider'
 import colors from '../../../../utils/colors'
 import Skeleton from 'react-loading-skeleton'
+import classNames from 'classnames'
 
 type PropsType = {
     isLoading?: boolean;
@@ -34,9 +35,13 @@ const BaseCard = ({
         [isDark]
     )
 
+    const containerStyles = classNames(classes.container, {
+        [classes.dark]: isDark
+    })
+
     if (isLoading) {
         return (
-            <div className={classes.container}>
+            <div className={containerStyles}>
                 <Skeleton highlightColor={isDark ? "#eee" : ""} containerClassName={classes.skeletonContainer} width="50%" height="20px" {...sekeletonProps} />
                 <Skeleton highlightColor={isDark ? "#eee" : ""} containerClassName={classes.skeletonContainer} width="100px" height="100px" {...sekeletonProps} />
                 <div className={classes.content}>
@@ -51,7 +56,7 @@ const BaseCard = ({
         )
     }
     return (
-        <div className={classes.container}>
+        <div className={containerStyles}>
             <h4 className={classes.name}>{name}</h4>
             <Icon className={classes.icon} icon={icon ?? ""} />
             <div className={classes.content}>
@@ -61,7 +66,6 @@ const BaseCard = ({
                 {actions}
                 <Link to={to ?? ""} className={classes.btnDetails}>
                     <Button>
-                        Details
                         <Icon icon={icons.open} height={20} width={20} />
                     </Button>
                 </Link>
