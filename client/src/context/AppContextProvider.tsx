@@ -14,6 +14,7 @@ import React, { createContext, useCallback, useState } from 'react'
 import Storage from "../utils/storage"
 import Request from "../utils/axios"
 import { ToastContainer, toast } from 'react-toastify'
+import Loading from "../components/Loading/Loading"
 
 // Type of application context provider
 type AppContextProviderType = (props: PropsType) => JSX.Element
@@ -23,11 +24,21 @@ type AppContextType = {
     isDark: boolean
     toggleIsDark: () => void
     request: Request
+    isMenuActive: boolean
+    toggleMenu: () => void
+    isLoading: boolean
+    setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 // component props type
 type PropsType = {
     children: React.ReactNode
+}
+
+export enum LoadingEnum {
+    LOADING,
+    FETCHING,
+    NONE
 }
 
 // Storage protocol 
@@ -40,7 +51,11 @@ export const request = new Request()
 const initialValue: AppContextType = {
     isDark: false,
     toggleIsDark: () => { },
-    request
+    request,
+    isMenuActive: false,
+    toggleMenu: () => { },
+    isLoading: false,
+    setIsLoading: () => {}
 }
 
 export type MessageType = "error" | "success" | "info"
@@ -79,6 +94,8 @@ const AppContextProvider: AppContextProviderType = ({
     children
 }: PropsType) => {
     const [isDark, setIsDark] = useState<boolean>(storage.get.isDark())
+    const [isMenuActive, setIsMenuActive] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
     /** 
      * Toggles isDark true/false 
@@ -90,15 +107,24 @@ const AppContextProvider: AppContextProviderType = ({
         })
     }, [])
 
+    const toggleMenu = useCallback(() => {
+        setIsMenuActive(prev => !prev)
+    }, [])
+
     /** Application state inicialization */
     const value: AppContextType = {
         isDark,
         request,
         toggleIsDark,
+        isMenuActive,
+        toggleMenu,
+        isLoading,
+        setIsLoading
     }
 
     return (
         <AppContext.Provider value={value}>
+            {isLoading && <Loading />}
             <ToastContainer
                 style={{
                     top: "80px"

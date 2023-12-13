@@ -12,6 +12,15 @@
     white-space: nowrap;
 }
 
+.container:disabled {
+    background-color: #DDD;
+    cursor:not-allowed;
+}
+
+.container:disabled:hover {
+    background-color: #DDD !important;
+}
+
 .dark {
     background-color: #52565b;
     color: var(--white);

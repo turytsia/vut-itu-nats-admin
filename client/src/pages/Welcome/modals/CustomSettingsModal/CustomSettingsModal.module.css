@@ -18,3 +18,7 @@
     border-bottom: 1px solid var(--gray-light);
     padding-bottom: 12px;
 }
+
+.search{
+margin-bottom: 16px;
+}

@@ -9,7 +9,7 @@
  */
 
 import React, { useMemo } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useRoutes } from 'react-router-dom'
 
 import classes from "./Breadcrumbs.module.css"
 import icons from '../../../../utils/icons'
@@ -42,7 +42,18 @@ const getPath = (p: string) => ["Jetono", ...p.split(/\/([^/?]+)/g).slice(1).fil
  * getRef(["a","b","c","d"], 2) // /a/b
  * ```
  */
-const getRef = (paths: string[], i: number) => paths.slice(1, i + 1).join("/")
+const getRef = (pathname: string) => map.find(([regex]) => regex.test(pathname))
+
+const map: [regex: RegExp, path: string][] = [
+    [/^\/operators$/, "/"],
+    [/^\/accounts$/, "/"],
+    [/^\/users$/, "/"],
+    [/^\/dataflows$/, "/"],
+    [/^\/map$/, "/"],
+    [/^\/operators\/.+$/, "/operators"],
+    [/^\/operators\/.+\/accounts\/.+$/, "/accounts"],
+    [/^\/operators\/.+\/accounts\/.+\/users\/.+$/, "/users"]
+]
 
 /**
  * Breadcrumbs component, generates breadcrumbs based on url
@@ -55,7 +66,8 @@ const Breadcrumbs = () => {
     const paths = useMemo(() => getPath(pathname), [pathname])
 
     const handleReturn = () => {
-        navigate(paths.slice(1, paths.length - 1).join("/"))
+        const path = getRef(pathname)
+        navigate(path ? path[1] : "")
     }
 
     return (
@@ -64,7 +76,7 @@ const Breadcrumbs = () => {
             {paths.map((p, i) => (
                 <React.Fragment key={i}>
                     <span className={classes.separator}>{i > 0 ? "•" : ""}</span>
-                    <Link className={classes.link} to={getRef(paths, i)}>{p}</Link>
+                    <span className={classes.link}>{p}</span>
                 </React.Fragment>
             ))}
         </div>

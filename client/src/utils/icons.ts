@@ -48,7 +48,8 @@ enum icons {
     info = 'material-symbols:info-outline',
     dashboard = 'ic:round-dashboard',
     map = 'material-symbols:map',
-    server = 'mdi:server'
+    server = 'mdi:server',
+    bars = 'fa6-solid:bars'
 }
 
 export default icons

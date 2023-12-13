@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Page from "../../components/Page/Page"
 import Filters from '../../components/Filters/Filters'
 import Grid from "./components/Grid/Grid"
@@ -12,7 +12,7 @@ import CustomSettingsModal, { DashboardSettingsFormType, initialFormState } from
 import { fetchAll } from '../../utils/common'
 import { NSCDataType, RequestDashboardType } from '../../utils/types'
 import uuid from 'react-uuid'
-import { notify, request } from '../../context/AppContextProvider'
+import { AppContext, notify, request } from '../../context/AppContextProvider'
 
 const initialData: NSCDataType = {
     dataflows: [],
@@ -38,11 +38,11 @@ const Welcome = () => {
     const [data, setData] = useState<NSCDataType>(initialData)
     const [dashboard, setDashboard] = useState<DashboardSettingsFormType>(initialFormState)
 
-    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [search, setSearch] = useState<string>("")
 
+    const { isLoading, setIsLoading } = useContext(AppContext)
+
     const DashboardFormToRequest = (form: DashboardSettingsFormType): RequestDashboardType => {
-        console.log(data.dataflows)
         return {
             dataflows: form.dataflows.map(name => data.dataflows.find(({ name: n }) => n === name)!),
             operators: form.operators.map(name => ({ name })),
@@ -105,14 +105,18 @@ const Welcome = () => {
         fetch()
     }, [fetch])
 
+    const searchIn = (searchTarget: string, search: string) => {
+        return searchTarget.trim().toLowerCase().includes(search.trim().toLowerCase())
+    }
+
     const filteredData = useMemo(() => (
         {
-            operators: data.operators.filter(({ sub }) => dashboard.operators.includes(sub)),
-            accounts: data.accounts.filter(({ sub }) => dashboard.accounts.includes(sub)),
-            users: data.users.filter(({ sub }) => dashboard.users.includes(sub)),
-            dataflows: data.dataflows.filter(({ name }) => dashboard.dataflows.includes(name))
+            operators: data.operators.filter(({ sub, name }) => dashboard.operators.includes(sub) && searchIn(name, search)),
+            accounts: data.accounts.filter(({ sub, name }) => dashboard.accounts.includes(sub) && searchIn(name, search)),
+            users: data.users.filter(({ sub, name }) => dashboard.users.includes(sub) && searchIn(name, search)),
+            dataflows: data.dataflows.filter(({ name }) => dashboard.dataflows.includes(name) && searchIn(name, search))
         }
-    ), [dashboard, data])
+    ), [dashboard, data, search])
 
     return (
         <Page title='Dashboard'>
@@ -126,21 +130,21 @@ const Welcome = () => {
                 },
             }}
                 renderActions={
-                    <Button isBlue onClick={() => setIsSettingsActive(true)}>
+                    <Button isBlue disabled={isLoading} onClick={() => setIsSettingsActive(true)}>
                         Custom settings
                         <Icon icon={icons.settings} width={20} height={20} />
                     </Button>
                 }
             />
-            <Grid>
+            <Grid isLoading={isLoading}>
                 {filteredData.operators.map(operator => (
-                    <Card key={uuid()} data={operator} icon={icons.operator} />
+                    <Card key={uuid()} data={operator} icon={icons.operator} type='operator' />
                 ))}
                 {filteredData.accounts.map(account => (
-                    <Card key={uuid()} data={account} icon={icons.account} />
+                    <Card key={uuid()} data={account} icon={icons.account} type='account' />
                 ))}
                 {filteredData.users.map(user => (
-                    <Card key={uuid()} data={user} icon={icons.users} />
+                    <Card key={uuid()} data={user} icon={icons.users} type='user' />
                 ))}
                 {filteredData.dataflows.map(dataflow => (
                     <DataflowCard key={uuid()} data={dataflow} icon={icons.chat} />

@@ -12,7 +12,7 @@ import { DataFlowContextFormType } from "../../utils/types";
 import { dataflowContextToServerUrl } from "../../utils/common";
 
 const DataFlowsDetails = () => {
-    const {request} = useContext(AppContext)
+    const {request, isLoading, setIsLoading} = useContext(AppContext)
 
     const [error, setError] = useState("")
     const [dataFlows, setDataFlows] = useState<DataFlowType[]>([])
@@ -27,6 +27,7 @@ const DataFlowsDetails = () => {
 
     const fetchDataFlows = useCallback(
         async () => {
+            setIsLoading(true)
             try {
                 const response = await request.get.dataflows();
 
@@ -34,6 +35,8 @@ const DataFlowsDetails = () => {
                 setDataFlows(response["dataflows"] ?? []);
             } catch (e) {
                 console.error(e);
+            } finally {
+                setIsLoading(false)
             }
         },
         [request]
@@ -48,6 +51,8 @@ const DataFlowsDetails = () => {
 
     const onContextCreation = useCallback(
         async (dataflowContext: DataFlowContextFormType) => {
+            setIsLoading(true)
+
             const dataflow: DataFlowType = {
                 name: dataflowContext.name,
                 server: dataflowContextToServerUrl(dataflowContext)
@@ -74,6 +79,8 @@ const DataFlowsDetails = () => {
                 notify(response.data.message, "success")
             } catch (e) {
                 console.error(e);
+            } finally {
+                setIsLoading(false)
             }
         },
         [fetchDataFlows, request]
@@ -89,6 +96,7 @@ const DataFlowsDetails = () => {
 
     const handleDelete = useCallback(
         async (name: string, _: number) => {
+            setIsLoading(true)
             try {
                 const response = await request.delete.dataflow(name);
                 await fetchDataFlows();
@@ -96,6 +104,8 @@ const DataFlowsDetails = () => {
                 // notify(response.data.message, "success")
             } catch (e) {
                 console.error(e);
+            } finally {
+                setIsLoading(false)
             }
         },
         [fetchDataFlows, request]

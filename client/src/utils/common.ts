@@ -133,7 +133,7 @@ export const fetchUsers = async (): Promise<ExtendedUserType[]> => {
                         return {
                             operator,
                             account,
-                            users: (await request.get.users(operator, account)).users
+                            users: (await request.get.users(operator, account)).users ?? []
                         }
                     })
                 )
@@ -192,7 +192,7 @@ export const fetchAll = async (): Promise<NSCDataType> => {
     const accountNamesSettled = await Promise.allSettled(
         operatorsResponse.operators.map(async (operator: string) => ({
             operator,
-            accounts: (await request.get.accounts(operator)).accounts
+            accounts: (await request.get.accounts(operator)).accounts ?? []
         } as RequestAccountType))
     )
 
@@ -229,14 +229,16 @@ export const fetchAll = async (): Promise<NSCDataType> => {
 
                 const responses = await Promise.allSettled(
                     accountRequest.accounts.map(async (account: string) => {
-
+                        const response = (await request.get.users(operator, account))
                         return {
                             operator,
                             account,
-                            users: (await request.get.users(operator, account)).users
+                            users: response.users ?? []
                         }
                     })
                 )
+
+                
 
                 const userNameResponses = responses
                     .filter((r): r is PromiseFulfilledResult<RequestUserType> => r.status === "fulfilled")
@@ -245,7 +247,7 @@ export const fetchAll = async (): Promise<NSCDataType> => {
 
                 const userResponses =
                     await Promise.allSettled(
-                        userNameResponses.flatMap(async ({ operator, account, users }) => {
+                        userNameResponses.map(async ({ operator, account, users }) => {
                             const responses = await Promise.allSettled(
                                 users.map(async name => {
                                     const user = await request.get.user(operator, account, name)
@@ -259,7 +261,8 @@ export const fetchAll = async (): Promise<NSCDataType> => {
                                 .map(({ value }) => value)
                                 .filter((v) => v)
                         }))
-
+                
+                
                 return userResponses
                     .filter((r): r is PromiseFulfilledResult<ExtendedUserType[]> => r.status === "fulfilled")
                     .map(({ value }) => value)
@@ -267,6 +270,8 @@ export const fetchAll = async (): Promise<NSCDataType> => {
                     .filter((v) => v)
             })
         )
+    
+    console.log(userResponses)
 
     const users = userResponses
         .filter((r): r is PromiseFulfilledResult<ExtendedUserType[]> => r.status === "fulfilled")

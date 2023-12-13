@@ -8,3 +8,19 @@
     background-color: #35383d;
     border-right: 1px solid #646464;
 }
+
+@media (max-width: 700px) {
+    .container {
+        display: none;
+        z-index: 1;
+    }
+
+    .container.active {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 71px;
+        bottom: 0;
+        width: 275px;
+    }
+}

@@ -6,6 +6,8 @@ import Button from '../../../../components/Button/Button'
 import { Icon } from '@iconify/react'
 
 import DataflowViewModal from "./modals/DataflowViewModal/DataflowViewModal"
+import Info from '../Card/components/Info/Info'
+import { datetimeFormat } from '../../../../utils/common'
 
 type PropsType = {
     icon: icons
@@ -17,11 +19,12 @@ const DataflowCard = ({
     data,
 }: PropsType) => {
     const [isViewActive, setIsViewActive] = useState<boolean>(false)
+    // console.log(data)
     return (
         <BaseCard
             icon={icon}
             name={data.name}
-            to={''}
+            to="/dataflows"
             actions={
                 <>
                     <Button onClick={() => setIsViewActive(true)}>
@@ -31,7 +34,7 @@ const DataflowCard = ({
                 </>
             }
         >
-            <span>123</span>
+            {data.created && <Info title='Issued' value={datetimeFormat(data.created)} />}
             {isViewActive && (
                 <DataflowViewModal data={data} onClose={() => setIsViewActive(false)} />
             )}

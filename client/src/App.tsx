@@ -8,7 +8,7 @@
  * @author xturyt00
  */
 
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 
 // components
 import View from "./components/View/View"
@@ -46,6 +46,7 @@ const App = () => {
             <Route path="/operators/:operator/accounts/:account" element={<AccountsDetail />} />
             <Route path="/dataflows" element={<DataFlowsDetails />} />
             <Route path="/map" element={<Map />} />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Main>
       </Container>
