@@ -81,7 +81,7 @@ const DataFlowsDetails = () => {
                 const response = await request.post.dataflows(dataflow);
                 await fetchDataFlows();
                 setIsCreateModal(false);
-                notify(response.data.message, "success")
+                notify(response.data.message, response.type)
             } catch (e) {
                 console.error(e);
             } finally {

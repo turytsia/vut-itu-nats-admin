@@ -144,6 +144,7 @@ const Accounts = () => {
             {isCreateActive && (
                 <CreateAccountModal
                     error={error}
+                    setErr={setError}
                     onSubmit={onAccountSubmit}
                     onClose={() => setIsCreateActive(false)}
                     operatorList={operators}
