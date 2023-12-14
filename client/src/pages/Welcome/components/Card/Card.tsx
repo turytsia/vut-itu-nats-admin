@@ -7,6 +7,7 @@ import { SecondsToMs, dateFormat, datetimeFormat } from '../../../../utils/commo
 import BaseCard from "../BaseCard/BaseCard"
 import { ExtendedAccountType } from '../../../Accounts/Accounts'
 import { ExtendedUserType } from '../../../Users/Users'
+import ButtonSourceCode from "../../../../components/ButtonSourceCode/ButtonSourceCode"
 
 type NSCEntityType = OperatorType | ExtendedAccountType | ExtendedUserType
 
@@ -37,7 +38,12 @@ const Card = ({
         <BaseCard
             icon={icon}
             name={data.name}
-            to={getTo()}>
+            to={getTo()}
+            actions={ 
+                <>
+                    <ButtonSourceCode data={data} />
+                </>
+            }>
             <Info title='Subject ID' value={data.sub} isCopy />
             <Info title='Issuer ID' value={data.iss} isCopy />
             <Info title='Issued' value={datetimeFormat(SecondsToMs(data.iat))}  />

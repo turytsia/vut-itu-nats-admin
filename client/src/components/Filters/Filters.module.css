@@ -19,3 +19,11 @@
 .container.dark svg {
     color: white;
 }
+
+.actions{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+}

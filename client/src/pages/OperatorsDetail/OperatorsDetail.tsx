@@ -13,6 +13,7 @@ import Details from "../../components/Details/Details"
 import uuid from 'react-uuid'
 
 import classes from "./OperatorsDetail.module.css"
+import ButtonSourceCode from '../../components/ButtonSourceCode/ButtonSourceCode'
 
 const OperatorsDetail = () => {
 	const { operator: name } = useParams()
@@ -78,10 +79,13 @@ const OperatorsDetail = () => {
 		<Page title={name as string}>
 			<Details
 				renderActions={
-					<Button isBlue onClick={() => setIsEditModal(true)}>
-						Update Operator
-						<Icon icon={icons.pen} width={20} height={20} />
-					</Button>
+					<>
+						<ButtonSourceCode data={operator ?? {}} />
+						<Button isBlue onClick={() => setIsEditModal(true)}>
+							Update Operator
+							<Icon icon={icons.pen} width={20} height={20} />
+						</Button>
+					</>
 				}
 				filtersConfig={{
 					searchConfig: {
@@ -177,12 +181,12 @@ const OperatorsDetail = () => {
 					}
 				]} />
 			{(isEditModal && operator) && (
-				<EditOperatorModal
-					error={error}
-					operator={operator}
-					onSubmit={onEditSubmit}
-					onClose={() => setIsEditModal(false)}
-				/>
+					<EditOperatorModal
+						error={error}
+						operator={operator}
+						onSubmit={onEditSubmit}
+						onClose={() => setIsEditModal(false)}
+					/>
 			)}
 		</Page>
 	)

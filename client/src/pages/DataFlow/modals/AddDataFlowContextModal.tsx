@@ -12,7 +12,12 @@ import { DataFlowContextFormType } from '../../../utils/types'
 const protocolOptions = ["ws://", "wss://"];
 
 type PropsType = {
+    disableName?: boolean,
+    title: string,
+    textProceed: string,
+    defaultForm?: DataFlowContextFormType
     error: string
+    icon: icons,
     onClose: () => void
     onSubmit: (df: DataFlowContextFormType) => void
 }
@@ -26,11 +31,16 @@ const initialData: DataFlowContextFormType = {
 }
 
 const AddDataFlowContext = ({
+    title,
+    textProceed,
+    defaultForm,
     error,
+    icon,
+    disableName,
     onClose,
     onSubmit
 }:PropsType) => {
-    const [form, setForm] = useState(initialData)
+    const [form, setForm] = useState(defaultForm ?? initialData)
 
     const onSave = () => {
         onSubmit(form)
@@ -50,14 +60,16 @@ const AddDataFlowContext = ({
     return (
         <Modal
             error={error}
-            title={"New Data Flow Context"}
-            textProceed="Add"
+            title={title}
+            textProceed={textProceed}
             textCancel="Cancel"
-            icon={icons.plus}
+            icon={icon}
             onClose={onClose}
             onSubmit={onSave}>
             <div className={classes.container}>
                 <Input
+                    isRequired
+                    disabled={disableName}
                     labelText="Name"
                     name="name"
                     value={form.name}

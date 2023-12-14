@@ -9,6 +9,7 @@ import {AccountPatchType, AccountType} from '../../utils/axios'
 import EditAccountModal, {EditAccountType} from './modals/EditAccountModal/EditAccountModal'
 import {dateFormat} from '../../utils/common'
 import Details from "../../components/Details/Details"
+import ButtonSourceCode from '../../components/ButtonSourceCode/ButtonSourceCode'
 
 const AccountsDetail = () => {
     const {request} = useContext(AppContext)
@@ -58,10 +59,13 @@ const AccountsDetail = () => {
         <Page title={accountName as string}>
             <Details
                 renderActions={
-                    <Button isBlue onClick={() => setIsEditModal(true)}>
-                        Update Account
-                        <Icon icon={icons.pen} width={20} height={20}/>
-                    </Button>
+                    <>
+                        <ButtonSourceCode data={account ?? {}} />
+                        <Button isBlue onClick={() => setIsEditModal(true)}>
+                            Update Account
+                            <Icon icon={icons.pen} width={20} height={20} />
+                        </Button>
+                    </>
                 }
                 filtersConfig={{
                     searchConfig: {

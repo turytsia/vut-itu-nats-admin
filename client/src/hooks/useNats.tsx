@@ -43,17 +43,19 @@ const useNats = (servers: string[]) => {
             return
         }
 
+        
         const sub = nc.subscribe(">", {
             callback: (err, msg) => {
                 console.log("Received message")
                 if (err) {
                     return
                 }
-
+                
                 setMessages((prev: Msg[]) => [...prev, msg])
             }
         })
-
+        
+        // setMessages([]);
         setNatsConnection(nc)
     }
 
@@ -73,13 +75,14 @@ const useNats = (servers: string[]) => {
     }
 
     useEffect(() => {
+        // setMessages([]);
         subscribe()
     }, [servers, natsConnection])
 
     // reset messages on server change
     // useEffect(() => {
     //     setMessages([]);
-    // }, [servers])
+    // }, [servers, natsConnection])
 
     return {
         messages,
