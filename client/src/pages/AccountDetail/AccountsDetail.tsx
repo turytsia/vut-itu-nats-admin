@@ -130,18 +130,18 @@ const AccountsDetail = () => {
                     },
                     {
                         title: {
-                            value: "Secret",
-                            icon: icons.lock
+                            value: "JWT",
+                            icon: icons.info
                         },
                         attributes: [
                             {
-                                name: "JWT Token",
+                                name: "JTI (JWT ID)",
                                 value: account?.jti,
                                 isSecret: true
                             },
                             {
                                 name: "Signing Keys",
-                                value: account?.jti,
+                                value: account?.iss,
                                 isSecret: true
                             }
                         ]

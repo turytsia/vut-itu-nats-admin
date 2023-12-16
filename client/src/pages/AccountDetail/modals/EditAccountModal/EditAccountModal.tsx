@@ -9,7 +9,7 @@ import classes from "./EditAccountModal.module.css"
 
 type PropsType = {
     onClose: () => void
-    onSubmit: (settings: AccountPatchType & AccountType) => void
+    onSubmit: (settings: AccountPatchType) => void
     account: AccountPatchType & AccountType
 }
 
@@ -22,23 +22,46 @@ const EditAccountModal = ({
                               account: initialAccount
                           }: PropsType) => {
 
-    const [account, setAccount] = useState<AccountPatchType & AccountType>(initialAccount)
+    const [description, setDescription] = useState<string>(initialAccount.nats.description ?? "")
+    const [payload, setPayload] = useState<number>(initialAccount.nats.limits.payload)
+    const [leafConns, setLeafConns] = useState<number>(initialAccount.nats.limits.leaf)
+    const [data, setData] = useState<number>(initialAccount.nats.limits.data)
+    const [connections, setConnections] = useState<number>(initialAccount.nats.limits.conn)
+
 
     const onSave = () => {
-        onSubmit(account)
+        onSubmit({
+            conns: connections.toString(),
+            data: data.toString(),
+            description: description,
+            leaf_conns: leafConns.toString(),
+            payload: payload.toString(),
+            disallow_bearer: null,
+            exports: null,
+            imports: null,
+            info_url: null,
+            js_consumer: null,
+            js_disk_storage: null,
+            js_max_ack_pending: null,
+            js_max_bytes_required: null,
+            js_max_disk_stream: null,
+            js_max_mem_stream: null,
+            js_mem_storage: null,
+            js_streams: null,
+            js_tier: null,
+            rm_js_tier: null,
+            rm_sk: null,
+            rm_tag: null,
+            subscriptions: null,
+            tag: null,
+            wildcard_exports: null
+        })
     }
 
-    const handleInputChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            const {name, value} = e.target
-            setAccount(prev => ({...prev, [name]: value}))
-        },
-        []
-    )
 
     return (
         <Modal
-            title={"Update account: " + account.name}
+            title={"Update account: " + initialAccount.name}
             textProceed="Save"
             textCancel="Cancel"
             icon={icons.pen}
@@ -48,39 +71,39 @@ const EditAccountModal = ({
                 <Input
                     labelText="Description"
                     name="description"
-                    value={account.nats.description}
-                    onChange={handleInputChange}/>
+                    value={description}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}/>
                 <Input
                     labelText="Payload"
                     hintText={"Set maximum message payload in bytes for the account (-1 is unlimited)"}
                     name="payload"
-                    value={account.nats.limits.payload}
+                    value={payload}
                     type={"number"}
-                    onChange={handleInputChange}/>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setPayload(parseInt(e.target.value))}/>
                 <div/>
                 <Input
                     labelText="Connections"
                     name="leaf_conns"
                     hintText={"Set maximum active leaf node connections for the account"}
-                    value={account.nats.limits.conn}
+                    value={connections}
                     type={"number"}
-                    onChange={handleInputChange}/>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setConnections(parseInt(e.target.value))}/>
                 <div/>
                 <Input
                     labelText="Leaf Connections"
                     name="leaf_conns"
                     hintText={"Set maximum active leaf node connections for the account"}
-                    value={account.nats.limits.leaf}
+                    value={leafConns}
                     type={"number"}
-                    onChange={handleInputChange}/>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setLeafConns(parseInt(e.target.value))}/>
                 <div/>
                 <Input
                     labelText="Data"
-                    name="leaf_conns"
+                    name="data"
                     hintText={"Set maximum active leaf node connections for the account"}
-                    value={account.nats.limits.data}
+                    value={data}
                     type={"number"}
-                    onChange={handleInputChange}/>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setData(parseInt(e.target.value))}/>
                 <div/>
             </div>
         </Modal>

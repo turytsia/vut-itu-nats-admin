@@ -136,7 +136,7 @@ export type AccountPatchType = {
     "conns": string | null,
     "data": string | null,
     "description": string | null,
-    "disallow_bearer": boolean,
+    "disallow_bearer": boolean | null,
     "exports": string | null,
     "imports": string | null,
     "info_url": string | null,
@@ -156,7 +156,7 @@ export type AccountPatchType = {
     "rm_tag": string | null,
     "subscriptions": string | null,
     "tag": string | null,
-    "wildcard_exports": boolean
+    "wildcard_exports": boolean | null,
 }
 
 export type UserType = NSCBaseType & {
@@ -500,7 +500,7 @@ const GetRequest: GetRequestActions = {
             const { data } = await axios.get(
                 `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
             );
-            
+
             return data
         } catch (error) {
             console.error(error);
@@ -698,7 +698,7 @@ const PatchRequest: PatchRequestActions = {
     },
     account: async (operator: string, account: string, payload: AccountPatchType): Promise<ResponseType> => {
         try {
-            const response = await put(`/operator/${operator}/account/${account}`, payload);
+            const response = await patch(`/operator/${operator}/account/${account}`, payload);
             return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;
@@ -710,6 +710,7 @@ const PatchRequest: PatchRequestActions = {
     },
     dataflows: async (payload: DataFlowType): Promise<ResponseType> => {
         try {
+            console.log("payload");
             const response = await patch(`/dataflows/${payload.name}`, payload);
             return { type: "success", data: response.data };
         } catch (error) {

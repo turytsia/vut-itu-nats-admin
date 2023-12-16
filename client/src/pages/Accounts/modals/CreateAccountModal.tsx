@@ -26,6 +26,7 @@ type PropsType = {
     onClose: () => void
     onSubmit: (state: AccountPayloadType) => void
     operatorList: string[]
+    setErr: (err: string) => void
 }
 
 // initial state for form inputs
@@ -55,7 +56,7 @@ const initialState: AccountPayloadType = {
  * @param props.operatorList - List of operators to select from.
  * @returns Modal form component.
  */
-const CreateAccountModal = ({onClose, onSubmit, error, operatorList}: PropsType) => {
+const CreateAccountModal = ({onClose, onSubmit, error, operatorList, setErr}: PropsType) => {
     // set active operator as default
 
     const [state, setState] = useState<AccountPayloadType>(initialState)
@@ -94,6 +95,14 @@ const CreateAccountModal = ({onClose, onSubmit, error, operatorList}: PropsType)
      */
     const handleAccountModalSubmit = useCallback(
         () => {
+            if (state.operator === null) {
+                setErr("Error: Operator is required")
+                return
+            }
+            if (state.name === "") {
+                setErr("Error: Name is required")
+                return
+            }
             onSubmit(state)
         },
         [state, onSubmit]
