@@ -97,7 +97,8 @@ export type AccountPayloadType = {
 
 export type UserPayload = {
     "account": string,
-    "name": string
+    "name": string,
+    "operator": string | null,
 }
 
 /**
@@ -164,7 +165,7 @@ export type UserType = NSCBaseType & {
         "data": number,
         "payload": number,
         "pub": {
-            [key: string]: any
+            "allow"?: string[],
         },
         "sub": {
             [key: string]: any
@@ -406,8 +407,8 @@ type PatchDashboardType = RequestType<[data: RequestDashboardType], ResponseType
 type GetUsersType = RequestType<[operator: string, account: string], { users: string[] }>
 type GetUserType = RequestType<[operator: string, account: string, user: string], UserType>
 type GetUserCredsType = RequestType<[operator: string, account: string, user: string], { [key: string]: string }>
-type PostUserType = RequestType<[operator: string, account: string, payload: UserType], ResponseType>
-type PatchUserType = RequestType<[operator: string, account: string, payload: UserPatchType], ResponseType>
+type PostUserType = RequestType<[operator: string, account: string, payload: UserPayload], ResponseType>
+type PatchUserType = RequestType<[operator: string, account: string, user: string, payload: UserPatchType], ResponseType>
 type DeleteUserType = RequestType<[operator: string, account: string, user: string], { [key: string]: string }>
 type DeleteDataflowType = RequestType<[dataflow: string], { [key: string]: string }>
 
@@ -688,8 +689,14 @@ const PatchRequest: PatchRequestActions = {
             return {type: "error", data: err.response?.data};
         }
     },
-    user: function (operator: string, account: string, payload: UserPatchType): Promise<ResponseType> {
-        throw new Error("Function not implemented.");
+    user: async (operator: string, account: string, user: string, payload: UserPatchType): Promise<ResponseType> => {
+        try {
+            const response = await patch(`/operator/${operator}/account/${account}/user/${user}`, payload);
+            return {type: "success", data: response.data};
+        } catch (error) {
+            const err = error as AxiosError;
+            return {type: "error", data: err.response?.data};
+        }
     }
 }
 

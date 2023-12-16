@@ -33,8 +33,8 @@ const Menu = () => {
     return (
         <aside className={containerStyles}>
             <Button pattern={/^\/$/} to="" icon={icons.dashboard} textRight='53'>Dashboard</Button>
-            <Button pattern={/^\/operators(\/\w+)?$/} to="/operators" icon={icons.operator} textRight='53'>Operators</Button>
-            <Button pattern={/^\/(accounts|operators\/.*\/accounts\/.*)$/} to="/accounts" icon={icons.account} textRight='124'>Accounts</Button>
+            <Button pattern={/^\/operators(\/\s+)?$/} to="/operators" icon={icons.operator} textRight='53'>Operators</Button>
+            <Button pattern={/^\/(accounts|operators\/.*\/accounts\/\s*)$/} to="/accounts" icon={icons.account} textRight='124'>Accounts</Button>
             <Button pattern={/^\/(users|operators\/.*\/accounts\/.*\/users\/.*)$/} to="/users" icon={icons.users} textRight='1.1K'>Users</Button>
             <Button pattern={/^\/dataflows$/} to="/dataflows" icon={icons.chat}>Data Flows</Button>
             <Button pattern={/^\/map$/} to="/map" icon={icons.map}>Map</Button>

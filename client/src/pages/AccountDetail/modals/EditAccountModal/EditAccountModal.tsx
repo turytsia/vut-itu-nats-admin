@@ -54,7 +54,7 @@ const EditAccountModal = ({
                     labelText="Payload"
                     hintText={"Set maximum message payload in bytes for the account (-1 is unlimited)"}
                     name="payload"
-                    value={account.nats.limits.payload}
+                    value={account.nats?.limits.payload}
                     type={"number"}
                     onChange={handleInputChange}/>
                 <div/>
@@ -62,7 +62,7 @@ const EditAccountModal = ({
                     labelText="Connections"
                     name="leaf_conns"
                     hintText={"Set maximum active leaf node connections for the account"}
-                    value={account.nats.limits.conn}
+                    value={account.nats?.limits.conn}
                     type={"number"}
                     onChange={handleInputChange}/>
                 <div/>
@@ -70,7 +70,7 @@ const EditAccountModal = ({
                     labelText="Leaf Connections"
                     name="leaf_conns"
                     hintText={"Set maximum active leaf node connections for the account"}
-                    value={account.nats.limits.leaf}
+                    value={account.nats?.limits.leaf}
                     type={"number"}
                     onChange={handleInputChange}/>
                 <div/>
@@ -78,7 +78,7 @@ const EditAccountModal = ({
                     labelText="Data"
                     name="leaf_conns"
                     hintText={"Set maximum active leaf node connections for the account"}
-                    value={account.nats.limits.data}
+                    value={account.nats?.limits.data}
                     type={"number"}
                     onChange={handleInputChange}/>
                 <div/>

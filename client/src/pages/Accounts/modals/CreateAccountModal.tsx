@@ -99,6 +99,7 @@ const CreateAccountModal = ({onClose, onSubmit, error, operatorList}: PropsType)
         [state, onSubmit]
     )
 
+
     return (
         <Modal
             error={error}
