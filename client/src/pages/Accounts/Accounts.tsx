@@ -13,7 +13,7 @@ import {defaultFiltersConfig} from "../../utils/views/tables";
 import Button from "../../components/Button/Button";
 import {Icon} from "@iconify/react";
 import icons from "../../utils/icons";
-import {dateFormat, fetchAccounts} from "../../utils/common";
+import {dateFormat, fetchAccounts, NSCDateFormat} from "../../utils/common";
 import {columns, ColumnTypes} from "../../hooks/useSort";
 import CreateAccountModal from "./modals/CreateAccountModal";
 import AccountRowActions from "./components/AccountRowActions/AccountRowActions";
@@ -105,7 +105,11 @@ const Accounts = () => {
     const onAccountSubmit = useCallback(
         async (form: AccountPayloadType) => {
             try {
-                const response = await request.post.account(form.operator as string, form)
+                const response = await request.post.account(form.operator as string, {
+                    ...form,
+                    expiry: NSCDateFormat(form.expiry),
+                    start: NSCDateFormat(form.start),
+                })
 
                 if (response.type === "error") {
                     setError(response.data?.message || "An error occurred.");

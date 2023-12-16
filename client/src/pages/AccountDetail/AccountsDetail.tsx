@@ -125,7 +125,19 @@ const AccountsDetail = () => {
                             {
                                 name: "Data",
                                 value: account?.nats.limits.data
-                            }
+                            },
+                            {
+                                name: "Subscriptions",
+                                value: account?.nats.limits.subs
+                            },
+                            {
+                                name: "Subscriptions",
+                                value: account?.nats.limits.subs
+                            },
+                            {
+                                name: "Wildcards",
+                                value: account?.nats.limits.wildcards
+                            },
                         ]
                     },
                     {
@@ -159,7 +171,23 @@ const AccountsDetail = () => {
                             {
                                 name: "Version",
                                 value: account?.nats.version
-                            }
+                            },
+                            {
+                                name: "Publish (allow)",
+                                value: Object.entries(account?.nats.default_permissions.pub.allow ?? {}).map(([key, value]) => `${value}`).join(", ")
+                            },
+                            {
+                                name: "Publish (deny)",
+                                value: Object.entries(account?.nats.default_permissions.pub.deny ?? {}).map(([key, value]) => `${value}`).join(", ")
+                            },
+                            {
+                                name: "Subscribe (allow)",
+                                value: Object.entries(account?.nats.default_permissions.sub.allow ?? {}).map(([key, value]) => `${value}`).join(", ")
+                            },
+                            {
+                                name: "Subscribe (deny)",
+                                value: Object.entries(account?.nats.default_permissions.sub.deny ?? {}).map(([key, value]) => `${value}`).join(", ")
+                            },
                         ]
                     }
                 ]}/>
