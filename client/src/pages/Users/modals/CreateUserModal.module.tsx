@@ -22,7 +22,7 @@ type PropsType = {
   error: string;
   onClose: () => void;
   onSubmit: (state: UserPayload) => void;
-  operatorList: string[];
+  accountList: string[];
 };
 
 
@@ -41,14 +41,14 @@ const initialState: UserPayload = {
  * @param props.onClose - Callback to close the modal.
  * @param props.onSubmit - Callback to submit the form.
  * @param props.error - Error message to display, if any.
- * @param props.operatorList - List of operators to select from.
+ * @param props.accountList - List of operators to select from.
  * @returns Modal form component.
  */
 const CreateUserModal = ({
   onClose,
   onSubmit,
   error,
-  operatorList,
+  accountList,
 }: PropsType) => {
   const [state, setState] = useState<UserPayload>(initialState);
 
@@ -85,14 +85,6 @@ const CreateUserModal = ({
       <div className={classes.container}>
         <Input
           isRequired
-          labelText="Account"
-          hintText="Account under which the user will be created"
-          name="account"
-          value={state.account}
-          onChange={handleInputChange}
-        />
-        <Input
-          isRequired
           labelText="Name"
           name="name"
           value={state.name}
@@ -100,10 +92,10 @@ const CreateUserModal = ({
         />
         <Select
           isRequired
-          labelText="Operator"
-          hintText="Operator under which the user will be created"
-          value={state.operator}
-          items={operatorList.map((name) => ({ id: name, value: name }))}
+          labelText="Account"
+          hintText="Account under which the user will be created"
+          value={state.account}
+          items={accountList.map((name) => ({ id: name, value: name }))}
           name="operator"
           onChange={handleOperatorChange}
         />

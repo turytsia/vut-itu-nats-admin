@@ -19,7 +19,7 @@ const Users = () => {
     const { request } = useContext(AppContext)
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [users, setUsers] = useState<ExtendedUserType[]>([])
-    const [operators, setOperators] = useState<string[]>([])
+    const [accounts, setAccounts] = useState<string[]>([])
     const [isCreateActive, setIsCreateActive] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
 
@@ -31,7 +31,7 @@ const Users = () => {
             try {
                 
                 const users = await fetchUsers()
-                setOperators(users.map(user => user.operator))
+                setAccounts(users.map(user => user.account))
                 setUsers(users)
 
             } catch (error) {
@@ -93,7 +93,6 @@ const Users = () => {
         fetch()
     }, [fetch])
 
-    console.log(operators)
 
     return (
         <Page title={`Users (${users.length})`}>
@@ -115,7 +114,7 @@ const Users = () => {
                     error={error}
                     onSubmit={onUserSubmit}
                     onClose={() => setIsCreateActive(false)}
-                    operatorList={operators}
+                    accountList={accounts}
                 />
             )}
         
