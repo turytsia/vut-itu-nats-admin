@@ -374,13 +374,15 @@ export type SecretPayloadType = {
 export type DataFlowType = {
     "name": string,
     "server": string,
-    "created"?: string
+    "created"?: string,
+    "lat": number,
+    "lon": number
 }
 
 /**
  * Request type template
  */
-type RequestType<T extends Array<string | object>, S> = (...args: T) => Promise<S>
+type RequestType<T extends Array<string | object | number>, S> = (...args: T) => Promise<S>
 
 type GetConfigType = RequestType<[operator: string], string>
 type PostConfigType = RequestType<[payload: { name: string, operator: string }], ResponseType>
@@ -425,11 +427,14 @@ type PostSecretType = RequestType<[payload: SecretPayloadType], ResponseType>
 
 type GetDataFlowType = RequestType<[], { [key: string]: DataFlowType[] | null }>
 type PostDataFlowType = RequestType<[payload: DataFlowType], ResponseType>
+type PatchDataFlow = RequestType<[payload: DataFlowType], ResponseType>
 
 type GetLocationType = RequestType<[location: string], any>
+type GetReverseLocationType = RequestType<[lat: number, lng: number], any>
 
 interface GetRequestActions {
     location: GetLocationType
+    reverseLocation: GetReverseLocationType
     dashboard: GetDashboardType
     bind: GetBindOperatorType
     operators: GetOperatorsType
@@ -465,6 +470,7 @@ interface PatchRequestActions {
     operator: PatchOperatorType
     account: PatchAccountType
     user: PatchUserType
+    dataflows: PatchDataFlow
 }
 
 interface DeleteRequestActions {
@@ -496,6 +502,17 @@ const GetRequest: GetRequestActions = {
                 `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
             );
             
+            return data
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    reverseLocation: async (lat: number, lng: number) => {
+        try {
+            const { data } = await axios.get(
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+            );
+
             return data
         } catch (error) {
             console.error(error);
@@ -697,6 +714,15 @@ const PatchRequest: PatchRequestActions = {
             const err = error as AxiosError;
             return {type: "error", data: err.response?.data};
         }
+    },
+    dataflows: async (payload: DataFlowType): Promise<ResponseType> => {
+        try {
+            const response = await patch(`/dataflows/${payload.name}`, payload);
+            return { type: "success", data: response.data };
+        } catch (error) {
+            const err = error as AxiosError;
+            return { type: "error", data: err.response?.data };
+        }
     }
 }
 
@@ -709,7 +735,7 @@ const DeleteRequest: DeleteRequestActions = {
     },
     dataflow: async (name: string): Promise<ResponseType> => {
         try {
-            const response = await adelete(`/dataflow/${name}`);
+            const response = await adelete(`/dataflows/${name}`);
             return {type: "success", data: response.data};
         } catch (error) {
             const err = error as AxiosError;

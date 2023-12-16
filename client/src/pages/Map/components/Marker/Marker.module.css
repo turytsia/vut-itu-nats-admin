@@ -12,6 +12,13 @@
     cursor: pointer;
 }
 
+.container.dark {
+    background-color: #52565b;
+}
+.container.dark:hover {
+    background-color: #44474a;
+}
+
 .container:hover {
     background-color: #eeeeee;
 }

@@ -43,6 +43,7 @@ type PropsType = {
     children?: React.ReactNode,
     sectionChangeCb?: (index: number) => void
     deletable?: DeletableSectionType
+    editConfig?: { onUpdate: (name: string, index: number) => void }
 }
 
 // accessors
@@ -129,7 +130,8 @@ const Details = ({
     deletable = {
         isDeletable: false,
         onDelete: (_: string, __: number) => {}
-    }
+    },
+    editConfig
 }: PropsType) => {
     const {isDark} = useContext(AppContext)
 
@@ -196,11 +198,18 @@ const Details = ({
                                     {attributes.length}
                                 </span>
                             )}
-                            {deletable.isDeletable && (
-                                <span>
-                                    <Icon color={"red"} icon={icons.close} height={20} width={20} onClick={yieldDeleteHandler(title.value, i)}/>
-                                </span>
-                            )}
+                            <div className={classes.actions}>
+                                {editConfig && (
+                                    <span>
+                                        <Icon icon={icons.pen} height={20} width={20} onClick={() => editConfig.onUpdate(title.value, i)} />
+                                    </span>
+                                )}
+                                {deletable.isDeletable && (
+                                    <span>
+                                        <Icon icon={icons.close} height={20} width={20} onClick={yieldDeleteHandler(title.value, i)} />
+                                    </span>
+                                )}
+                            </div>
                         </Button>
                     ))
                     }

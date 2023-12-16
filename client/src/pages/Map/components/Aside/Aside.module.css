@@ -9,6 +9,10 @@
     border-radius: var(--radius);
 }
 
+.aside.dark {
+    background-color: #52565b;
+}
+
 .header {
     display: flex;
     align-items: center;
