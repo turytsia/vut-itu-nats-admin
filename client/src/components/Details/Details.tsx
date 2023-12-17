@@ -5,7 +5,7 @@
  * It generates details page based on given config.
  *
  * @module Details
- * 
+ *
  * @author xturyt00
  */
 import React, { useContext, useEffect, useState } from 'react'
@@ -31,11 +31,24 @@ export type DetailsConfigType = {
     attributes: DetailsConfigAttributeType[]
 }[]
 
+
+/**
+ * @author xbarza00
+ *
+ * @description deletable section type, if isDeletable is true, it will render delete icon
+ */
 type DeletableSectionType = {
     isDeletable?: boolean,
     onDelete: (details: string, i: number) => void
 }
 
+
+/**
+ * @author xturyt00
+ * @editor xbarza00
+ *
+ * @description props type for Details component
+ */
 type PropsType = {
     detailsConfig: DetailsConfigType,
     filtersConfig?: FiltersConfigType
@@ -50,7 +63,7 @@ type PropsType = {
 
 /**
  * Retrieves search filter's value
- * 
+ *
  * @param filtersConfig - Filters config
  * @returns Search filter's value
  */
@@ -60,7 +73,7 @@ const getSearchValue = (filtersConfig?: FiltersConfigType) => {
 
 /**
  * Retrieve title's value from Details config based on index
- * 
+ *
  * @param index - Current index
  * @param detailsConfig - Details config
  * @returns Title's value from Details config based on index
@@ -71,7 +84,7 @@ const getCurrentTitle = (index: number, detailsConfig: DetailsConfigType) => {
 
 /**
  * Retrieve attributes from Details config based on index
- * 
+ *
  * @param index - Current index
  * @param detailsConfig - Details config
  * @returns Attributes from Details config based on index
@@ -84,7 +97,7 @@ const getCurrentAttributes = (index: number, detailsConfig: DetailsConfigType) =
 
 /**
  * Filter attributes
- * 
+ *
  * @param attributes - Attributes
  * @param filtersConfig - Filters config
  * @returns Filtered attributes
@@ -100,7 +113,7 @@ const filterAttributes = (attributes: DetailsConfigAttributeType[], filtersConfi
 
 /**
  * Filter details
- * 
+ *
  * @param detailsConfig - Details config
  * @param filtersConfig - Filters config
  * @returns Filtered details
@@ -113,12 +126,14 @@ const filterDetailsConfig = (detailsConfig: DetailsConfigType, filtersConfig?: F
 
 /**
  * Details component
- * 
+ *
  * @param props - Component props
  * @param props.detailsConfig - Details config
  * @param props.filtersConfig - Filters config
  * @param props.renderActions - Renders element to the right of the filters
  * @returns Details component
+ *
+ * @editor xbarza00
  */
 const Details = ({
     detailsConfig,
@@ -145,6 +160,10 @@ const Details = ({
 
     const searchValue = getSearchValue(filtersConfig)
 
+    /**
+     * Handler for action `section change`
+     * @editor xbarza00
+     */
     const onSectionChange = (i: number) => {
         sectionChangeCb(i)
         setSectionIndex(i)
@@ -156,6 +175,11 @@ const Details = ({
         setSectionIndex(0)
     }, [searchValue])
 
+    /**
+     * @editor xbarza00
+     *
+     * @description yields delete handler for delete icon
+     */
     const yieldDeleteHandler = (name: string, sectionIndex: number) => {
         return (e: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
             e.stopPropagation()
@@ -167,6 +191,12 @@ const Details = ({
         [classes.dark]: isDark
     })
 
+    /**
+     * @author xturyt00
+     * @editor xbarza00 (deletable)
+     *
+     * @description renders Details component
+     */
     return (
         <div className={containerStyles}>
             {filtersConfig && (

@@ -1,3 +1,13 @@
+/**
+ * @fileOverview Accounts Detail Page.
+ *
+ * @exports AccountsDetail
+ *
+ * @version 1.0.0
+ *
+ * @author xbarza00
+ */
+
 import {useCallback, useContext, useEffect, useState} from 'react'
 import Page from '../../components/Page/Page'
 import Button from '../../components/Button/Button'

@@ -1,3 +1,13 @@
+/**
+ * @fileOverview JWT Modal Component.
+ *
+ * @exports JWTModal
+ *
+ * @version 1.0.0
+ *
+ * @author xbarza00
+ */
+
 import React from 'react'
 import Modal from '../../../../components/Modal/Modal'
 import Input from '../../../../components/Input/Input'

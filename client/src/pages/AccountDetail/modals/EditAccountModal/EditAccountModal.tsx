@@ -1,3 +1,14 @@
+/**
+ * @file EditAccountModal.tsx
+ * @brief Modal form component to edit account
+ *
+ * This file contains implementation of a Modal form component to edit account.
+ *
+ * @module EditAccountModal
+ *
+ * @author xbarza00
+ */
+
 import React, {ChangeEvent, useCallback, useState} from 'react'
 
 import icons from "../../../../utils/icons"

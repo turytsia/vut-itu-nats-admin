@@ -1,3 +1,14 @@
+/**
+ * useNats hook
+ *
+ * This hook is used to connect to a NATS server and subscribe to all messages.
+ *
+ * @module useNats
+ *
+ * @author xturyt00
+ * @author xbarza00
+ */
+
 import React, { useEffect, useState } from 'react'
 import { connect, Msg, NatsConnection, MsgHdrs } from "nats.ws"
 

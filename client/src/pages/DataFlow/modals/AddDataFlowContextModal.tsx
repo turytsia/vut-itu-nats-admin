@@ -1,3 +1,15 @@
+/**
+ * @fileOverview AddDataFlowContextModal component.
+ *
+ * @exports AddDataFlowContextModal
+ *
+ * @version 1.0.0
+ *
+ * @module AddDataFlowContextModal
+ *
+ * @author  xbarza00
+ */
+
 import React, {ChangeEvent, useCallback, useState} from 'react'
 import Input from '../../../components/Input/Input'
 import Modal from '../../../components/Modal/Modal'

@@ -7,6 +7,7 @@
  * @module Input
  * 
  * @author xturyt00
+ * @editor xbarza00
  */
 import React, { ChangeEventHandler, useContext } from 'react'
 import classes from "./Input.module.css"
@@ -27,7 +28,7 @@ type PropsType = {
 	placeholder?: string
 	hintText?: string
 	name?: string
-	type?: string
+	type?: string // editor = xbarza00
 	className?: string
 	onChange?: ChangeEventHandler<HTMLInputElement>
 }
@@ -64,7 +65,7 @@ const Input = ({
 	width,
 	name,
 	className,
-	type = "text",
+	type = "text", // editor = xbarza00
 	onChange = () => { }
 }: PropsType) => {
 
@@ -88,7 +89,7 @@ const Input = ({
 				disabled={disabled}
 				placeholder={placeholder}
 				name={name}
-				type={type}
+				type={type} // editor = xbarza00
 				onChange={onChange} />
 
 			{isCopy && <CopyButton className={classes.copy} value={value} />}
