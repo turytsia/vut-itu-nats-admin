@@ -21,15 +21,15 @@ import {
 import UserRowActions from "./components/UserRowActions";
 import CreateUserModal from "./modals/CreateUserModal.module";
 import DeleteUserModal from "../../UsersDetail/modals/DeleteUserModal/DeleteUserModal";
+import { ExtendedAccountType } from "../Accounts/Accounts";
 
 export type UsersExtention = { operator: string; account: string };
 export type ExtendedUserType = UserType & UsersExtention;
 
 const Users = () => {
-  const { request } = useContext(AppContext);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { request, isLoading, setIsLoading } = useContext(AppContext);
   const [users, setUsers] = useState<ExtendedUserType[]>([]);
-  const [accounts, setAccounts] = useState<string[]>([]);
+  const [accounts, setAccounts] = useState<ExtendedAccountType[]>([]);
   const [isCreateActive, setIsCreateActive] = useState<boolean>(false);
   const [isDeleteActive, setIsDeleteActive] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -41,7 +41,7 @@ const Users = () => {
       const users = await fetchUsers();
       const accounts = await fetchAccounts()
 
-      setAccounts(accounts.map(({ name }) => name));
+      setAccounts(accounts);
       setUsers(users);
     } catch (error) {
       console.error(error);
@@ -55,27 +55,27 @@ const Users = () => {
    */
   const onUserSubmit = useCallback(
     async (form: UserPayload) => {
+      setIsLoading(true);
       try {
         const response = await request.post.user(
           form.operator as string,
           form.account as string,
           form
         );
-
+        setError(response.type === "error" ? response.data.message : "");
         if (response.type === "error") {
-          setError(response.data?.message || "An error occurred.");
           return;
         }
 
         const users = await fetchUsers();
 
         setUsers(users);
-        setError("");
         setIsCreateActive(false);
         notify(response.data.message, "success");
       } catch (e) {
         console.error(e);
       } finally {
+        setIsLoading(false);
       }
     },
     [request]

@@ -13,7 +13,7 @@ import { request } from "../../../context/AppContextProvider";
 import { RequestAccountType } from "../../../utils/types";
 import { DropdownItemType } from "../../../components/Dropdown/Dropdown";
 import DateInput from "../../../components/DateInput/DateInput";
-import { NSCDateFormat } from "../../../utils/common";
+import { NSCDateFormat, SecondsToMs } from "../../../utils/common";
 
 type PropsType = {
   onClose: () => void;
@@ -31,27 +31,40 @@ const initialState: UserPayload = {
   conn_type: "",
 };
 
-const EditUserModal = ({ onClose, onSubmit, user: initialUser }: PropsType) => {
-  const [state, setState] = useState<UserPayload>(initialState);
+const EditUserModal = ({
+  onClose,
+  onSubmit,
+  user: initialUser,
+  error
+}: PropsType) => {
+  const [state, setState] = useState<UserPayload>({
+    ...initialState,
+    expiry: initialUser.exp ? new Date(SecondsToMs(initialUser.exp)).toISOString() : null,
+    start: initialUser.nbf ? new Date(SecondsToMs(initialUser.nbf)).toISOString() : null
+  });
   const [user, setUser] = useState<UserPatchType & UserType>(initialUser);
 
-  const [isBearer, setIsBearer] = useState<boolean>(false);
+  const [isBearer, setIsBearer] = useState<boolean>(user.nats.bearer_token ?? false);
   const [allowPub, setAllowPub] = useState<string[]>(
     initialUser.nats.pub.allow ?? []
   );
-  const [DenyPub, setDenyPub] = useState<string[]>([]);
-  const [allowPubResp, setAllowPubResp] = useState<string[]>([]);
+  const [DenyPub, setDenyPub] = useState<string[]>(user.nats.pub.deny ?? []);
+  const [allowPubResp, setAllowPubResp] = useState<string>(user.nats?.pub.response ?? "1");
   const [allowPubSub, setAllowPubSub] = useState<string[]>([]);
   const [denyPubSub, setDenyPubSub] = useState<string[]>([]);
   const [connType, setConnType] = useState<string[]>([]);
-  const [sourceNet, setSourceNet] = useState<string[]>([]);
-  const [tag, setTag] = useState<string[]>([]);
+  const [sourceNet, setSourceNet] = useState<string[]>(user.nats.src ?? []);
+  const [tag, setTag] = useState<string[]>(user.nats.tags ?? []);
   const [time, setTime] = useState<string[]>([]);
+
+  const [data, setData] = useState<number>(user.nats.data ?? -1)
+  const [subscriptions, setSubscriptions] = useState<number>(user.nats?.subs ?? -1)
+  const [payload, setPayload] = useState<number>(user.nats.payload ?? -1)
 
   const [allowSub, setAllowSub] = useState<string[]>(
     initialUser.nats.sub.allow ?? []
   );
-  const [denySub, setDenySub] = useState<string[]>([]);
+  const [denySub, setDenySub] = useState<string[]>(user?.nats.sub.deny ?? []);
 
   const [rm, setRm] = useState<string[]>([]);
   const [rmConn, setRmConn] = useState<string[]>([]);
@@ -64,7 +77,7 @@ const EditUserModal = ({ onClose, onSubmit, user: initialUser }: PropsType) => {
       allow_pub: allowPub.join(","),
       deny_pub: DenyPub.join(","),
 
-      allow_pub_response: allowPubResp.join(","),
+      allow_pub_response: allowPubResp,
       allow_pubsub: allowPubSub.join(","),
       conn_type: connType.join(","),
 
@@ -83,6 +96,9 @@ const EditUserModal = ({ onClose, onSubmit, user: initialUser }: PropsType) => {
       tag: tag.join(","),
 
       bearer: isBearer,
+      data: data.toString(),
+      subs: subscriptions.toString(),
+      payload: payload.toString()
     } as UserPatchType);
   };
 
@@ -103,6 +119,7 @@ const EditUserModal = ({ onClose, onSubmit, user: initialUser }: PropsType) => {
 
   return (
     <Modal
+      error={error}
       title={"Update user: " + user.name}
       textProceed="Save"
       textCancel="Cancel"
@@ -117,9 +134,9 @@ const EditUserModal = ({ onClose, onSubmit, user: initialUser }: PropsType) => {
             "Set maximum message payload in bytes for the user (-1 is unlimited)"
           }
           name="payload"
-          value={user.nats?.payload}
+          value={payload}
           type={"number"}
-          onChange={handleInputChange}
+          onChange={e => setPayload(+e.target.value)}
         />
         <Checkbox
           labelText="Require bearer"
@@ -132,17 +149,17 @@ const EditUserModal = ({ onClose, onSubmit, user: initialUser }: PropsType) => {
           labelText="Subscriptions"
           hintText={"Set maximum active subscriptions for the user"}
           name="subscriptions"
-          value={user.nats?.subs}
+          value={subscriptions}
           type={"number"}
-          onChange={handleInputChange}
+          onChange={e => setSubscriptions(+e.target.value)}
         />
         <Input
           labelText="Data"
           hintText={"Set data for the user"}
           name="data"
-          value={user.nats?.data}
+          value={data}
           type={"number"}
-          onChange={handleInputChange}
+          onChange={e => setData(+e.target.value)}
         />
         <InputTags
           onDelete={(pub) =>
@@ -166,9 +183,9 @@ const EditUserModal = ({ onClose, onSubmit, user: initialUser }: PropsType) => {
             "Set permissions to limit how often a client can publish to reply subjects"
           }
           name="subscriptions"
-          value={user.nats?.pub.response}
+          value={allowPubResp}
           type={"number"}
-          onChange={handleInputChange}
+          onChange={e => setAllowPubResp(e.target.value)}
         />
         <InputTags
           onDelete={(type) =>
@@ -203,7 +220,7 @@ const EditUserModal = ({ onClose, onSubmit, user: initialUser }: PropsType) => {
             )
           }
           labelText="Allow pub sub"
-          value={denySub}
+          value={allowPubSub}
           onChange={setAllowPubSub}
         />
         <InputTags

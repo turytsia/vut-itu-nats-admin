@@ -94,7 +94,7 @@ const Modal = ({
                                     <div>
                                         <Icon icon={icons.error} height={20} width={20} />
                                     </div>
-                                    <span>{errors ? errors[0] : ""}</span>
+                                    <span>{errors ? errors[0] : error}</span>
                                 </>
                             )}
                         </div>

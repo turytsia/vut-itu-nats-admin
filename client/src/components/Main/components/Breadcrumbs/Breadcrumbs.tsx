@@ -50,9 +50,9 @@ const map: [regex: RegExp, path: string][] = [
     [/^\/users$/, "/"],
     [/^\/dataflows$/, "/"],
     [/^\/map$/, "/"],
-    [/^\/operators\/.+$/, "/operators"],
-    [/^\/operators\/.+\/accounts\/.+$/, "/accounts"],
-    [/^\/operators\/.+\/accounts\/.+\/users\/.+$/, "/users"]
+    [/^\/operators\/[^\/]+$/, "/operators"],
+    [/^\/operators\/[^\/]+\/accounts\/[^\/]+$/, "/accounts"],
+    [/^\/operators\/[^\/]+\/accounts\/[^\/]+\/users\/[^\/]+$/, "/users"]
 ]
 
 /**
@@ -67,6 +67,7 @@ const Breadcrumbs = () => {
 
     const handleReturn = () => {
         const path = getRef(pathname)
+        console.log(pathname)
         navigate(path ? path[1] : "")
     }
 

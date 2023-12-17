@@ -46,7 +46,7 @@ const EditAccountModal = ({
     const [rmSk, setRmSk] = useState<string>()
     const [rmTag, setRmTag] = useState<string>()
     const [tag, setTag] = useState<string>()
-    const [subscriptions, setSubscriptions] = useState<number>()
+    const [subscriptions, setSubscriptions] = useState<string>("")
     const [wildcardExports, setWildcardExports] = useState<boolean>()
 
     const onSave = () => {
@@ -211,7 +211,7 @@ const EditAccountModal = ({
                     hintText={"set maximum subscription for the account (-1 is unlimited)"}
                     type={"number"}
                     value={subscriptions ?? ""}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSubscriptions(parseInt(e.target.value))}/>
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSubscriptions(e.target.value)}/>
                 <div/>
                 <Input
                     labelText="Exports"

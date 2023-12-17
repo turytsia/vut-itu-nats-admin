@@ -122,9 +122,9 @@ export type AccountType = NSCBaseType & {
                 allow: string,
                 deny: string,
             },
-            "resp": {
-                "max": number,
-                "ttl": number,
+            "resp"?: {
+                "max"?: number,
+                "ttl"?: number,
             }
         },
         "description": string,
@@ -171,19 +171,27 @@ export type AccountPatchType = {
 }
 
 export type UserType = NSCBaseType & {
+  exp?: number
+  nbf?: number
   nats: {
     data: number;
     payload: number;
     pub: {
       allow?: string[];
-      response?: number;
+      response?: string;
+      deny?: string[]
     };
     sub: {
       allow?: string[];
+      deny?: string[]
     };
+    src?: string[]
+    resp?: { max: number, ttl: number }
+    tags?: string[]
     subs: number;
     type: string;
     version: number;
+    bearer_token?: boolean;
   };
 };
 

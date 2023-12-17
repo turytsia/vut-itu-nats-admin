@@ -16,6 +16,7 @@ import { fetchUsers } from "../utils/common";
 import classes from "./UserDetail.module.css";
 import Users, { ExtendedUserType } from "../pages/Users/Users";
 import DeleteUserModal from "./modals/DeleteUserModal/DeleteUserModal";
+import ButtonSourceCode from "../components/ButtonSourceCode/ButtonSourceCode";
 
 const UsersDetail = () => {
   const {
@@ -28,8 +29,7 @@ const UsersDetail = () => {
   const [search, setSearch] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  const { request } = useContext(AppContext);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { request, setIsLoading } = useContext(AppContext);
   const [user, setUser] = useState<(UserPatchType & UserType) | null>(null);
 
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
@@ -61,7 +61,8 @@ const UsersDetail = () => {
         accountName as string,
         userName as string
       );
-
+      
+      
       setError(response.type === "success" ? "" : response.data.message);
       if (response.type === "success") {
         setIsDeleteModal(false);
@@ -85,7 +86,7 @@ const UsersDetail = () => {
         userName as string,
         settings as UserPatchType
       );
-
+      console.log(response)
       setError(response.type === "success" ? "" : response.data.message);
       if (response.type === "success") {
         const user = (await request.get.user(
@@ -119,6 +120,7 @@ const UsersDetail = () => {
       <Details
         renderActions={
           <>
+            <ButtonSourceCode data={user ?? {}} />
             <Button isBlue onClick={() => setIsEditModal(true)}>
               Update User
               <Icon icon={icons.pen} width={20} height={20} />
@@ -167,6 +169,14 @@ const UsersDetail = () => {
               {
                 name: "Created at",
                 value: datetimeFormat(SecondsToMs(user?.iat!)),
+              },
+              {
+                name: "Start at",
+                value: user?.nbf ? datetimeFormat(SecondsToMs(user?.nbf)) : null,
+              },
+              {
+                name: "Expires at",
+                value: user?.exp ? datetimeFormat(SecondsToMs(user?.exp)) : null,
               },
             ],
           },
@@ -218,6 +228,70 @@ const UsersDetail = () => {
                     ))}
                   </span>
                 ) : null,
+              },
+              {
+                name: "Deny pub",
+                value: user?.nats.pub.deny ? (
+                  <span className={classes.tags}>
+                    {user?.nats.pub.deny.map((tag) => (
+                      <Tag key={uuid()} isBlue>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </span>
+                ) : null,
+              },
+              {
+                name: "Deny sub",
+                value: user?.nats.sub.deny ? (
+                  <span className={classes.tags}>
+                    {user?.nats.sub.deny.map((tag) => (
+                      <Tag key={uuid()} isBlue>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </span>
+                ) : null,
+              },
+              {
+                name: "Tags",
+                value: user?.nats.tags ? (
+                  <span className={classes.tags}>
+                    {user?.nats.tags.map((tag) => (
+                      <Tag key={uuid()} isBlue>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </span>
+                ) : null,
+              },
+              {
+                name: "Network sources",
+                value: user?.nats.src ? (
+                  <span className={classes.tags}>
+                    {user?.nats.src.map((tag) => (
+                      <Tag key={uuid()} isBlue>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </span>
+                ) : null,
+              },
+              {
+                name: "Payload",
+                value: user?.nats.payload ? user?.nats.payload : null,
+              },
+              {
+                name: "Data",
+                value: user?.nats.data ? user?.nats.data : null,
+              },
+              {
+                name: "Subscriptions",
+                value: user?.nats.subs ? user?.nats.subs : null,
+              },
+              {
+                name: "Bearer Token",
+                value: user?.nats.bearer_token ? "Yes" : "No",
               },
               {
                 name: "Type",

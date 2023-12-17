@@ -18,12 +18,13 @@ import Modal from "../../../components/Modal/Modal";
 import Input from "../../../components/Input/Input";
 import Select from "../../../components/Select/Select";
 import { DropdownItemType } from "../../../components/Dropdown/Dropdown";
+import { ExtendedAccountType } from "../../Accounts/Accounts";
 
 type PropsType = {
   error: string;
   onClose: () => void;
   onSubmit: (state: UserPayload) => void;
-  accountList: string[];
+  accountList: ExtendedAccountType[];
 };
 
 // initial state for form inputs
@@ -94,9 +95,9 @@ const CreateUserModal = ({
           labelText="Account"
           hintText="Account under which the user will be created"
           value={state.account}
-          items={accountList.map((name) => ({ id: name, value: name }))}
+          items={accountList.map(({ name }) => ({ id: name, value: name }))}
           name="account"
-          onChange={(value) => setState(prev => ({ ...prev, account: value }))}
+          onChange={(value) => setState(prev => ({ ...prev, account: value, operator: accountList.find(({ name }) => name === value)?.operator ?? "" }))}
         />
       </div>
     </Modal>

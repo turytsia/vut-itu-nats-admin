@@ -114,7 +114,7 @@ const AccountsDetail = () => {
                             },
                             {
                                 name: "ttl",
-                                value: ((account?.nats.default_permissions.resp.ttl ?? 0) / 1000000000) + "s",
+                                value: account?.nats.default_permissions.resp ? ((account?.nats.default_permissions.resp.ttl ?? 0) / 1000000000) + "s" : null,
                             }
                         ]
                     },

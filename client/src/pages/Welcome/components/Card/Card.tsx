@@ -30,7 +30,7 @@ const Card = ({
             case "account":
                 return `/operators/${(data as ExtendedAccountType).operator}/accounts/${(data as ExtendedAccountType).name}`
             case "user":
-                return `/operators/${(data as ExtendedUserType).operator}/accounts/${(data as ExtendedUserType).account}/${(data as ExtendedUserType).name}`
+                return `/operators/${(data as ExtendedUserType).operator}/accounts/${(data as ExtendedUserType).account}/users/${(data as ExtendedUserType).name}`
         }
     }
 
