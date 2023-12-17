@@ -26,6 +26,8 @@ type PropsType = {
     account: AccountPatchType & AccountType;
 };
 
+export type EditAccountType = {}
+
 /**
  * EditAccountModal component for editing an account.
  *
