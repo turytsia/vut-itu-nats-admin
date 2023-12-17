@@ -112,6 +112,10 @@ const AccountsDetail = () => {
                                 name: "Created at",
                                 value: datetimeFormat(SecondsToMs(account?.iat!)),
                             },
+                            {
+                                name: "ttl",
+                                value: ((account?.nats.default_permissions.resp.ttl ?? 0) / 1000000000) + "s",
+                            }
                         ]
                     },
                     {

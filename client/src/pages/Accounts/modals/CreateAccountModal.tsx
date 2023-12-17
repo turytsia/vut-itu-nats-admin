@@ -103,6 +103,14 @@ const CreateAccountModal = ({onClose, onSubmit, error, operatorList, setErr}: Pr
                 setErr("Error: Name is required")
                 return
             }
+            if (state.response_ttl !== null) {
+                if (Number(state.response_ttl) < 0) {
+                    setErr("Error: Response TTL must be positive")
+                    return
+                }
+                state.response_ttl = String(Number(state.response_ttl)) + "s"
+            }
+
             onSubmit(state)
         },
         [state, onSubmit]
