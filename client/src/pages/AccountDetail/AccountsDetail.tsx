@@ -4,15 +4,16 @@ import Button from '../../components/Button/Button'
 import {Icon} from '@iconify/react'
 import icons from '../../utils/icons'
 import {useParams} from 'react-router-dom'
-import {AppContext} from '../../context/AppContextProvider'
+import {AppContext, notify} from '../../context/AppContextProvider'
 import {AccountPatchType, AccountType} from '../../utils/axios'
 import EditAccountModal, {EditAccountType} from './modals/EditAccountModal/EditAccountModal'
-import {dateFormat} from '../../utils/common'
+import {SecondsToMs, dateFormat, datetimeFormat} from '../../utils/common'
 import Details from "../../components/Details/Details"
 import ButtonSourceCode from '../../components/ButtonSourceCode/ButtonSourceCode'
 
 const AccountsDetail = () => {
-    const {request} = useContext(AppContext)
+    const { request, setIsLoading } = useContext(AppContext)
+    const [error, setError] = useState<string>("")
 
     const {operator: operatorName, account: accountName} = useParams()
 
@@ -35,12 +36,21 @@ const AccountsDetail = () => {
 
     const onEditSubmit = useCallback(
         async (settings: EditAccountType) => {
+            setIsLoading(true)
             try {
-                await request.patch.account(operatorName as string, accountName as string, settings as AccountPatchType)
+                const response = await request.patch.account(operatorName as string, accountName as string, settings as AccountPatchType)
                 await fetch()
-                setIsEditModal(false)
+                
+                setError(response.type === "success" ? "" : response.data.message)
+                if (response.type === "success") {
+
+                    setIsEditModal(false)
+                    notify(response.data.message, "success")
+                }
             } catch (e) {
                 console.error(e)
+            } finally {
+                setIsLoading(false)
             }
         },
         []
@@ -100,7 +110,7 @@ const AccountsDetail = () => {
                             },
                             {
                                 name: "Created at",
-                                value: dateFormat(account?.iat!),
+                                value: datetimeFormat(SecondsToMs(account?.iat!)),
                             },
                         ]
                     },
@@ -131,12 +141,12 @@ const AccountsDetail = () => {
                                 value: account?.nats.limits.subs
                             },
                             {
-                                name: "Subscriptions",
-                                value: account?.nats.limits.subs
-                            },
-                            {
                                 name: "Wildcards",
                                 value: account?.nats.limits.wildcards
+                            },
+                            {
+                                name: "Description",
+                                value: account?.nats.description
                             },
                         ]
                     },
@@ -193,6 +203,7 @@ const AccountsDetail = () => {
                 ]}/>
             {(isEditModal && account) && (
                 <EditAccountModal
+                    error={error}
                     account={account}
                     onSubmit={onEditSubmit}
                     onClose={() => setIsEditModal(false)}

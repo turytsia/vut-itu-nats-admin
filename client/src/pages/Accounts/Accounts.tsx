@@ -13,7 +13,7 @@ import {defaultFiltersConfig} from "../../utils/views/tables";
 import Button from "../../components/Button/Button";
 import {Icon} from "@iconify/react";
 import icons from "../../utils/icons";
-import {dateFormat, fetchAccounts, NSCDateFormat} from "../../utils/common";
+import {dateFormat, datetimeFormat, fetchAccounts, NSCDateFormat, SecondsToMs} from "../../utils/common";
 import {columns, ColumnTypes} from "../../hooks/useSort";
 import CreateAccountModal from "./modals/CreateAccountModal";
 import AccountRowActions from "./components/AccountRowActions/AccountRowActions";
@@ -89,7 +89,7 @@ const Accounts = () => {
                 case "sub":
                     return account[key]
                 case "iat":
-                    return dateFormat(account[key])
+                    return datetimeFormat(SecondsToMs(account[key]))
                 case "":
                     return (
                         <AccountRowActions operatorName={account.operator} account={account} />

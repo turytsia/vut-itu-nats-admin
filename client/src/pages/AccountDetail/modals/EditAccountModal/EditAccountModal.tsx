@@ -9,6 +9,7 @@ import classes from "./EditAccountModal.module.css"
 import Checkbox from "../../../../components/Checkbox/Checkbox";
 
 type PropsType = {
+    error: string
     onClose: () => void
     onSubmit: (settings: AccountPatchType) => void
     account: AccountPatchType & AccountType
@@ -17,6 +18,7 @@ type PropsType = {
 export type EditAccountType = {}
 
 const EditAccountModal = ({
+    error,
                               onClose,
                               onSubmit,
                               account: initialAccount
@@ -79,6 +81,7 @@ const EditAccountModal = ({
 
     return (
         <Modal
+            error={error}
             title={"Update account: " + initialAccount.name}
             textProceed="Save"
             textCancel="Cancel"
