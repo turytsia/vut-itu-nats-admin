@@ -120,7 +120,11 @@ export type AccountType = NSCBaseType & {
             },
             "sub": {
                 allow: string,
-                deny: string
+                deny: string,
+            },
+            "resp": {
+                "max": number,
+                "ttl": number,
             }
         },
         "description": string,
