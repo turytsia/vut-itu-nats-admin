@@ -36,24 +36,11 @@ const Welcome = () => {
 
     const [error, setError] = useState("")
     const [data, setData] = useState<NSCDataType>(initialData)
-    const [dashboard, setDashboard] = useState<DashboardSettingsFormType>(initialFormState)
+    const [dashboard, setDashboard] = useState<RequestDashboardType>(initialFormState)
 
     const [search, setSearch] = useState<string>("")
 
     const { isLoading, setIsLoading } = useContext(AppContext)
-
-    const DashboardFormToRequest = (form: DashboardSettingsFormType): RequestDashboardType => {
-        return {
-            dataflows: form.dataflows.map(name => data.dataflows.find(({ name: n }) => n === name)!),
-            operators: form.operators.map(name => ({ name })),
-            accounts: form.accounts.map(name => ({ operator: data.accounts.find(({ name: n }) => n === name)?.operator!, name })),
-            users: form.accounts.map(name => ({
-                operator: data.users.find(({ name: n }) => n === name)?.operator!,
-                account: data.users.find(({ name: n }) => n === name)?.account!,
-                name
-            })),
-        }
-    }
 
     const fetch = useCallback(
         async () => {
@@ -66,7 +53,7 @@ const Welcome = () => {
 
                 setData(data)
 
-                setDashboard(RequestToDashboardForm(dashboard))
+                setDashboard(dashboard ?? initialFormState)
 
             } catch (error) {
                 console.error(error)
@@ -78,11 +65,11 @@ const Welcome = () => {
     );
 
     const onSubmit = useCallback(
-        async (form: DashboardSettingsFormType) => {
+        async (form: RequestDashboardType) => {
             setIsLoading(true);
 
             try {
-                const response = await request.patch.dashboard(DashboardFormToRequest(form))
+                const response = await request.patch.dashboard(form)
                 
                 setError(response.type === "success" ? "" : response.data.message)
 
@@ -98,7 +85,7 @@ const Welcome = () => {
                 setIsLoading(false);
             }
         },
-        [DashboardFormToRequest]
+        []
     )
 
     useEffect(() => {
@@ -108,12 +95,11 @@ const Welcome = () => {
     const searchIn = (searchTarget: string, search: string) => {
         return searchTarget.trim().toLowerCase().includes(search.trim().toLowerCase())
     }
-
     const filteredData = useMemo(() => ({
-            operators: data.operators.filter(({ sub, name }) => dashboard.operators.includes(sub) && searchIn(name, search)),
-            accounts: data.accounts.filter(({ sub, name }) => dashboard.accounts.includes(sub) && searchIn(name, search)),
-            users: data.users.filter(({ sub, name }) => dashboard.users.includes(sub) && searchIn(name, search)),
-            dataflows: data.dataflows.filter(({ name }) => dashboard.dataflows.includes(name) && searchIn(name, search))
+            operators: data.operators.filter(({ name }) => dashboard.operators?.find(({ name: n }) => n === name) && searchIn(name, search)),
+            accounts: data.accounts.filter(({ operator, name }) => dashboard.accounts?.find(({ operator: o, name: n }) => o === operator && n === name ) && searchIn(name, search)),
+            users: data.users.filter(({ operator, account, name }) => dashboard.users?.find(({ operator: o, account: a, name: n }) => o === operator && a === account && n === name) && searchIn(name, search)),
+            dataflows: data.dataflows.filter(({ name }) => dashboard.dataflows?.find(({ name: n }) => n === name) && searchIn(name, search))
         }
     ), [dashboard, data, search])
 

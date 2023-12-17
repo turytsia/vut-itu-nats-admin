@@ -118,6 +118,14 @@ const OperatorsDetail = () => {
 								name: "Created at",
 								value: datetimeFormat(SecondsToMs(operator?.iat!)),
 							},
+							{
+								name: "Start at",
+								value: operator?.nbf ? datetimeFormat(SecondsToMs(operator?.nbf)) : null,
+							},
+							{
+								name: "Expires at",
+								value: operator?.exp ? datetimeFormat(SecondsToMs(operator?.exp)) : null,
+							},
 						]
 					},
 					{

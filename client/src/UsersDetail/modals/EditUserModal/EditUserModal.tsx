@@ -213,26 +213,6 @@ const EditUserModal = ({
           value={denySub}
           onChange={setDenySub}
         />
-        <InputTags
-          onDelete={(pub_sub) =>
-            setRm((prev) =>
-              prev.includes(pub_sub) ? prev : [...prev, pub_sub]
-            )
-          }
-          labelText="Allow pub sub"
-          value={allowPubSub}
-          onChange={setAllowPubSub}
-        />
-        <InputTags
-          onDelete={(pub_sub) =>
-            setRm((prev) =>
-              prev.includes(pub_sub) ? prev : [...prev, pub_sub]
-            )
-          }
-          labelText="Deny pub sub"
-          value={denyPubSub}
-          onChange={setDenyPubSub}
-        />
         <DateInput
           placeholder="yyyy.mm.dd"
           name="start"

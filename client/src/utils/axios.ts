@@ -53,6 +53,8 @@ export type NSCBaseType = NameType & {
  * @todo
  */
 export type OperatorType = NSCBaseType & {
+  exp?: number,
+  nbf?: number,
   nats: {
     type: string;
     version: number;
