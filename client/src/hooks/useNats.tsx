@@ -23,7 +23,7 @@ export const decode = (data: Uint8Array): string => {
     return new TextDecoder().decode(data)
 }
 
-const useNats = (servers: string[]) => {
+const useNats = (server: string) => {
     const [messages, setMessages] = useState<Msg[]>([])
     const [natsConnection, setNatsConnection] = useState<NatsConnection | null>(null)
     const [ownMessages, setOwnMessages] = useState<string[]>([])
@@ -39,14 +39,16 @@ const useNats = (servers: string[]) => {
 
     const subscribe = async () => {
 
-        if (natsConnection !== null) {
-            setConnected(true)
-            return
+        if (natsConnection) {
+            close()
         }
 
-        const nc = await connectNats(servers)
+        const nc = await connectNats([server])
+
+        setConnected(!!nc)
+        setNatsConnection(nc)
+
         if (!nc) {
-            setConnected(false)
             return
         }
 
@@ -58,16 +60,14 @@ const useNats = (servers: string[]) => {
                     return
                 }
                 
-                setMessages((prev: Msg[]) => [...prev, msg])
+                setMessages(prev => [...prev, msg])
             }
         })
         
-        // setMessages([]);
-        setNatsConnection(nc)
     }
 
     const publish = async (subject: string, headers: MsgHdrs, data: string) => {
-        const natsConnection = await connectNats(servers)
+        const natsConnection = await connectNats([server])
         if (!natsConnection) {
             return
         }
@@ -81,15 +81,30 @@ const useNats = (servers: string[]) => {
         setOwnMessages((prev: string[]) => [...prev, uuid])
     }
 
+    const close = async () => {
+        console.log(natsConnection)
+        if (!natsConnection) return
+
+        try {
+            await natsConnection.close()
+            console.log("Nats connection closed")
+        } catch (error) {
+            console.error(error)
+        }        
+    }
+
     useEffect(() => {
-        // setMessages([]);
+        setMessages([]);
         subscribe()
-    }, [servers, natsConnection])
+
+    }, [server])
 
     // reset messages on server change
-    // useEffect(() => {
-    //     setMessages([]);
-    // }, [servers, natsConnection])
+    useEffect(() => {
+        return () => {
+            close()
+        }
+    }, [])
 
     return {
         messages,

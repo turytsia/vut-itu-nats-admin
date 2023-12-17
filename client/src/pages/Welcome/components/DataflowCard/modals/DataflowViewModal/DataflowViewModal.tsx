@@ -17,7 +17,7 @@ const DataflowViewModal = ({
     onClose
 }: PropsType) => {
 
-    const { messages, isOwn, publish } = useNats([data.server])
+    const { messages, isOwn, publish } = useNats(data.server)
 
     return (
         <Modal
