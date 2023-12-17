@@ -3,14 +3,14 @@
     right: 8px;
     top: 8px;
     bottom: 8px;
-    width: 300px;
+    width: 400px;
     background-color: #fff;
     padding: 8px;
     border-radius: var(--radius);
 }
 
 .aside.dark {
-    background-color: #52565b;
+    background-color: var(--dark-blue-light);
 }
 
 .header {
@@ -20,6 +20,9 @@
 }
 .header h4 {
     justify-content: space-between;
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 .header svg {
@@ -27,10 +30,12 @@
 }
 
 .container {
+    display: flex;
     overflow-y: auto;
     flex-direction: column;
     flex: 1;
     border-radius: var(--radius);
+    gap: 8px;
 }
 
 .main {
@@ -48,7 +53,9 @@
     flex: 1;
     border-radius: var(--radius);
 }
-
+.formContainer {
+    max-height: 90px;
+}
 .formContainer > * {
     display: block;
   }
