@@ -1,3 +1,12 @@
+/**
+ * @fileoverview ButtonSourceCode component implementation
+ *
+ * This file contains implementation for a button, that shows an object in JSON format
+ *
+ * @module ButtonSourceCode
+ * 
+ * @author xturyt00
+ */
 import React, { useState } from 'react'
 import Button from '../Button/Button'
 import { Icon } from '@iconify/react'
@@ -8,12 +17,18 @@ type PropsType = {
     data: object
 }
 
+/**
+ * ButtonSourceCode component
+ * 
+ * @param props - Component props 
+ * @param props.data - Object to be converted in JSON
+ * @returns ButtonSourceCode
+ */
 const ButtonSourceCode = ({
     data
 }: PropsType) => {
+
     const [isActive, setIsActive] = useState(false)
-
-
 
     return (
         <>

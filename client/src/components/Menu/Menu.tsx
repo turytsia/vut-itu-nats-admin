@@ -5,7 +5,7 @@
  *
  * @module Menu
  * 
- * @author xturyt00
+ * @author xturyt00, xbarza00
  */
 
 import { useContext } from 'react'

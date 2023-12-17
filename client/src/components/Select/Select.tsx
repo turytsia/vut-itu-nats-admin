@@ -3,11 +3,9 @@
  *
  * @module Select
  *
- * @author xbarza00
+ * @author xbarza00, xturyt00
  */
-import React, { useContext, ChangeEventHandler } from 'react'
-import { AppContext } from '../../context/AppContextProvider'
-import classNames from 'classnames'
+import React from 'react'
 import classes from "./Select.module.css"
 import Dropdown, { DropdownItemType } from '../Dropdown/Dropdown'
 import InputContainer from '../InputContainer/InputContainer'
@@ -54,26 +52,6 @@ const Select = ({
     onChange = () => { }
 }: PropsType) => {
 
-    const { isDark } = useContext(AppContext)
-
-    const selectStyles = classNames(classes.select, className, {
-        [classes.dark]: isDark,
-    })
-
-    // const selectOptions = () => {
-    //     console.log(options)
-    //     if (typeof options[0] === "string") {
-    //         options = options as string[]
-    //         return options.map((option) => {
-    //             return <option value={option}>{option}</option>
-    //         })
-    //     }
-    //     options = options as { value: string, label: string }[]
-    //     return options.map((option) => {
-    //         return <option value={option.value}>{option.label}</option>
-    //     })
-    // }
-
     return (
         <InputContainer
             labelText={labelText}
@@ -93,14 +71,6 @@ const Select = ({
             onChange={onChange}
             />
         </InputContainer>
-        // <select
-        //     className={selectStyles}
-        //     disabled={disabled}
-        //     onChange={onChange}
-        //     name={name}
-        // >
-        //     {selectOptions()}
-        // </select>
     )
 }
 

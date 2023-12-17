@@ -6,7 +6,7 @@
  *
  * @module Input
  * 
- * @author xturyt00
+ * @author xturyt00, xbarza00
  */
 import React, { ChangeEventHandler, useContext } from 'react'
 import classes from "./Input.module.css"

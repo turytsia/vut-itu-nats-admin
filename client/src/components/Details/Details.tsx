@@ -6,7 +6,7 @@
  *
  * @module Details
  * 
- * @author xturyt00
+ * @author xturyt00, xbarza00
  */
 import React, { useContext, useEffect, useState } from 'react'
 

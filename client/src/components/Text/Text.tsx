@@ -1,3 +1,10 @@
+/**
+ * @fileoverview Text component implments a key value overview for Details.tsx
+ *
+ * @module Text
+ *
+ * @author xturyt00
+ */
 import React from 'react'
 
 import classes from "./Text.module.css"
@@ -9,6 +16,15 @@ type PropsType = {
     className?: string
 }
 
+/**
+ * Text component
+ * 
+ * @param props - Component props 
+ * @param props.labelText - Label text
+ * @param props.children - Children
+ * @param props.className - Classname
+ * @returns Text
+ */
 const Text = ({
     labelText,
     children,

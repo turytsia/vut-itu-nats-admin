@@ -1,3 +1,10 @@
+/**
+ * @fileoverview TextSection component implments section with settings overview at Details.tsx
+ *
+ * @module TextSection
+ *
+ * @author xturyt00
+ */
 import React, { useContext } from 'react'
 import { Icon } from '@iconify/react'
 
@@ -10,6 +17,14 @@ type PropsType = {
     children?: React.ReactNode
 }
 
+/**
+ * TextSection component
+ * 
+ * @param props - Component props 
+ * @param props.text - Title of the section
+ * @param props.children - Children
+ * @returns TextSection
+ */
 const TextSection = ({
     text,
     children

@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Loading component implementation
+ *
+ * This file contains implementation of a loading for the application
+ *
+ * @module Loading
+ * 
+ * @author xturyt00
+ */
 import React from 'react'
 import classes from "./Loading.module.css"
 import { FloatingPortal } from '@floating-ui/react'
