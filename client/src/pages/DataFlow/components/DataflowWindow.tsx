@@ -17,7 +17,7 @@ const DataflowWindow = ({
     name
 }: Props) => {
 
-    const { messages, isOwn, publish } = useNats([server])
+    const { messages, isOwn, publish, isConnected  } = useNats([server])
     const { isDark } = useContext(AppContext)
 
     const titleStyles = classNames(classes.title, {
@@ -27,7 +27,7 @@ const DataflowWindow = ({
     return (
         <div className={classes.main}>
             <h1 className={titleStyles}>
-                {name}
+                {name} ({isConnected() ? "Connected" : "Disconnected"})
                 <span className={classes.subtitle}>{server}</span>
             </h1>
             <div className={classes.container}>

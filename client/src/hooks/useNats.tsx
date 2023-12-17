@@ -27,19 +27,26 @@ const useNats = (servers: string[]) => {
     const [messages, setMessages] = useState<Msg[]>([])
     const [natsConnection, setNatsConnection] = useState<NatsConnection | null>(null)
     const [ownMessages, setOwnMessages] = useState<string[]>([])
+    const [connected, setConnected] = useState<boolean>(false)
 
     const isOwn = (message: Msg) => {
         return ownMessages.includes(message.headers?.get("X-Jetono-UUID") || "")
     }
 
+    const isConnected = () => {
+        return connected
+    }
+
     const subscribe = async () => {
 
         if (natsConnection !== null) {
+            setConnected(true)
             return
         }
 
         const nc = await connectNats(servers)
         if (!nc) {
+            setConnected(false)
             return
         }
 
@@ -87,7 +94,8 @@ const useNats = (servers: string[]) => {
     return {
         messages,
         isOwn,
-        publish
+        publish,
+        isConnected
     }
 }
 
