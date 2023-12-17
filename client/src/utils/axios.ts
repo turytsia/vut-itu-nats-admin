@@ -109,60 +109,62 @@ export type UserPayload = {
  * @todo
  */
 export type AccountType = NSCBaseType & {
-  nats: {
-    authorization: {
-      auth_users: string[];
-    };
-    default_permissions: {
-      pub: {
-        [key: string]: any;
-      };
-      sub: {
-        [key: string]: any;
-      };
-    };
-    description: string;
-    limits: {
-      conn: number;
-      data: number;
-      exports: number;
-      imports: number;
-      leaf: number;
-      payload: number;
-      subs: number;
-      wildcards: boolean;
-    };
-    type: string;
-    version: number;
-  };
-};
+    "nats": {
+        "authorization": {
+            "auth_users": string[]
+        },
+        "default_permissions": {
+            "pub": {
+                allow: string,
+                deny: string
+            },
+            "sub": {
+                allow: string,
+                deny: string
+            }
+        },
+        "description": string,
+        "limits": {
+            "conn": number,
+            "data": number,
+            "exports": number,
+            "imports": number,
+            "leaf": number,
+            "payload": number,
+            "subs": number,
+            "wildcards": boolean
+        },
+        "type": string,
+        "version": number
+    },
+}
 
 export type AccountPatchType = {
-  conns: string | null;
-  data: string | null;
-  description: string | null;
-  disallow_bearer: boolean;
-  exports: string | null;
-  imports: string | null;
-  info_url: string | null;
-  js_consumer: string | null;
-  js_disk_storage: string | null;
-  js_max_ack_pending: string | null;
-  js_max_bytes_required: string | null;
-  js_max_disk_stream: string | null;
-  js_max_mem_stream: string | null;
-  js_mem_storage: string | null;
-  js_streams: string | null;
-  js_tier: string | null;
-  leaf_conns: string | null;
-  payload: string | null;
-  rm_js_tier: string | null;
-  rm_sk: string | null;
-  rm_tag: string | null;
-  subscriptions: string | null;
-  tag: string | null;
-  wildcard_exports: boolean;
-};
+    "conns": string | null,
+    "data": string | null,
+    "description": string | null,
+    "disallow_bearer": boolean | null,
+    "exports": string | null,
+    "imports": string | null,
+    "info_url": string | null,
+    "js_consumer": string | null,
+    "js_disk_storage": string | null,
+    "js_max_ack_pending": string | null,
+    "js_max_bytes_required": string | null,
+    "js_max_disk_stream": string | null,
+    "js_max_mem_stream": string | null,
+    "js_mem_storage": string | null,
+    "js_streams": string | null,
+    "js_tier": string | null,
+    "leaf_conns": string | null,
+    "payload": string | null,
+    "rm_js_tier": string | null,
+    "rm_sk": string | null,
+    "rm_tag": string | null,
+    "subscriptions": string | null,
+    "tag": string | null,
+    "wildcard_exports": boolean | null,
+}
 
 export type UserType = NSCBaseType & {
   nats: {
@@ -566,24 +568,22 @@ const {
  * @todo
  */
 const GetRequest: GetRequestActions = {
-  location: async (address: string) => {
-    try {
-      const { data } = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          address
-        )}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-      );
+    location: async (address: string) => {
+        try {
+            const { data } = await axios.get(
+                `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+            );
 
-      return data;
-    } catch (error) {
-      console.error(error);
-    }
-  },
-  reverseLocation: async (lat: number, lng: number) => {
-    try {
-      const { data } = await axios.get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
-      );
+            return data
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    reverseLocation: async (lat: number, lng: number) => {
+        try {
+            const { data } = await axios.get(
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+            );
 
       return data;
     } catch (error) {
@@ -800,7 +800,7 @@ const PatchRequest: PatchRequestActions = {
     payload: AccountPatchType
   ): Promise<ResponseType> => {
     try {
-      const response = await put(
+      const response = await patch(
         `/operator/${operator}/account/${account}`,
         payload
       );

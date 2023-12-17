@@ -75,12 +75,14 @@ const AddDataFlowContext = ({
                     value={form.name}
                     onChange={handleInputChange}/>
                 <Select
+                    isRequired
                     labelText='Protocol'
                     value={form.protocol}
                     items={protocolOptions.map(opt => ({ id: opt, value: opt }))}
                     name={"protocol"} className={classes.selectProtocol}
                     onChange={handleProtocolChange} />
                 <Input
+                    isRequired
                     labelText="Server Hostname"
                     hintText={"Server context will be bound and connected to"}
                     name="server"
@@ -88,6 +90,7 @@ const AddDataFlowContext = ({
                     onChange={handleInputChange}
                     width={"100%"} />
                 <Input
+                    isRequired
                     labelText="Port"
                     hintText={"Port of the server context will be bound and connected to"}
                     name="port"
@@ -96,6 +99,7 @@ const AddDataFlowContext = ({
                     onChange={handleInputChange}
                     width={"100%"} />
                 <Input
+                    isRequired
                     labelText="Server Location"
                     hintText={"Address of a server"}
                     name="location"

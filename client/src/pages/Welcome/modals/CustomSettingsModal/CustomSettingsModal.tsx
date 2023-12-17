@@ -82,7 +82,7 @@ const CustomSettingsModal = ({
     const changeDataflows = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm(prev => ({
             ...prev,
-            dataflows: prev.dataflows.includes(e.target.name) ? prev.dataflows.filter(sub => sub !== e.target.name) : [...prev.users, e.target.name]
+            dataflows: prev.dataflows.includes(e.target.name) ? prev.dataflows.filter(sub => sub !== e.target.name) : [...prev.dataflows, e.target.name]
         }))
     }
 

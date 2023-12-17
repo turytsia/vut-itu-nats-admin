@@ -13,7 +13,7 @@ import {defaultFiltersConfig} from "../../utils/views/tables";
 import Button from "../../components/Button/Button";
 import {Icon} from "@iconify/react";
 import icons from "../../utils/icons";
-import {dateFormat, fetchAccounts} from "../../utils/common";
+import {dateFormat, datetimeFormat, fetchAccounts, NSCDateFormat, SecondsToMs} from "../../utils/common";
 import {columns, ColumnTypes} from "../../hooks/useSort";
 import CreateAccountModal from "./modals/CreateAccountModal";
 import AccountRowActions from "./components/AccountRowActions/AccountRowActions";
@@ -89,7 +89,7 @@ const Accounts = () => {
                 case "sub":
                     return account[key]
                 case "iat":
-                    return dateFormat(account[key])
+                    return datetimeFormat(SecondsToMs(account[key]))
                 case "":
                     return (
                         <AccountRowActions operatorName={account.operator} account={account} />
@@ -105,7 +105,11 @@ const Accounts = () => {
     const onAccountSubmit = useCallback(
         async (form: AccountPayloadType) => {
             try {
-                const response = await request.post.account(form.operator as string, form)
+                const response = await request.post.account(form.operator as string, {
+                    ...form,
+                    expiry: NSCDateFormat(form.expiry),
+                    start: NSCDateFormat(form.start),
+                })
 
                 if (response.type === "error") {
                     setError(response.data?.message || "An error occurred.");
@@ -144,6 +148,7 @@ const Accounts = () => {
             {isCreateActive && (
                 <CreateAccountModal
                     error={error}
+                    setErr={setError}
                     onSubmit={onAccountSubmit}
                     onClose={() => setIsCreateActive(false)}
                     operatorList={operators}

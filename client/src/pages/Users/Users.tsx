@@ -15,6 +15,7 @@ import {
   SecondsToMs,
   dateFormat,
   datetimeFormat,
+  fetchAccounts,
   fetchUsers,
 } from "../../utils/common";
 import UserRowActions from "./components/UserRowActions";
@@ -38,7 +39,9 @@ const Users = () => {
 
     try {
       const users = await fetchUsers();
-      setAccounts(Array.from(new Set(users.map((user) => user.account))));
+      const accounts = await fetchAccounts()
+
+      setAccounts(accounts.map(({ name }) => name));
       setUsers(users);
     } catch (error) {
       console.error(error);
