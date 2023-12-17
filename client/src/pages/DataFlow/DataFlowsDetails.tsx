@@ -1,3 +1,15 @@
+/**
+ * @file DataFlowsDetails.tsx
+ *
+ * @brief Data flows details page
+ *
+ * This file contains DataFlowsDetails page component implementation.
+ *
+ * @module DataFlowsDetails
+ *
+ * @author xbarza00
+ */
+
 import Page from "../../components/Page/Page";
 import Button from "../../components/Button/Button";
 import { Icon } from "@iconify/react";

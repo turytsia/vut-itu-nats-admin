@@ -1,3 +1,17 @@
+/**
+ * @fileoverview DataflowWindow component that renders the dataflow window
+ *
+ * This file contains DataflowWindow component that renders the dataflow window.
+ *
+ * @module DataflowWindow
+ *
+ * @exports DataflowWindow
+ *
+ * @version 0.1.0
+ *
+ * @author xbarza00
+ */
+
 import React, { useContext, useEffect } from "react";
 import MessageBox from "./MessageBox";
 import MessageForm from "./MessageForm";

@@ -116,6 +116,12 @@ const Operators = () => {
         fetch()
     }, [fetch])
 
+
+    /**
+     * @edtor xbarza00
+     *
+     * extracted to common method table with config
+     */
     return (
         <Page
             title={`Operators (${operators.length})`}>

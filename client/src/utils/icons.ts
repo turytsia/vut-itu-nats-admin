@@ -12,6 +12,9 @@
  * Icons enum 
  * 
  * @see https://icon-sets.iconify.design/ - All the icons can be found here
+ *
+ * @author xturyt00
+ * @editor xbarza00
  */
 enum icons {
     sun = 'lucide:sun',

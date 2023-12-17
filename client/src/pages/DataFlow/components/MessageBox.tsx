@@ -1,3 +1,15 @@
+/**
+ * @fileOverview MessageBox.tsx
+ *
+ * @exports MessageBox
+ *
+ * @version 1.0.0
+ *
+ * @module MessageBox
+ *
+ * @author xbarza00
+ */
+
 import classes from "./MessageBox.module.css";
 import classNames from "classnames";
 import { Msg, MsgHdrs } from "nats.ws";

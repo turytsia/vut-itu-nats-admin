@@ -5,7 +5,8 @@
  *
  * @module Menu
  * 
- * @author xturyt00, xbarza00
+ * @author xturyt00
+ * @editor xbarza00 - Account, Dataflows
  */
 
 import { useContext } from 'react'
