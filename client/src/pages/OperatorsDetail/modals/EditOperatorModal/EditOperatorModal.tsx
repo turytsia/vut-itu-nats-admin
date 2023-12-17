@@ -1,3 +1,8 @@
+/**
+ * @module OpearatorsDetail
+ *
+ * @author xturyt00
+ */
 import React, { useEffect, useState } from "react";
 
 import icons from "../../../../utils/icons";

@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Location component implementation
+ *
+ * This file contains implementation of Location component.
+ *
+ * @module Location
+ *
+ * @author xturyt00
+ */
+
 import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import Page from '../../components/Page/Page'
 import uuid from 'react-uuid'
@@ -11,21 +21,39 @@ import { DataFlowType } from '../../utils/axios';
 import { AppContext, request } from '../../context/AppContextProvider';
 import Location from "./components/Location/Location"
 
+/**
+ * Map component. This component renders the map
+ */
 const containerStyle = {
     width: '100%',
     height: '400px'
 };
 
+/**
+ * Center of the map
+ */
 const center = {
     lat: 49.195061,
     lng: 16.606836
 };
 
+/**
+ * JsApiLoader config
+ *
+ * @type {{id: string, googleMapsApiKey: string}}
+ *
+ * @property {string} id - Id of the map.
+ *
+ * @property {string} googleMapsApiKey - Google maps api key.
+ */
 const jsApiLoaderConfig = {
     id: "id123",
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY as string
 }
 
+/**
+ * Custom styles for the map
+ */
 const customStyles = [
     {
         featureType: 'all',
@@ -39,57 +67,84 @@ const customStyles = [
     }
 ];
 
+/**
+ * Map component. This component renders the map
+ * @constructor
+ *
+ *  @param {DataFlowType} dataflow - Dataflow object.
+ *
+ *  @param {() => void} onClose - Function that closes the aside.
+ */
 const Map = () => {
+    /**
+     * Hooks
+     */
     const { isLoaded } = useJsApiLoader(jsApiLoaderConfig)
     const {isLoading, setIsLoading} = useContext(AppContext)
 
     const [map, setMap] = useState<GoogleMap | null>(null)
+    // dataflows hooks created with useState
     const [dataflows, setDataflows] = useState<DataFlowType[]>()
     const [currentDataflow, setCurrentDataflow] = useState<DataFlowType | null>(null)
 
+    /**
+     * Callbacks
+     */
+
+    // onLoad callback used to set the map instance
     const onLoad = useCallback((map: any) => {
         const bounds = new window.google.maps.LatLngBounds(center);
         map.fitBounds(bounds);
         setMap(map)
     }, [])
 
+    // onUnmount callback used to reset the map instance
     const onUnmount = useCallback((map: any) => {
         setMap(null)
     }, [])
 
+    // clickLocationHandler callback used to set the current dataflow
     const clickLocationHandler = (location: DataFlowType) => {
         if(!map) return
         map.panTo({ lat: location.lat, lng: location.lon })
         setCurrentDataflow(location)
     }
 
+    // closeLocationHandler callback used to reset the current dataflow
     const  closeLocationHandler = () => {
         setCurrentDataflow(null)
     }
 
+    // fetchDataFlows callback used to fetch dataflows from the server
     const fetchDataFlows = useCallback(
         async () => {
             setIsLoading(true)
             try {
+                // fetch dataflows from the server
                 const response = await request.get.dataflows();
 
+                // check if response is valid
                 if (response["dataflows"] === undefined) return;
+                // set dataflows
                 setDataflows(response["dataflows"] ?? []);
             } catch (e) {
                 console.error(e);
             } finally {
+                // disable loading
                 setIsLoading(false)
             }
         },
         [request]
     )
 
+    //  useEffect hook used to fetch dataflows from the server
     useEffect(() => {
         fetchDataFlows()
     }, [])
 
     // console.log(map)
-    
+
+    // render component
     return (
         <Page
             title={`Map`}>

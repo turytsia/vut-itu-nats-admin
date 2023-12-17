@@ -1,3 +1,6 @@
+/**
+ * @author xturyt00
+ */
 import React from 'react'
 import classes from "./Card.module.css"
 import icons from '../../../../utils/icons'
@@ -11,18 +14,41 @@ import ButtonSourceCode from "../../../../components/ButtonSourceCode/ButtonSour
 
 type NSCEntityType = OperatorType | ExtendedAccountType | ExtendedUserType
 
+/**
+ * Card component props
+ *
+ * @typedef {object} PropsType
+ */
 type PropsType = {
     data: NSCEntityType
     icon: icons,
     type: "operator" | "account" | "user"
 }
 
+/**
+ * Card component
+ *
+ * @param data - Card data
+ * @param icon - Icon name
+ * @param type - Card type
+ * @constructor
+ */
 const Card = ({
     data,
     icon,
     type
 }: PropsType) => {
 
+    /**
+     * Hooks not needed
+     */
+
+    /**
+     * Functions
+     */
+
+    // get to
+    // used for link to
     const getTo = () => {
         switch (type) {
             case "operator":
@@ -34,6 +60,7 @@ const Card = ({
         }
     }
 
+    // render
     return (
         <BaseCard
             icon={icon}

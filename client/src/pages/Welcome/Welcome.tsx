@@ -1,3 +1,8 @@
+
+/**
+ * @author xturyt00
+ */
+
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import Page from "../../components/Page/Page"
 import Filters from '../../components/Filters/Filters'
@@ -14,6 +19,13 @@ import { NSCDataType, RequestDashboardType } from '../../utils/types'
 import uuid from 'react-uuid'
 import { AppContext, notify, request } from '../../context/AppContextProvider'
 
+/**
+ * Initial data state
+ *
+ * @type {NSCDataType}
+ * @constant
+ * @default
+ */
 const initialData: NSCDataType = {
     dataflows: [],
     operators: [],
@@ -21,6 +33,13 @@ const initialData: NSCDataType = {
     users: []
 }
 
+
+/**
+ * RequestDashboardType to DashboardSettingsFormType
+ *
+ * @param data to convert
+ * @constructor
+ */
 const RequestToDashboardForm = (data: RequestDashboardType): DashboardSettingsFormType => {
     return {
         dataflows: data.dataflows ? data.dataflows.map(({name}) => name) : [],
@@ -30,71 +49,108 @@ const RequestToDashboardForm = (data: RequestDashboardType): DashboardSettingsFo
     }
 }
 
-
+/**
+ * Welcome page
+ *
+ * @constructor
+ */
 const Welcome = () => {
+    /**
+     * Hooks
+     */
+    // settings modal state
     const [isSettinsActive, setIsSettingsActive] = useState(false)
 
+    // error state
     const [error, setError] = useState("")
+    // data state
     const [data, setData] = useState<NSCDataType>(initialData)
+    // dashboard state
     const [dashboard, setDashboard] = useState<RequestDashboardType>(initialFormState)
 
+    // search state (for filters)
     const [search, setSearch] = useState<string>("")
 
+    // loading state, used for grid
     const { isLoading, setIsLoading } = useContext(AppContext)
 
+    // fetch data from server
     const fetch = useCallback(
         async () => {
+            // set loading state
             setIsLoading(true);
 
             try {
+                // fetch data
                 const dashboard = await request.get.dashboard()
 
+                // set data
                 const data = await fetchAll()
 
                 setData(data)
 
+                // set dashboard
                 setDashboard(dashboard ?? initialFormState)
 
             } catch (error) {
                 console.error(error)
             } finally {
+                // set loading state
                 setIsLoading(false);
             }
         },
         []
     );
 
+    /**
+     * Callbacks
+     */
+
+    // on submit form
     const onSubmit = useCallback(
         async (form: RequestDashboardType) => {
+            // set loading state
             setIsLoading(true);
 
             try {
+                // send request
                 const response = await request.patch.dashboard(form)
-                
+
+                // set error
                 setError(response.type === "success" ? "" : response.data.message)
 
+                // set dashboard
                 if (response.type === "success") {
                     setDashboard(form)
+                    // set form state
                     setIsSettingsActive(false)
+                    // notify success
                     notify(response.data.message, "success")
                 }
 
             } catch (error) {
                 console.error(error)
             } finally {
+                // disable loading state
                 setIsLoading(false);
             }
         },
         []
     )
 
+    // on mount fetch data
     useEffect(() => {
         fetch()
     }, [fetch])
 
+
+    // function for searching
     const searchIn = (searchTarget: string, search: string) => {
+        // if search is empty, return true
         return searchTarget.trim().toLowerCase().includes(search.trim().toLowerCase())
     }
+
+    // filter data
     const filteredData = useMemo(() => ({
             operators: data.operators.filter(({ name }) => dashboard.operators?.find(({ name: n }) => n === name) && searchIn(name, search)),
             accounts: data.accounts.filter(({ operator, name }) => dashboard.accounts?.find(({ operator: o, name: n }) => o === operator && n === name ) && searchIn(name, search)),
@@ -103,6 +159,7 @@ const Welcome = () => {
         }
     ), [dashboard, data, search])
 
+    // render
     return (
         <Page title='Dashboard'>
             <Filters filtersConfig={{

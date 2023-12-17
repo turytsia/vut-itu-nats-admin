@@ -1,3 +1,8 @@
+
+/**
+ * @author xzhuka01
+ */
+
 import React, { useState, ChangeEvent, useCallback, useEffect } from "react";
 
 import icons from "../../../utils/icons";
@@ -10,6 +15,9 @@ import Checkbox from "../../../components/Checkbox/Checkbox";
 import classes from "./DeleteUserModal.module.css";
 import { request } from "../../../context/AppContextProvider";
 
+/**
+ * DeleteUserModal component props
+ */
 type PropsType = {
   onClose: () => void;
   onSubmit: () => void;
@@ -17,7 +25,15 @@ type PropsType = {
   error: string;
 };
 
+/**
+ * DeleteUserModal component
+ * @param onClose - callback to close modal
+ * @param onSubmit - callback to submit form
+ * @param user - user to delete
+ * @constructor
+ */
 const DeleteUserModal = ({ onClose, onSubmit, user }: PropsType) => {
+  // render modal
   return (
     <Modal
       title={"Delete user: " + user.name}

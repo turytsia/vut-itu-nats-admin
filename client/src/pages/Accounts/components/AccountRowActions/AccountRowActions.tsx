@@ -36,6 +36,8 @@ const AccountRowActions = ({
     account
 }: PropsType) => {
 
+    // render component
+    // with actions
     return (
         <div className={classes.actions}>
             <FloatingDelayGroup delay={150}>

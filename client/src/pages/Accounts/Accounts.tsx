@@ -46,6 +46,7 @@ export type AccountsExtention = { operator: string }
 export type ExtendedAccountType = AccountType & AccountsExtention
 
 const Accounts = () => {
+    // hooks
     const { request, isLoading, setIsLoading } = useContext(AppContext)
     const [accounts, setAccounts] = useState<ExtendedAccountType[]>([])
 
@@ -54,8 +55,13 @@ const Accounts = () => {
     const [isCreateActive, setIsCreateActive] = useState<boolean>(false)
 
     const [operators, setOperators] = useState<string[]>([])
+
+    /**
+     * Fetches data from the server.
+     */
     const fetch = useCallback(
         async () => {
+            // setting loading state while fetching
             setIsLoading(true);
 
             try {
@@ -65,12 +71,14 @@ const Accounts = () => {
 
                 const accounts = await fetchAccounts()
 
+                // setting operators and accounts
                 setOperators(operatorsResponse.operators)
                 setAccounts(accounts)
 
             } catch (error) {
                 console.error(error)
             } finally {
+                // disabling loading state
                 setIsLoading(false);
             }
         },
@@ -105,18 +113,25 @@ const Accounts = () => {
     const onAccountSubmit = useCallback(
         async (form: AccountPayloadType) => {
             try {
+                // sending request to create account
                 const response = await request.post.account(form.operator as string, {
                     ...form,
                     expiry: NSCDateFormat(form.expiry),
                     start: NSCDateFormat(form.start),
                 })
 
+                /**
+                 * if the response is success, then we are closing modal and notifying user,
+                 */
                 if (response.type === "error") {
                     setError(response.data?.message || "An error occurred.");
                 } else {
                     setError("");
+                    // closing modal and notifying user
                     setIsCreateActive(false)
+                    // fetching accounts again
                     fetch()
+                    // notifying user
                     notify(response.data.message, "success")
                 }
             } catch (e) {
@@ -127,9 +142,11 @@ const Accounts = () => {
     )
 
     useEffect(() => {
+        // fetch on mount
         fetch()
     }, [fetch])
 
+    // render template
     return (
         <Page title={`Accounts (${accounts.length})`}>
             <Table

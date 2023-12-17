@@ -9,20 +9,63 @@ import classNames from "classnames";
 import MessageBox from "../../../DataFlow/components/MessageBox";
 import MessageForm from "../../../DataFlow/components/MessageForm";
 
+/**
+ * @fileoverview Aside component implementation
+ *
+ * This file contains implementation of Aside component.
+ *
+ * @module Aside
+ *
+ * @author xturyt00
+ */
+
+/**
+ * Aside component props
+ *
+ * @typedef PropsType
+ *
+ * @property {DataFlowType} dataflow - Dataflow object.
+ *
+ * @property {() => void} onClose - Function that closes the aside.
+ *
+ */
 type PropsType = {
   dataflow: DataFlowType;
   onClose: () => void;
 };
 
+
+/**
+ * Aside component. This component renders the aside
+ *
+ * @param props - Component props.
+ *
+ * @param props.dataflow - Dataflow object.
+ *
+ * @param props.onClose - Function that closes the aside.
+ *
+ *
+ * @param dataflow - Dataflow object.
+ * @param onClose - Function that closes the aside.
+ * @constructor
+ */
 const Aside = ({ dataflow, onClose }: PropsType) => {
+  /**
+   * Hooks for nats
+   */
+
+  // hooks for nats
   const { messages, isOwn, publish, isConnected } = useNats(dataflow.server);
 
+  // hooks for theme
   const { isDark } = useContext(AppContext);
 
+  // hooks for component state, headers and styles
   const asideStyles = classNames(classes.aside, {
     [classes.dark]: isDark,
   });
 
+  // render component
   return (
     <aside className={asideStyles}>
       <div className={classes.main}>

@@ -116,7 +116,8 @@ const CreateAccountModal = ({onClose, onSubmit, error, operatorList, setErr}: Pr
         [state, onSubmit]
     )
 
-
+    // render full modal form
+    // with inputs
     return (
         <Modal
             error={error}

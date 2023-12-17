@@ -8,16 +8,25 @@
  * @author xbarza00
  */
 
-import React from 'react'
-import Modal from '../../../../components/Modal/Modal'
-import Input from '../../../../components/Input/Input'
-import icons from '../../../../utils/icons'
+import React from 'react';
+import Modal from '../../../../components/Modal/Modal';
+import Input from '../../../../components/Input/Input';
+import icons from '../../../../utils/icons';
 
+/**
+ * JWTModal component props.
+ */
 type PropsType = {
-    token: string
-    onClose: () => void
-}
+  token: string;
+  onClose: () => void;
+};
 
+/**
+ * JWTModal component for displaying JWT token.
+ *
+ * @param token JWT token to be displayed.
+ * @param onClose Callback function to close the modal.
+ */
 const JWTModal = ({
     token,
     onClose,
@@ -41,4 +50,4 @@ const JWTModal = ({
     )
 }
 
-export default JWTModal
+export default JWTModal;

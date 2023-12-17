@@ -1,3 +1,7 @@
+/**
+ * @author xbarza00
+ */
+
 import React, { useState } from 'react'
 import BaseCard from "../BaseCard/BaseCard"
 import icons from '../../../../utils/icons'
@@ -9,17 +13,30 @@ import DataflowViewModal from "./modals/DataflowViewModal/DataflowViewModal"
 import Info from '../Card/components/Info/Info'
 import { datetimeFormat } from '../../../../utils/common'
 
+/**
+ * DataflowCard component props
+ */
 type PropsType = {
     icon: icons
     data: DataFlowType
 }
 
+/**
+ * DataflowCard component
+ *
+ * @param icon - Icon name
+ * @param data - Dataflow data
+ * @constructor
+ */
 const DataflowCard = ({
     icon,
     data,
 }: PropsType) => {
+    // check if view modal is active
     const [isViewActive, setIsViewActive] = useState<boolean>(false)
     // console.log(data)
+
+    // render
     return (
         <BaseCard
             icon={icon}

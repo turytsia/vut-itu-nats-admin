@@ -1,11 +1,11 @@
 /**
  * @fileoverview useSort custom hook
  *
- * This file contains implementation of a useSort hook. This is
- * custom hook that is being used in Table.tsx for sorting
+ * This file contains the implementation of the useSort hook.
+ * It is a custom hook used in Table.tsx for sorting data.
  *
  * @module useSort
- * 
+ *
  * @author xturyt00
  */
 
@@ -23,7 +23,7 @@ type SortersType = {
     [key: string]: SorterType
 }
 
-/** Type of the data, that will be sorted */
+/** Type of the data that will be sorted */
 type DataType = {
     [key: string]: any
 }
@@ -54,10 +54,10 @@ const initialSorter = {
 }
 
 /**
- * Returns next type for the given type of the sort
- * 
- * @param type given type
- * @returns Returns next type of the given type
+ * Returns the next type for the given type of the sort.
+ *
+ * @param type Given type
+ * @returns Next type of the given type
  */
 const getNextType = (type: sort) => ({
     [sort.DEFAULT]: sort.ASC,
@@ -66,13 +66,13 @@ const getNextType = (type: sort) => ({
 }[type])
 
 /**
- * Updates specific sorter in sorter collection by key. 
- * Updating means changing type of a sorter to the next one,
- * then it constructs new sorter collection and returns it back
- * 
- * @param sorters collection of sorters
- * @param key key of the sorter that needs to be updated
- * @returns collection of sorters with updated sorter
+ * Updates a specific sorter in the sorter collection by key.
+ * Updating means changing the type of a sorter to the next one.
+ * It then constructs a new sorter collection and returns it back.
+ *
+ * @param sorters Collection of sorters
+ * @param key Key of the sorter that needs to be updated
+ * @returns Collection of sorters with the updated sorter
  */
 const updateSorter = (sorters: SortersType, key: string) =>
     Object.values(sorters)
@@ -80,23 +80,23 @@ const updateSorter = (sorters: SortersType, key: string) =>
         .reduce((a, s) => ({ ...a, [s.key]: s }), {})
 
 /**
- * Creates new sorter in collection of sorters,
- * assigns it to provided key and returns new collection
- * 
- * @param sorters collection of sorters
- * @param key key of the new sorter
- * @returns collection of sorters with new sorter
+ * Creates a new sorter in the collection of sorters,
+ * assigns it to the provided key, and returns the new collection.
+ *
+ * @param sorters Collection of sorters
+ * @param key Key of the new sorter
+ * @returns Collection of sorters with the new sorter
  */
 const pushSorter = (sorters: SortersType, key: string) =>
     [...Object.values(sorters), { ...initialSorter, key }].reduce((a, s, i) => ({ ...a, [s.key]: { ...s, order: i + 1 } }), {})
 
 /**
- * Deletes specific sorter in collection of sorters by a key
- * and returns new collection of sorters 
- * 
- * @param sorters collection of sorters
- * @param key key of the sorter that needs to be removed
- * @returns new collection of sorters 
+ * Deletes a specific sorter in the collection of sorters by a key
+ * and returns a new collection of sorters.
+ *
+ * @param sorters Collection of sorters
+ * @param key Key of the sorter that needs to be removed
+ * @returns New collection of sorters
  */
 const deleteSorter = (sorters: SortersType, key: string) =>
     Object.values(sorters)
@@ -105,20 +105,20 @@ const deleteSorter = (sorters: SortersType, key: string) =>
         .reduce((a, s, i) => ({ ...a, [s.key]: { ...s, order: i + 1 } }), {})
 
 /**
- * Custom hook useSort is used to sort data in Table.tsx
- * 
- * @param initialData initial data (table)
- * @param columnTypes column types of initial table 
- * @returns handlers to work with this hook
+ * Custom hook useSort is used to sort data in Table.tsx.
+ *
+ * @param initialData Initial data (table)
+ * @param columnTypes Column types of the initial table
+ * @returns Handlers to work with this hook
  */
 const useSort = ([...initialData]: DataType[], columnTypes: ColumnTypes) => {
     const [sorters, setSorters] = useState<SortersType>({})
 
     /**
-     * Sorting change handler
-     * Changes specific sorter in collection of sorters by key provided
-     * 
-     * @param key key of the sorter
+     * Sorting change handler.
+     * Changes a specific sorter in the collection of sorters by the provided key.
+     *
+     * @param key Key of the sorter
      */
     const changeSort = useCallback(
         (key: string) => {
@@ -138,11 +138,12 @@ const useSort = ([...initialData]: DataType[], columnTypes: ColumnTypes) => {
     )
 
     /**
-     * Data sort handler
-     * It sorts data by specific column provided as a key
-     * 
-     * @param data data (table), that will be sorted
-     * @param key key of a column in table
+     * Data sort handler.
+     * It sorts data by a specific column provided as a key.
+     *
+     * @param data Data (table) that will be sorted
+     * @param key Key of a column in the table
+     * @returns Sorted data
      */
     const sortData = useCallback(
         (data: DataType[], key: string) => {
@@ -174,13 +175,13 @@ const useSort = ([...initialData]: DataType[], columnTypes: ColumnTypes) => {
         [sorters, initialData, columnTypes]
     )
 
-    // accessors
+    // Accessors
 
     /**
-     * Returns type of a sort by column key
-     * 
-     * @param key column key
-     * @return type of a sort
+     * Returns the type of a sort by column key.
+     *
+     * @param key Column key
+     * @returns Type of a sort
      */
     const sortTypeOf = useCallback(
         (key: string) => sorters[key]?.type ?? sort.DEFAULT,
@@ -188,16 +189,22 @@ const useSort = ([...initialData]: DataType[], columnTypes: ColumnTypes) => {
     )
 
     /**
-     * Returns order of a sort by column key
-     * 
-     * @param key column key
-     * @return order of a sort
+     * Returns the order of a sort by column key.
+     *
+     * @param key Column key
+     * @returns Order of a sort
      */
     const sortOrderOf = useCallback(
         (key: string) => sorters[key]?.order,
         [sorters]
     )
 
+    /**
+     * Checks if a column is sortable.
+     *
+     * @param key Column key
+     * @returns True if the column is sortable, false otherwise
+     */
     const isSortable = useCallback(
         (key: string) => columnTypes[key] !== columns.NONE,
         [columnTypes]

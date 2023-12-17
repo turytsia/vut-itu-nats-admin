@@ -31,9 +31,10 @@ const MessageBox = ({
     message,
     isOwn
 }: PropsType) => {
-
+    // hooks for theme
     const { isDark } = useContext(AppContext)
 
+    // hooks for component state, headers and styles
     const [showHeaders, setShowHeaders] = React.useState(false)
 
     const headerStyles = classNames(classes.containerHeader, {
@@ -46,12 +47,15 @@ const MessageBox = ({
         [classes.own]: isOwn
     })
 
+    // handle show headers, when icon is clicked
     const handleShowHeaders = () => {
         setShowHeaders(!showHeaders)
     }
 
-
+    // extract headers keys
     let keys = message.headers?.keys();
+
+    // render component with message data
     return (
         <div className={messageStyles}>
             <div className={headerStyles}>

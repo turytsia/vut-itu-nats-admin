@@ -1,3 +1,9 @@
+/**
+ * Edit user modal
+ *
+ * @author xzhuka01
+ */
+
 import { useCallback, useContext, useEffect, useState } from "react";
 import Page from "../components/Page/Page";
 import Button from "../components/Button/Button";

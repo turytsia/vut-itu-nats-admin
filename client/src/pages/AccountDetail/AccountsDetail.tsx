@@ -22,6 +22,7 @@ import Details from "../../components/Details/Details"
 import ButtonSourceCode from '../../components/ButtonSourceCode/ButtonSourceCode'
 
 const AccountsDetail = () => {
+    // hooks
     const { request, setIsLoading } = useContext(AppContext)
     const [error, setError] = useState<string>("")
 
@@ -33,39 +34,50 @@ const AccountsDetail = () => {
 
     const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
+    // fetch account
     const fetch = useCallback(
         async () => {
             try {
+                // setting account from the response
                 setAccount(await request.get.account(operatorName as string, accountName as string) as AccountPatchType & AccountType)
             } catch (e) {
                 console.error(e)
             }
         },
+        // dependencies on following
         [accountName, operatorName, request]
     )
 
+    // edit account
     const onEditSubmit = useCallback(
         async (settings: EditAccountType) => {
+            // setting loading state while fetching
             setIsLoading(true)
             try {
+                // sending request to edit account
                 const response = await request.patch.account(operatorName as string, accountName as string, settings as AccountPatchType)
+                // fetching account again
                 await fetch()
-                
+
+                // setting error message if the response is not success
                 setError(response.type === "success" ? "" : response.data.message)
                 if (response.type === "success") {
-
+                    // closing modal and notifying user
                     setIsEditModal(false)
                     notify(response.data.message, "success")
                 }
             } catch (e) {
+                // setting error message if the response is not success
                 console.error(e)
             } finally {
+                // setting loading state to false
                 setIsLoading(false)
             }
         },
         []
     )
 
+    // callback for input change
     const onChangeInput = useCallback(
         (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
         []
@@ -75,6 +87,8 @@ const AccountsDetail = () => {
         fetch()
     }, [fetch])
 
+
+    // create details config view
     return (
         <Page title={accountName as string}>
             <Details

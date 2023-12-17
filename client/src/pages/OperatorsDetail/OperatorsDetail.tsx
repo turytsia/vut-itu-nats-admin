@@ -1,3 +1,9 @@
+/**
+ * @module OpearatorsDetail
+ *
+ * @author xturyt00
+ */
+
 import { useCallback, useContext, useEffect, useState } from 'react'
 import Page from '../../components/Page/Page'
 import Button from '../../components/Button/Button'
@@ -15,46 +21,77 @@ import uuid from 'react-uuid'
 import classes from "./OperatorsDetail.module.css"
 import ButtonSourceCode from '../../components/ButtonSourceCode/ButtonSourceCode'
 
+/**
+ * OperatorsDetail page component
+ *
+ * @returns OperatorsDetail page
+ */
 const OperatorsDetail = () => {
+	/**
+	 * Hook that extracts the name parameter from the url.
+	 */
 	const { operator: name } = useParams()
 
+	// search hook that is used to filter the table
 	const [search, setSearch] = useState<string>("")
 	const [error, setError] = useState<string>("")
 
+	// request hook for api calls
 	const { request } = useContext(AppContext)
 	const [isLoading, setIsLoading] = useState<boolean>(false)
+	// hook for handling the operator update modal
 	const [operator, setOperator] = useState<OperatorType | null>(null)
 
 	const [isEditModal, setIsEditModal] = useState<boolean>(false)
 
+	/**
+	 * Callbacks
+	 */
+
+	// fetch operator data
 	const fetch = useCallback(
 		async () => {
 			try {
+				// set loading state
 				setIsLoading(true)
 
+				// fetch operator data
 				const operator = await request.get.operator(name as string)
+
+				// set operator data
 				setOperator(operator)
 			}
 			catch (e) {
 				console.error(e)
 			}
 			finally {
+				// disable loading
 				setIsLoading(false)
 			}
 		},
 		[]
 	)
 
+	// onEditSubmit callback used to submit the operator update form
 	const onEditSubmit = async (settings: OperatorPatchType) => {
 		try {
+			// set loading state
 			setIsLoading(true)
 
+			// send request to update the operator
 			const response = await request.patch.operator(name as string, settings)
+			// in case of error, set error message
 			setError(response.type === "success" ? "" : response.data.message)
+
+			// if response is success, fetch the operator data
 			if (response.type === "success") {
+				// fetch operator data
 				const operator = await request.get.operator(name as string)
+				//	set operator data
 				setOperator(operator)
+				// close the modal
 				setIsEditModal(false)
+				// notify the user
 				notify(response.data.message, "success")
 			}
 		}
@@ -62,10 +99,16 @@ const OperatorsDetail = () => {
 			console.error(e)
 		}
 		finally {
+			// disable loading
 			setIsLoading(false)
 		}
 	}
 
+	/**
+	 * Effects
+	 */
+
+	// useEffect hook used to fetch operator data
 	const onChangeInput = useCallback(
 		(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value),
 		[]
@@ -75,6 +118,7 @@ const OperatorsDetail = () => {
 		fetch()
 	}, [])
 
+	// render
 	return (
 		<Page title={name as string}>
 			<Details

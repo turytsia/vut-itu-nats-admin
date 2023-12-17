@@ -1,3 +1,9 @@
+/**
+ * Edit user modal
+ *
+ * @author xzhuka01
+ */
+
 import React, { useState, ChangeEvent, useCallback, useEffect } from "react";
 
 import icons from "../../../utils/icons";
@@ -15,6 +21,15 @@ import { DropdownItemType } from "../../../components/Dropdown/Dropdown";
 import DateInput from "../../../components/DateInput/DateInput";
 import { NSCDateFormat, SecondsToMs } from "../../../utils/common";
 
+/**
+ * EditUserModal component props
+ *
+ * @param onClose - callback to close modal
+ *
+ * @param onSubmit - callback to submit form
+ *
+ * @param user - user to edit
+ */
 type PropsType = {
   onClose: () => void;
   onSubmit: (settings: UserPatchType) => void;
@@ -22,6 +37,17 @@ type PropsType = {
   error: string;
 };
 
+/**
+ * EditUserModal component
+ *
+ * @param onClose - callback to close modal
+ *
+ * @param onSubmit - callback to submit form
+ *
+ * @param user - user to edit
+ *
+ * @constructor
+ */
 const initialState: UserPayload = {
   account: "",
   name: "",
@@ -31,19 +57,35 @@ const initialState: UserPayload = {
   conn_type: "",
 };
 
+/**
+ * EditUserModal component
+ * @param onClose - callback to close modal
+ * @param onSubmit - callback to submit form
+ * @param initialUser - user to edit
+ * @param error - error message
+ * @constructor
+ */
 const EditUserModal = ({
   onClose,
   onSubmit,
   user: initialUser,
   error
 }: PropsType) => {
+  /**
+   * HOOKS
+   */
+
+  // initial state for form inputs
   const [state, setState] = useState<UserPayload>({
     ...initialState,
     expiry: initialUser.exp ? new Date(SecondsToMs(initialUser.exp)).toISOString() : null,
     start: initialUser.nbf ? new Date(SecondsToMs(initialUser.nbf)).toISOString() : null
   });
+
+  // initial state for form inputs
   const [user, setUser] = useState<UserPatchType & UserType>(initialUser);
 
+  // hooks for form inputs
   const [isBearer, setIsBearer] = useState<boolean>(user.nats.bearer_token ?? false);
   const [allowPub, setAllowPub] = useState<string[]>(
     initialUser.nats.pub.allow ?? []
@@ -72,6 +114,7 @@ const EditUserModal = ({
   const [rmTag, setRmTag] = useState<string[]>([]);
   const [rmTime, setRmTime] = useState<string[]>([]);
 
+  // on save format strings
   const onSave = () => {
     onSubmit({
       allow_pub: allowPub.join(","),
@@ -102,6 +145,7 @@ const EditUserModal = ({
     } as UserPatchType);
   };
 
+  // on close reset state
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
@@ -117,6 +161,7 @@ const EditUserModal = ({
     setState((prev) => ({ ...prev, [name]: String(date) }));
   }, []);
 
+  // render modal
   return (
     <Modal
       error={error}

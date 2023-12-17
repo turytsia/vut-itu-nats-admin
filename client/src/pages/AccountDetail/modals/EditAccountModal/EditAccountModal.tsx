@@ -1,40 +1,41 @@
 /**
  * @file EditAccountModal.tsx
- * @brief Modal form component to edit account
+ * @brief Modal form component for editing an account
  *
- * This file contains implementation of a Modal form component to edit account.
+ * This file contains the implementation of a Modal form component used for editing an account.
  *
  * @module EditAccountModal
  *
  * @author xbarza00
  */
 
-import React, {ChangeEvent, useCallback, useState} from 'react'
+import React, {ChangeEvent, useCallback, useState} from 'react';
 
-import icons from "../../../../utils/icons"
-import Modal from "../../../../components/Modal/Modal"
-import Input from "../../../../components/Input/Input"
-import {AccountPatchType, AccountType} from '../../../../utils/axios'
+import icons from '../../../../utils/icons';
+import Modal from '../../../../components/Modal/Modal';
+import Input from '../../../../components/Input/Input';
+import Checkbox from '../../../../components/Checkbox/Checkbox';
+import {AccountPatchType, AccountType} from '../../../../utils/axios';
 
-import classes from "./EditAccountModal.module.css"
-import Checkbox from "../../../../components/Checkbox/Checkbox";
+import classes from './EditAccountModal.module.css';
 
 type PropsType = {
-    error: string
-    onClose: () => void
-    onSubmit: (settings: AccountPatchType) => void
-    account: AccountPatchType & AccountType
-}
+    error: string;
+    onClose: () => void;
+    onSubmit: (settings: AccountPatchType) => void;
+    account: AccountPatchType & AccountType;
+};
 
-export type EditAccountType = {}
-
-const EditAccountModal = ({
-    error,
-                              onClose,
-                              onSubmit,
-                              account: initialAccount
-                          }: PropsType) => {
-
+/**
+ * EditAccountModal component for editing an account.
+ *
+ * @param error Error message, if any.
+ * @param onClose Callback function to close the modal.
+ * @param onSubmit Callback function to submit the edited account settings.
+ * @param account Initial account settings.
+ */
+const EditAccountModal = ({error, onClose, onSubmit, account: initialAccount}: PropsType) => {
+    // existing state variables
     const [description, setDescription] = useState<string>(initialAccount.nats.description ?? "")
     const [payload, setPayload] = useState<number>(initialAccount.nats.limits.payload)
     const [leafConns, setLeafConns] = useState<number>(initialAccount.nats.limits.leaf)
@@ -60,6 +61,10 @@ const EditAccountModal = ({
     const [subscriptions, setSubscriptions] = useState<string>("")
     const [wildcardExports, setWildcardExports] = useState<boolean>()
 
+    /**
+     * Callback to handle the onSave action.
+     */
+
     const onSave = () => {
         onSubmit({
             conns: connections.toString(),
@@ -79,7 +84,7 @@ const EditAccountModal = ({
             js_max_mem_stream: jsMaxMemStream?.toString() ?? null,
             js_mem_storage: jsMemStorage?.toString() ?? null,
             js_streams: jsStreams?.toString() ?? null,
-            js_tier:  jsTier?.toString() ?? null,
+            js_tier: jsTier?.toString() ?? null,
             rm_js_tier: rmJsTier?.toString() ?? null,
             rm_sk: rmSk?.toString() ?? null,
             rm_tag: rmTag?.toString() ?? null,
@@ -242,7 +247,7 @@ const EditAccountModal = ({
                 <div/>
             </div>
         </Modal>
-    )
-}
+    );
+};
 
-export default EditAccountModal
+export default EditAccountModal;

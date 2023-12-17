@@ -1,3 +1,7 @@
+/**
+ * @author xturyt00
+ */
+
 import React from 'react'
 import CopyButton from '../../../../../../components/CopyButton/CopyButton'
 
@@ -9,6 +13,14 @@ type PropsType = {
     isCopy?: boolean
 }
 
+/**
+ * Info component
+ *
+ * @param title - Info title
+ * @param value - Info value
+ * @param isCopy - Copy button
+ * @constructor
+ */
 const Info = ({
     title,
     value,

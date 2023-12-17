@@ -32,13 +32,16 @@ const DataflowWindow = ({
 }: Props) => {
     // console.log(server)
 
+    // hooks for nats
     const { messages, isOwn, publish, isConnected } = useNats(server)
     const { isDark } = useContext(AppContext)
 
+    // hook for theme
     const titleStyles = classNames(classes.title, {
         [classes.dark]: isDark
     })
 
+    // render component
     return (
         <div className={classes.main}>
             <h1 className={titleStyles}>
