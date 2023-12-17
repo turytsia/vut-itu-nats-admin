@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import MessageBox from "./MessageBox";
 import MessageForm from "./MessageForm";
 import classes from "./DataFlowsWindow.module.css"
@@ -16,8 +16,9 @@ const DataflowWindow = ({
     server,
     name
 }: Props) => {
+    // console.log(server)
 
-    const { messages, isOwn, publish } = useNats([server])
+    const { messages, isOwn, publish, isConnected } = useNats(server)
     const { isDark } = useContext(AppContext)
 
     const titleStyles = classNames(classes.title, {
@@ -27,7 +28,7 @@ const DataflowWindow = ({
     return (
         <div className={classes.main}>
             <h1 className={titleStyles}>
-                {name}
+                <span className={classes.titleContent}>{name} {isConnected() ? <span className={classes.online}>Online</span> : <span className={classes.offline}>Offline</span>}</span>
                 <span className={classes.subtitle}>{server}</span>
             </h1>
             <div className={classes.container}>

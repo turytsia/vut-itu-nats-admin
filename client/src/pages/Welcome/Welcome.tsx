@@ -23,10 +23,10 @@ const initialData: NSCDataType = {
 
 const RequestToDashboardForm = (data: RequestDashboardType): DashboardSettingsFormType => {
     return {
-        dataflows: data.dataflows.map(({name}) => name),
-        operators: data.operators.map(({ name }) => name),
-        accounts: data.accounts.map(({ name }) => name),
-        users: data.users.map(({ name }) => name)
+        dataflows: data.dataflows ? data.dataflows.map(({name}) => name) : [],
+        operators: data.operators ? data.operators.map(({ name }) => name) : [],
+        accounts: data.accounts ? data.accounts.map(({ name }) => name) : [],
+        users: data.users ? data.users.map(({ name }) => name) : []
     }
 }
 

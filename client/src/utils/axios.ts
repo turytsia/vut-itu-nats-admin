@@ -110,10 +110,12 @@ export type AccountType = NSCBaseType & {
         },
         "default_permissions": {
             "pub": {
-                [key: string]: any
+                allow: string,
+                deny: string
             },
             "sub": {
-                [key: string]: any
+                allow: string,
+                deny: string
             }
         },
         "description": string,
