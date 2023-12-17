@@ -51,6 +51,8 @@ const EditOperatorModal = ({
     operator.nats.system_account ?? ""
   );
 
+
+
   const [serviceUrls, setServiceUrls] = useState<string[]>(
     operator.nats.operator_service_urls ?? []
   );
@@ -155,8 +157,11 @@ const EditOperatorModal = ({
           onChange={(e) => setIsSigningKey(e.target.checked)}
         />
       </div>
+      
     </Modal>
+    
   );
+  
 };
 
 export default EditOperatorModal;

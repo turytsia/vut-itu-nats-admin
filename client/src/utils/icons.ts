@@ -50,6 +50,7 @@ enum icons {
     map = 'material-symbols:map',
     server = 'mdi:server',
     bars = 'fa6-solid:bars',
+    delete = 'ic:round-delete',
     // code = 'ic:round-code'
 }
 

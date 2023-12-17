@@ -17,6 +17,7 @@ import classes from "./CreateUserModal.module.css";
 import Modal from "../../../components/Modal/Modal";
 import Input from "../../../components/Input/Input";
 import Select from "../../../components/Select/Select";
+import { DropdownItemType } from "../../../components/Dropdown/Dropdown";
 
 type PropsType = {
   error: string;
@@ -25,13 +26,14 @@ type PropsType = {
   accountList: string[];
 };
 
-
-
 // initial state for form inputs
 const initialState: UserPayload = {
   account: "",
   name: "",
   operator: "",
+  expiry: null,
+  start: null,
+  conn_type: "",
 };
 
 /**
@@ -51,7 +53,6 @@ const CreateUserModal = ({
   accountList,
 }: PropsType) => {
   const [state, setState] = useState<UserPayload>(initialState);
-
   /**
    * Handle input changes
    *
@@ -61,16 +62,14 @@ const CreateUserModal = ({
     setState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }, []);
 
-  const handleOperatorChange = (value: string | null) => {
-    setState((prev) => ({ ...prev, operator: value }));
-  };
-
   /**
    * Handle form submission
    */
   const handleSubmit = useCallback(() => {
     onSubmit(state);
   }, [state, onSubmit]);
+
+
 
   return (
     <Modal
@@ -96,8 +95,8 @@ const CreateUserModal = ({
           hintText="Account under which the user will be created"
           value={state.account}
           items={accountList.map((name) => ({ id: name, value: name }))}
-          name="operator"
-          onChange={handleOperatorChange}
+          name="account"
+          onChange={(value) => setState(prev => ({ ...prev, account: value }))}
         />
       </div>
     </Modal>

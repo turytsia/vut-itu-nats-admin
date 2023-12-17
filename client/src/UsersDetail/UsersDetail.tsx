@@ -3,7 +3,7 @@ import Page from "../components/Page/Page";
 import Button from "../components/Button/Button";
 import { Icon } from "@iconify/react";
 import icons from "../utils/icons";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext, notify } from "../context/AppContextProvider";
 import { NameType, UserPatchType, UserType } from "../utils/axios";
 import EditUserModal from "./modals/EditUserModal/EditUserModal";
@@ -14,7 +14,8 @@ import uuid from "react-uuid";
 import { fetchUsers } from "../utils/common";
 
 import classes from "./UserDetail.module.css";
-import { ExtendedUserType } from "../pages/Users/Users";
+import Users, { ExtendedUserType } from "../pages/Users/Users";
+import DeleteUserModal from "./modals/DeleteUserModal/DeleteUserModal";
 
 const UsersDetail = () => {
   const {
@@ -23,6 +24,7 @@ const UsersDetail = () => {
     user: userName,
   } = useParams();
 
+  const navigate = useNavigate()
   const [search, setSearch] = useState<string>("");
   const [error, setError] = useState<string>("");
 
@@ -31,6 +33,7 @@ const UsersDetail = () => {
   const [user, setUser] = useState<(UserPatchType & UserType) | null>(null);
 
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
+  const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
 
   const fetch = useCallback(async () => {
     setIsLoading(true);
@@ -48,6 +51,29 @@ const UsersDetail = () => {
       setIsLoading(false);
     }
   }, []);
+
+  const onDeleteSubmit = async () => {
+    try {
+      setIsLoading(true);
+
+      const response = await request.delete.user(
+        operatorName as string,
+        accountName as string,
+        userName as string
+      );
+
+      setError(response.type === "success" ? "" : response.data.message);
+      if (response.type === "success") {
+        setIsDeleteModal(false);
+        notify(response.data.message, "success");
+        navigate(`/users`)
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const onEditSubmit = async (settings: UserPatchType) => {
     try {
@@ -92,10 +118,16 @@ const UsersDetail = () => {
     <Page title={userName as string}>
       <Details
         renderActions={
-          <Button isBlue onClick={() => setIsEditModal(true)}>
-            Update User
-            <Icon icon={icons.pen} width={20} height={20} />
-          </Button>
+          <>
+            <Button isBlue onClick={() => setIsEditModal(true)}>
+              Update User
+              <Icon icon={icons.pen} width={20} height={20} />
+            </Button>
+            <Button isRed onClick={() => setIsDeleteModal(true)}>
+              Delete User
+              <Icon icon={icons.delete} width={20} height={20} />
+            </Button>
+          </>
         }
         filtersConfig={{
           searchConfig: {
@@ -176,6 +208,18 @@ const UsersDetail = () => {
                 ) : null,
               },
               {
+                name: "Allow sub",
+                value: user?.nats.sub.allow ? (
+                  <span className={classes.tags}>
+                    {user?.nats.sub.allow.map((tag) => (
+                      <Tag key={uuid()} isBlue>
+                        {tag}
+                      </Tag>
+                    ))}
+                  </span>
+                ) : null,
+              },
+              {
                 name: "Type",
                 value: user?.nats.type,
               },
@@ -193,6 +237,14 @@ const UsersDetail = () => {
           user={user}
           onSubmit={onEditSubmit}
           onClose={() => setIsEditModal(false)}
+        />
+      )}
+      {isDeleteModal && user && (
+        <DeleteUserModal
+          error={error}
+          user={user}
+          onSubmit={onDeleteSubmit}
+          onClose={() => setIsDeleteModal(false)}
         />
       )}
     </Page>

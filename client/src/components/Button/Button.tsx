@@ -17,6 +17,7 @@ type PropsType = {
     className?: string
     isTransparent?: boolean
     isBlue?: boolean
+    isRed?: boolean
     disabled?: boolean
     children?: React.ReactNode
     onClick?: MouseEventHandler<HTMLButtonElement>
@@ -36,6 +37,7 @@ type PropsType = {
 const Button = forwardRef<HTMLButtonElement, PropsType>(({
     className = "",
     isBlue = false,
+    isRed = false,
     isTransparent = false,
     children = null,
     disabled = false,
@@ -46,6 +48,7 @@ const Button = forwardRef<HTMLButtonElement, PropsType>(({
 
     const buttonStyles = classNames(classes.container, className, {
         [classes.blue]: isBlue,
+        [classes.red]: isRed,
         [classes.dark]: isDark,
         [classes.transparent]: isTransparent,
     })
